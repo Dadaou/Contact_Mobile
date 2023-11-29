@@ -44,7 +44,7 @@ const FormulaireAuthentification = () => {
     return (
 
         <>
-            <View style={{ marginBottom: 90 }}>
+            <View style={{marginBottom : 90}}>
 
                 <View style={styles.inputSection}>
 
@@ -71,7 +71,7 @@ const FormulaireAuthentification = () => {
 
                 </View>
 
-                <Button title="CONNEXION" disabled={boutonDesactive} onPress={() => navigation.navigate('AccueilContact')} />
+                <Button title="CONNEXION" disabled={boutonDesactive} onPress={() => navigation.navigate('Contact')} />
 
                 <TouchableOpacity>
                     <Text style={{ textAlign: 'right', color: '#1685E7', paddingTop: 15 }}>Mot de passe oublié?</Text>
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 16,
+        padding: 10
     },
 
     eyeIcon: {
 
-        right: 2,
-        padding: 5
+        padding: 1
     }
 
 })

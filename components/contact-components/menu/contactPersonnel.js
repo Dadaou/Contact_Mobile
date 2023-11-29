@@ -1,15 +1,19 @@
 import React from 'react'
 import { View, StyleSheet } from "react-native"
 import HeaderContact from "../headerContact"
-import BodyContactFavori from '../body/bodyContactFavori'
+import TitrePage from "../titrePage"
 
-const OptionContactFavori = () => {
+const OptionContactpersonnel = () => {
+
+    const titre = "Contacts personnels"
 
     return (
         <>
             <View style={styles.container}>
+
               <HeaderContact />
-              <BodyContactFavori />
+              <TitrePage titre={titre}/>
+
             </View>
         </>
     )
@@ -17,10 +21,10 @@ const OptionContactFavori = () => {
 
 const styles = StyleSheet.create({
 
-  container: {
-      flex: 1
-  }
+    container: {
+        flex: 1
+    }
 
 })
 
-export default OptionContactFavori
+export default OptionContactpersonnel

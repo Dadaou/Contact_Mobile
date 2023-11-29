@@ -1,4 +1,4 @@
-//import Logo from "./constante/";
+import urlLogo from "../../constant/constant.js"
 import { NavigationContainer, useNavigation  } from '@react-navigation/native';
 import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -13,7 +13,6 @@ const afficherMenuCoulissant = () => {
 const HeaderContact = () => {
 
     const navigation = useNavigation()
-    const urlLogoContact = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-contacts.png"
 
     return (
 
@@ -32,7 +31,7 @@ const HeaderContact = () => {
                 </View>
 
                 <View style={styles.sectionLogoContact}>
-                    <Image source={{ uri: urlLogoContact }} style={styles.logo}/>
+                    <Image source={{ uri:  urlLogo.urlLogoContact }} style={styles.logo}/>
                     <Text style={{color : "#FEFFFF", fontWeight : "bold"}}>Contact</Text>
                 </View>
 
@@ -53,7 +52,6 @@ const HeaderContact = () => {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
         backgroundColor: '#1685E7',
         padding : 20,
         flexDirection: "row",
