@@ -1,12 +1,11 @@
 import React from 'react'
-import { View, StyleSheet } from "react-native"
+import { View, Text,StyleSheet, ScrollView } from "react-native"
 import HeaderContact from "../headerContact"
 //import BodyContactFavori from '../body/bodyContactFavori'
-
-import MyTabs from '../bottomContact'
-
+import ListeContact from '../listeContact'
 import TitrePage from "../titrePage"
-import RechercherContact from "../rechercherContact";
+import RechercherContact from "../rechercherContact"
+import FooterContact from '../footerContact'
 
 const OptionContactFavori = () => {
 
@@ -20,7 +19,9 @@ const OptionContactFavori = () => {
                 <HeaderContact />
                 <TitrePage titre={titre}/>
                 <RechercherContact />
-                <MyTabs />
+                <ListeContact />
+                <FooterContact />
+                
 
             </View>
         </>

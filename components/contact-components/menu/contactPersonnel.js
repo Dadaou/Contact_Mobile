@@ -2,6 +2,8 @@ import React from 'react'
 import { View, StyleSheet } from "react-native"
 import HeaderContact from "../headerContact"
 import TitrePage from "../titrePage"
+import RechercherContact from "../rechercherContact"
+import FooterContact from '../footerContact'
 
 const OptionContactpersonnel = () => {
 
@@ -13,6 +15,8 @@ const OptionContactpersonnel = () => {
 
               <HeaderContact />
               <TitrePage titre={titre}/>
+              <RechercherContact />
+              <FooterContact />
 
             </View>
         </>

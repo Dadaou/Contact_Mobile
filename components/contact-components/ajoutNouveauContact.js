@@ -27,7 +27,7 @@ const NouveauContact = () => {
     return (
         <>
             <View  style={styles.container}>
-                <Text>Hellooooooooooooooo</Text>
+                
             </View>
         </>
     )
