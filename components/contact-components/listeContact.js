@@ -28,7 +28,7 @@ const Item = ({photo, prenom, nom}) => {
                 
                     <Text style= {{flex : 4}}>{photo}</Text>
                     <Text  style= {{flex : 5}}/*style={{  paddingHorizontal: 40 }}*/>{prenom}</Text>
-                    <Text  style= {{flex : 8}}>{nom}</Text>
+                    <Text  style= {{flex : 12}}>{nom}</Text>
 
                     <TouchableOpacity style={styles.icon}>
                         <Ionicons
@@ -67,8 +67,7 @@ const styles = StyleSheet.create({
     container: {
 
       backgroundColor: '#EDEBEB',
-      padding: 20,
-      marginVertical: 8,
+      padding: 10,
       marginHorizontal: 8,
       flexDirection: 'row'
 

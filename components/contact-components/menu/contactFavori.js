@@ -20,9 +20,7 @@ const OptionContactFavori = () => {
                 <TitrePage titre={titre}/>
                 <RechercherContact />
                 <ListeContact />
-                <FooterContact />
                 
-
             </View>
         </>
 
