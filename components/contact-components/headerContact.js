@@ -1,8 +1,9 @@
-//import Logo from "./constante/";
-import { NavigationContainer, useNavigation  } from '@react-navigation/native';
-import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import urlLogo from "../../constant/constant.js"
+import { useNavigation  } from '@react-navigation/native'
+import { SafeAreaView } from "react-native-safe-area-context"
+import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native"
+import Icon from 'react-native-vector-icons/FontAwesome'
+
 
 const afficherMenuCoulissant = () => {
 
@@ -13,12 +14,12 @@ const afficherMenuCoulissant = () => {
 const HeaderContact = () => {
 
     const navigation = useNavigation()
-    const urlLogoContact = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-contacts.png"
 
     return (
 
         <>
-            <View  style={styles.container}>
+            <SafeAreaView style={styles.container}>
+                
 
                 <View style={styles.sectionMenu}>
 
@@ -32,7 +33,7 @@ const HeaderContact = () => {
                 </View>
 
                 <View style={styles.sectionLogoContact}>
-                    <Image source={{ uri: urlLogoContact }} style={styles.logo}/>
+                    <Image source={{ uri:  urlLogo.urlLogoContact }} style={styles.logo}/>
                     <Text style={{color : "#FEFFFF", fontWeight : "bold"}}>Contact</Text>
                 </View>
 
@@ -44,7 +45,7 @@ const HeaderContact = () => {
                         color={'#FEFFFF'}/>
                 </View>
 
-            </View>
+            </SafeAreaView>
         </>
 
     )
@@ -53,11 +54,9 @@ const HeaderContact = () => {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
         backgroundColor: '#1685E7',
-        padding : 20,
-        flexDirection: "row",
-        marginTop : 40
+        padding : 16,
+        flexDirection: "row"
     },
 
     logo: {

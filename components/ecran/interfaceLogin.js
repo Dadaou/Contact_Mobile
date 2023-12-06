@@ -1,46 +1,43 @@
+import urlLogo from "../../constant/constant.js"
 import {
     View,
     Text,
     Image,
     StyleSheet
-} from "react-native";
+} from "react-native"
 
-import FormulaireAuthentification from "../login-components/formulaireAuthentification.js";
+import FormulaireAuthentification from "../login-components/formulaireAuthentification.js"
+
 
 const Login = () => {
 
-    const urlLogoManao = "https://identification.manao.eu/assets/img/manao.png"
-    const urlLogoAchat = "https://licences.manao.eu/assets/img/manao_logiciels_new/achat-v2.png"
-    const urlLogoContact = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-contacts.png"
-    const urlLogoBulletin = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-bulletin.png"
-    const urlTableur = "https://mdocs-beta.manao.eu/assets/css/icons_manao/mdoc_icon_tab.png"
-    const urlTexteur = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-texteur.png"
-    const urlTreso = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-treso.png"
-    const urlLogoMessagerie = "https://licences.manao.eu/assets/img/manao_logiciels_new/logo-messagerie.png"
-    const urlLogoAgenda = "https://licences.manao.eu/assets/img/manao_logiciels_new/agenda.png"
-
-
-    const urlLogo = [urlLogoAchat, urlLogoContact, urlLogoBulletin, urlTreso, urlTableur, urlTexteur, urlLogoMessagerie, urlLogoAgenda]
+    const logo = [urlLogo.urlLogoAchat, urlLogo.urlLogoContact, urlLogo.urlLogoBulletin, urlLogo.urlTreso, urlLogo.urlTableur, urlLogo.urlTexteur, urlLogo.urlLogoMessagerie, urlLogo.urlLogoAgenda]
 
     return (
         <>
             <View style={styles.container}>
 
-                <View>
-                    <Image source={{ uri: urlLogoManao }} style={styles.logoPrincipalManao} />
-                    <Text style={styles.descriptionManao}>Plateforme logicielle pour l'organisation et la gestion d'entreprises</Text>
-                </View>
+                <View style={{marginBottom : 10}}>
 
-                <View style={styles.containerLogo}>
-                    {urlLogo.map((url, index) => (
-                        <Image key={index} source={{ uri: url }} style={styles.logo} />
-                    ))}
+                    <View> 
+                        <Image source={{ uri: urlLogo.urlLogoManao }} style={styles.logoPrincipalManao} />
+                        <Text style={styles.descriptionManao}>Plateforme logicielle pour l'organisation et la gestion d'entreprises</Text>
+                    </View>
+
+                    <View style={{  flexDirection: 'row' }}> 
+                        {logo.map((url, index) => (
+                            <Image key={index} source={{ uri: url }} style={styles.logo} />
+                        ))}
+                    </View>
+
                 </View>
 
                 <FormulaireAuthentification />
 
-               <Text>Manao© 2023</Text>
+            </View>
 
+            <View> 
+                <Text style = {{textAlign: 'center'}}>Manao© 2023</Text>
             </View>
 
         </>
@@ -53,9 +50,8 @@ const styles = StyleSheet.create({
 
         flexDirection: 'column',
         flex: 1,
-        //marginTop: 140,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center'
     },
 
     descriptionManao: {
@@ -67,14 +63,9 @@ const styles = StyleSheet.create({
     },
 
     logoPrincipalManao: {
-        width: 250,
-        height: 110
+        width: 295,
+        height: 130
     },
-
-    bottomElement: {
-        textAlign: 'center',
-    },
-
 
     containerLogo: {
         flexDirection: 'row',

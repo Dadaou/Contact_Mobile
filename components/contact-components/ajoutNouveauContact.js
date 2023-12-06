@@ -9,7 +9,7 @@ import {    View,
 
 const NouveauContact = () => {
     
-    return (
+    /*return (
         <>
             <View  style={styles.container}>
                 <TouchableOpacity style={styles.plusIcon}>
@@ -19,6 +19,15 @@ const NouveauContact = () => {
                         color= '#1685E7' 
                         />
                 </TouchableOpacity>
+           
+            </View>
+        </>
+    )*/
+
+    return (
+        <>
+            <View  style={styles.container}>
+                
             </View>
         </>
     )
@@ -28,7 +37,7 @@ const NouveauContact = () => {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 30,
+        flex: 1,
         backgroundColor: '#FEFFFF'
     },
 
