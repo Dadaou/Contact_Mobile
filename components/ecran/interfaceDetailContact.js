@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation  } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
@@ -13,7 +14,7 @@ const DetailContact = ({route}) => {
 
         <>
 
-            <View  style={styles.container}>
+            <SafeAreaView  style={styles.container}>
 
                 <View style={styles.header}> 
 
@@ -63,7 +64,7 @@ const DetailContact = ({route}) => {
                    
 
 
-            </View>
+            </SafeAreaView>
 
         </>
 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "column",
         flex : 1,
-        marginTop : 40
+        //marginTop : 40
     },
 
     header : {

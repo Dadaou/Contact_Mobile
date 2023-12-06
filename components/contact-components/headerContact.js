@@ -1,8 +1,9 @@
 import urlLogo from "../../constant/constant.js"
-import { NavigationContainer, useNavigation  } from '@react-navigation/native';
-import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation  } from '@react-navigation/native'
+import { SafeAreaView } from "react-native-safe-area-context"
+import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native"
+import Icon from 'react-native-vector-icons/FontAwesome'
+
 
 const afficherMenuCoulissant = () => {
 
@@ -17,7 +18,8 @@ const HeaderContact = () => {
     return (
 
         <>
-            <View  style={styles.container}>
+            <SafeAreaView style={styles.container}>
+                
 
                 <View style={styles.sectionMenu}>
 
@@ -43,7 +45,7 @@ const HeaderContact = () => {
                         color={'#FEFFFF'}/>
                 </View>
 
-            </View>
+            </SafeAreaView>
         </>
 
     )
@@ -53,9 +55,8 @@ const styles = StyleSheet.create({
 
     container: {
         backgroundColor: '#1685E7',
-        padding : 20,
-        flexDirection: "row",
-        marginTop : 40
+        padding : 16,
+        flexDirection: "row"
     },
 
     logo: {
