@@ -1,23 +1,16 @@
-import {    View, 
-    TextInput,
-    Text,
-    Button,
-    TouchableOpacity,
-    StyleSheet
-} from "react-native"
+import { View, TextInput, StyleSheet } from "react-native"
 
 const RechercherContact = () => {
 
     return (
 
         <>
-            <View  style={styles.container}>
+            <View>
 
                 <TextInput
 
                     style={styles.champDeRecherche}
-                    placeholder="Rechercher des contacts" />
-
+                    placeholder="Rechercher un contact" />
             </View>
 
         </>
@@ -27,11 +20,9 @@ const RechercherContact = () => {
 
 const styles = StyleSheet.create({
 
-    container: {
-        flex : 0
-    },
 
     champDeRecherche: {
+        
         height: 40,
         margin: 12,
         borderWidth: 1,

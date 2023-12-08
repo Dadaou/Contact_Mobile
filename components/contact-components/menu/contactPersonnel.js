@@ -1,25 +1,24 @@
 import React from 'react'
 import { View, StyleSheet } from "react-native"
-import HeaderContact from "../headerContact"
-import TitrePage from "../titrePage"
-import RechercherContact from "../rechercherContact"
-import FooterContact from '../footerContact'
+import HeaderContact from "../HeaderContact"
+import TitrePage from "../TitrePage"
+import RechercherContact from "../RechercherContact"
 
-const OptionContactpersonnel = () => {
+
+const ContactPersonnel = () => {
 
     const titre = "Contacts personnels"
 
     return (
-        <>
+       
             <View style={styles.container}>
 
               <HeaderContact />
               <TitrePage titre={titre}/>
               <RechercherContact />
-              <FooterContact />
-
+              
             </View>
-        </>
+       
     )
 }
 
@@ -31,4 +30,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default OptionContactpersonnel
+export default ContactPersonnel
