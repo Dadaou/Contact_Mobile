@@ -1,32 +1,35 @@
 import { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 
-const Item = ({ prenom, nom, telephone, email }) => {
+const Item = ({ id, prenom, nom, telephone, email }) => {
 
     const navigation = useNavigation()
 
     return (
 
-            <TouchableOpacity style={styles.container}
-                onPress={() => navigation.navigate('DetailContact', {
+            <TouchableOpacity   style={styles.container}
+                                onPress={() => navigation.navigate('DetailContact', {
 
-                    prenom: prenom,
-                    nom: nom,
-                    telephone: telephone,
-                    email: email
-                })}>
+                                    id : id,
+                                    prenom: prenom,
+                                    nom: nom,
+                                    telephone: telephone,
+                                    email: email
+                                    
+                                })}>
 
-                <Text style={{ flex: 5, fontSize: 20 }}/*style={{  paddingHorizontal: 40 }}*/>{prenom}</Text>
-                <Text style={{ flex: 12, fontSize: 20 }}>{nom}</Text>
+                
+                <View style= {{flex : 0.2}} >
+                    <Image source={require('../../assets/user.jpg')}
+                                style={styles.photoUtilisateur} />
+                </View>
 
-                <TouchableOpacity style={styles.icon}>
-                    <Ionicons
-                        name='ellipsis-vertical'
-                        size={20} />
-                </TouchableOpacity>
+                <Text style={{ flex : 0.4, fontSize: 18 }}>{prenom}</Text>
+                <Text style={{ flex : 1, fontSize: 18 }}>{nom}</Text>
+
 
             </TouchableOpacity>
 
@@ -76,7 +79,7 @@ const ListContact = () => {
 
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <Item prenom={item.prenom} nom={item.nom} telephone={item.telephone} email={item.email} />}
+                    renderItem={({ item }) => <Item id= {item.id} prenom={item.prenom} nom={item.nom} telephone={item.telephone} email={item.email} />}
                     keyExtractor={item => item.id} />
                     
             </View>
@@ -97,6 +100,13 @@ const styles = StyleSheet.create({
 
     icon: {
         flex: 1
+    },
+
+    photoUtilisateur: {
+
+        width: 30,
+        height: 30,
+        borderRadius: 100
     }
 
 });

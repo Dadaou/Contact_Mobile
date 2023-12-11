@@ -6,8 +6,6 @@ import * as SQLite from 'expo-sqlite'
 
 const AjoutContact = ({ navigation }) => {
 
-
-
     const db = SQLite.openDatabase('Contact.db')
 
     const [prenom, setPrenom] = useState('')
@@ -133,10 +131,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         padding: 15
-        //marginHorizontal : 50
-        //backgroundColor: "#ECCA37"
     },
-
 
     input: {
 
@@ -145,14 +140,7 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10
-    },
-
-    /*photoUtilisateur: {
-        width: 200,
-        height: 200,
-        borderRadius: 100
-    }*/
-
+    }
 })
 
 export default AjoutContact

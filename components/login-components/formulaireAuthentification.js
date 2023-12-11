@@ -13,8 +13,8 @@ const FormulaireAuthentification = () => {
     const [boutonDesactive, setBoutonDesactive] = useState(true)
 
     const toggleAfficherMotDePasse = () => {
-        setAfficherMotDePasse(!afficherMotDePasse);
-    };
+        setAfficherMotDePasse(!afficherMotDePasse)
+    }
 
 
     useEffect(() => {
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     },
 
     eyeIcon: {
-
         padding: 1
     }
 

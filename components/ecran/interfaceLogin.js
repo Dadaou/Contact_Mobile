@@ -1,4 +1,4 @@
-import urlLogo from "../../constant/Constant"
+import urlLogo from "../../constant/Constant.js"
 import {
     View,
     Text,
