@@ -1,10 +1,4 @@
-import {    View, 
-            TextInput,
-            Text,
-            Button,
-            TouchableOpacity,
-            StyleSheet
-        } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 
 const TitrePage = ({titre}) => {
     

@@ -1,4 +1,4 @@
-import urlLogo from "../../constant/constant.js"
+import urlLogo from "../../constant/Constant"
 import {
     View,
     Text,
@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from "react-native"
 
-import FormulaireAuthentification from "../login-components/formulaireAuthentification.js"
+import FormulaireAuthentification from "../login-components/FormulaireAuthentification.js"
 
 
 const Login = () => {
@@ -14,7 +14,7 @@ const Login = () => {
     const logo = [urlLogo.urlLogoAchat, urlLogo.urlLogoContact, urlLogo.urlLogoBulletin, urlLogo.urlTreso, urlLogo.urlTableur, urlLogo.urlTexteur, urlLogo.urlLogoMessagerie, urlLogo.urlLogoAgenda]
 
     return (
-        <>
+        
             <View style={styles.container}>
 
                 <View style={{marginBottom : 10}}>
@@ -34,13 +34,11 @@ const Login = () => {
 
                 <FormulaireAuthentification />
 
-            </View>
-
-            <View> 
                 <Text style = {{textAlign: 'center'}}>Manao© 2023</Text>
+              
             </View>
 
-        </>
+
     );
 };
 
@@ -74,6 +72,7 @@ const styles = StyleSheet.create({
     },
 
     logo: {
+        
         width: 30,
         height: 30,
         marginHorizontal: 5,

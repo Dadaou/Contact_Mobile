@@ -1,15 +1,14 @@
-import urlLogo from "../../constant/constant.js"
+import urlLogo from "../../constant/Constant"
 import { useNavigation  } from '@react-navigation/native'
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, Image, Text, TouchableOpacity, StyleSheet, Button } from "react-native"
+import { View, Image, Text, TouchableOpacity, StyleSheet} from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-
-const afficherMenuCoulissant = () => {
+/*const afficherMenuCoulissant = () => {
 
     const navigation = useNavigation()
     navigation.openDrawer()
-}
+}*/
 
 const HeaderContact = () => {
 
@@ -17,7 +16,7 @@ const HeaderContact = () => {
 
     return (
 
-        <>
+        
             <SafeAreaView style={styles.container}>
                 
 
@@ -46,7 +45,7 @@ const HeaderContact = () => {
                 </View>
 
             </SafeAreaView>
-        </>
+        
 
     )
 }
@@ -76,4 +75,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default HeaderContact;
+export default HeaderContact

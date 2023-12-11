@@ -10,7 +10,6 @@ const ModificationContact = ({route}) => {
 
     return (
 
-        <>
             <View style={styles.container}>
 
                 <View style={styles.header} >
@@ -26,45 +25,43 @@ const ModificationContact = ({route}) => {
                 </View>
 
                 
-		<ScrollView style={styles.content} >
+                <ScrollView style={styles.content} >
 
-            <View style = {{ alignItems: 'center'}}>
+                    <View style = {{ alignItems: 'center'}}>
 
-                <Image source={require('../../assets/avatar.jpg')} 
-                        style={styles.photoUtilisateur} />
+                        <Image source={require('../../assets/avatar.jpg')} 
+                                style={styles.photoUtilisateur} />
 
+                    </View>
+
+                    <TextInput
+                                style={styles.input}
+                                editable={false}
+                                placeholder="Prénom"
+                                onChangeText={(text) => setNouveauPrenom(text)}
+                                value={nouveauPrenom} />
+                    <TextInput
+                                style={styles.input}
+                                editable={false}
+                                placeholder="Nom"
+                                onChangeText={(text) => setNouveauNom(text)}
+                                value={nouveauNom} />
+
+                    <TextInput
+                                style={styles.input}
+                                placeholder="Téléphone"
+                                value='0348346222'
+                                keyboardType="numeric" />
+
+
+                    <TextInput
+                                style={styles.input}
+                                placeholder="Email" 
+                                value='onjamanao1@gmail.com'/>
+
+                </ScrollView>
+                        
             </View>
-
-            <TextInput
-                        style={styles.input}
-                        editable={false}
-                        placeholder="Prénom"
-                        onChangeText={(text) => setNouveauPrenom(text)}
-                        value={nouveauPrenom} />
-            <TextInput
-                        style={styles.input}
-                        editable={false}
-                        placeholder="Nom"
-                        onChangeText={(text) => setNouveauNom(text)}
-                        value={nouveauNom} />
-
-            <TextInput
-                        style={styles.input}
-                        placeholder="Téléphone"
-                        value='0348346222'
-                        keyboardType="numeric" />
-
-
-            <TextInput
-                        style={styles.input}
-                        placeholder="Email" 
-                        value='onjamanao1@gmail.com'/>
-
-        </ScrollView>
-                
-            </View>
-        </>
-
     )
 }
 

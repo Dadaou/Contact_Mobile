@@ -2,15 +2,7 @@
 import { useState, useEffect } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-
-import {
-    View,
-    TextInput,
-    Text,
-    Button,
-    TouchableOpacity,
-    StyleSheet
-} from "react-native";
+import { View, TextInput, Text, Button, TouchableOpacity, StyleSheet } from "react-native"
 
 
 const FormulaireAuthentification = () => {
@@ -43,7 +35,7 @@ const FormulaireAuthentification = () => {
 
     return (
 
-        <>
+        
             <View style={{marginBottom : 90}}>
 
                 <View style={styles.inputSection}>
@@ -71,14 +63,13 @@ const FormulaireAuthentification = () => {
 
                 </View>
 
-                <Button title="CONNEXION" disabled={boutonDesactive} onPress={() => navigation.navigate('Contact')} />
+                <Button title="CONNEXION" disabled={boutonDesactive} onPress={() => navigation.navigate('Accueil')} />
 
                 <TouchableOpacity>
                     <Text style={{ textAlign: 'right', color: '#1685E7', paddingTop: 15 }}>Mot de passe oublié?</Text>
                 </TouchableOpacity>
 
             </View>
-        </>
     );
 };
 
@@ -108,4 +99,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default FormulaireAuthentification;
+export default FormulaireAuthentification
