@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
-import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 
@@ -24,7 +23,7 @@ const Item = ({ id, prenom, nom, telephone, email }) => {
                 
                 <View style= {{flex : 0.2}} >
                     <Image source={require('../../assets/user.jpg')}
-                                style={styles.photoUtilisateur} />
+                                style={styles.photoContact} />
                 </View>
 
                 <Text style={{ flex : 0.4, fontSize: 18 }}>{prenom}</Text>
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
-    photoUtilisateur: {
+    photoContact: {
 
         width: 30,
         height: 30,

@@ -36,12 +36,11 @@ const HeaderContact = () => {
                     <Text style={{color : "#FEFFFF", fontWeight : "bold"}}>Contact</Text>
                 </View>
 
-                <View style={styles.sectionPhotoUtilisateur}>
+                <View>
 
-                    <Icon
-                        name={'user'}
-                        size={25} 
-                        color={'#FEFFFF'}/>
+                    <Image source={require('../../assets/user.jpg')}
+                                    style={styles.photoUtilisateur} />
+
                 </View>
 
             </SafeAreaView>
@@ -71,6 +70,14 @@ const styles = StyleSheet.create({
         flex: 7,
         flexDirection: "row"
     },
+
+
+    photoUtilisateur: {
+
+        width: 32,
+        height: 32,
+        borderRadius: 100
+    }
 
 
 })
