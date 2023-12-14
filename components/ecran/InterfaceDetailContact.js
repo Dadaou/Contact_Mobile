@@ -3,20 +3,29 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "rea
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'  
+import { FontAwesome } from '@expo/vector-icons'
+
+
+const convertirEnArray = (chaine) => {
+
+    if (chaine !== "") {
+        const chaineArray = chaine.split(',')
+        return chaineArray
+    } else return []
+
+}
 
 
 const DetailContact = ({ route }) => {
 
     const navigation = useNavigation()
-    const { id, prenom, nom, telephone, email } = route.params
-
+    const { ctt_id, tel_id, ml_id, prenom, nom, telephone, mail } = route.params
     const [favori, setFavori] = useState(false)
 
     const toggleFavori = () => {
         setFavori(!favori)
     }
-    
+
     return (
 
         
@@ -35,17 +44,21 @@ const DetailContact = ({ route }) => {
 
                     <TouchableOpacity  onPress={() => navigation.navigate('ModificationContact', {
 
-                                                                                id : id,
+                                                                                ctt_id : ctt_id,
+                                                                                tel_id : tel_id,
+                                                                                ml_id : ml_id,
                                                                                 prenom: prenom,
                                                                                 nom: nom,
                                                                                 telephone: telephone,
-                                                                                email: email
-                                                                                })}>
+                                                                                mail: mail
+
+                                                                            })}>
 
                         <Ionicons
                             name={'pencil'}
                             size={25}
                             color={'#1685E7'} />
+                            
                     </TouchableOpacity>
 
                 </View>
@@ -63,28 +76,70 @@ const DetailContact = ({ route }) => {
 
                     </View>
 
-                    <View style={{ paddingLeft : 50}}>
+                    <View style={{ padding : 25}}>
 
                         <Text style={styles.sectionCoordonnee}>Téléphone</Text>
 
-                        <View style={{ flexDirection: "row"}}>
+                        {convertirEnArray(telephone).length === 0 ? (
 
-                            <TouchableOpacity style = {{marginHorizontal : 12}}>
-                                <FontAwesome name="phone" size={25} color="#000000" />
-                            </TouchableOpacity>
-                            <Text style={{ fontSize: 18,  marginBottom: 25 }}>{telephone}</Text>
-                        </View>
+                            <View style={{ flexDirection: "row"}}>
+                                
+                                <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                    <FontAwesome name="phone" size={25} color="#000000" />
+                                </TouchableOpacity>
+
+                                <Text style={{ fontSize: 15,  marginBottom: 25 }}>Ajouter un numéro de téléphone</Text>
+
+                            </View>
+
+                        ) : (
+
+                            convertirEnArray(telephone).map((telephone, index) => (
+
+                                <View key={index} style={{ flexDirection: "row"}}>
+    
+                                    <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                        <FontAwesome name="phone" size={25} color="#000000" />
+                                    </TouchableOpacity>
+    
+                                    <Text style={{ fontSize: 18,  marginBottom: 25 }}>{telephone}</Text>
+    
+                                </View>
+                                           
+                            ))
+                        )}
 
 
                         <Text style={styles.sectionCoordonnee}>Email</Text>
 
-                        <View style={{ flexDirection: "row"}}>
+                        {convertirEnArray(mail).length === 0 ? (
 
-                            <TouchableOpacity style = {{marginHorizontal : 12}}>
-                                <FontAwesome name="envelope" size={23} color="#000000" />
-                            </TouchableOpacity>
-                            <Text style={{ fontSize: 18 }}>{email}</Text>
-                        </View>
+                            <View style={{ flexDirection: "row"}}>
+                                
+                                <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                    <FontAwesome name="envelope" size={23} color="#000000" />
+                                </TouchableOpacity>
+
+                                <Text style={{ fontSize: 15,  marginBottom: 25 }}>Ajouter une adresse e-mail</Text>
+
+                            </View>
+
+                        ) : (
+
+                                convertirEnArray(mail).map((mail, index) => (
+
+                                    <View key={index} style={{ flexDirection: "row"}}>
+            
+                                        <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                            <FontAwesome name="envelope" size={23} color="#000000" />
+                                        </TouchableOpacity>
+            
+                                        <Text style={{ fontSize: 18,  marginBottom: 25 }}>{mail}</Text>
+            
+                                    </View>
+                                            
+                                ))
+                        )}
 
                     </View>
 
@@ -142,4 +197,3 @@ const styles = StyleSheet.create({
 
 
 export default DetailContact
-

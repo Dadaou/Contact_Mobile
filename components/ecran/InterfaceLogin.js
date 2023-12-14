@@ -5,7 +5,6 @@ import {
     Image,
     StyleSheet
 } from "react-native"
-
 import FormulaireAuthentification from "../login-components/FormulaireAuthentification.js"
 
 
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     descriptionManao: {
