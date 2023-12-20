@@ -18,9 +18,9 @@ const App = () => {
     <NavigationContainer>
 
       <Stack.Navigator screenOptions={{ headerShown: false }} >
+        <Stack.Screen name="AjoutContact" component={AjoutContact}/>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Accueil" component={MenuCoulissant} />
-        <Stack.Screen name="AjoutContact" component={AjoutContact}/>
         <Stack.Screen name="DetailContact" component={DetailContact}/>
         <Stack.Screen name="ModificationContact" component={ModificationContact}/>
       </Stack.Navigator>

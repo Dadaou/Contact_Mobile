@@ -1,35 +1,42 @@
 import { useState} from 'react'
 import { View, TextInput, StyleSheet, Text, TouchableOpacity, ScrollView, Alert } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Feather } from '@expo/vector-icons'
+import { Octicons } from '@expo/vector-icons'
+import PhoneInput from 'react-native-international-phone-number'
 import * as SQLite from 'expo-sqlite'
 
-const ModificationContact  = ({ navigation, route }) => {
+const  ModificationContact = ({ navigation, route }) => {
 
     const db = SQLite.openDatabase('Contact.db')
-    const { id, prenom, nom, telephone, email } = route.params
+    const { ctt_id, tel_id, ml_id, prenom, nom, telephone, mail } = route.params
 
     const [nouveauPrenom, setNouveauPrenom] = useState(prenom)
     const [nouveauNom, setNouveauNom] = useState(nom)
     const [nouveauTelephone, setNouveauTelephone] = useState(telephone)
-    const [nouveauEmail, setNouveauEmail] = useState(email)
+    const [nouveauEmail, setNouveauMail] = useState(mail)
+
+    /*const [prenom, setPrenom] = useState('')
+    const [nom, setNom] = useState('')
+    const [telephone, setTelephone] = useState('')
+    const [selectedCountry, setSelectedCountry] = useState(null)
+    const [mail, setMail] = useState('')*/
 
     const redirection = () => {
         navigation.navigate('Accueil')
     };
 
 
-    const enregistrerModification = () => {
+    const enregistrerContact = () => {
 
-        if (nouveauPrenom == '' || nouveauNom == '' || nouveauTelephone == '') {
+        if (nom == '' || prenom == '') {
 
             Alert.alert(
 
                 'Information',
-                'Veuillez ajouter des informations pour modifier le contact',
+                'Veuillez ajouter des informations pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
-            )
+            );
         }
 
         else {
@@ -37,90 +44,129 @@ const ModificationContact  = ({ navigation, route }) => {
             db.transaction((tx) => {
 
                 tx.executeSql(
-
-                    'UPDATE contact SET prenom = ?, nom = ?, telephone = ?, email = ? WHERE id = ?', 
-                    [nouveauPrenom, nouveauNom, nouveauTelephone, nouveauEmail, id],
-
-                    (txObj, resultSet) => {
-                        redirection()
-                    },
-
-                    (txObj, error) => console.log(error)
+                    'INSERT INTO contact (ctt_prenom, ctt_nom) VALUES (?,?)', [prenom, nom]
                 )
+
+                tx.executeSql(
+                    'INSERT INTO telephone (tel_numero, ctt_id) VALUES (?,(SELECT MAX(ctt_id) FROM  contact ))', [telephone]
+                )
+
+                tx.executeSql(
+                    'INSERT INTO mail (ml_mail, ctt_id) VALUES (?,(SELECT MAX(ctt_id) FROM  contact ))', [mail]
+                )
+
             })
+
+
+            redirection()
 
         }
 
+        setPrenom('')
+        setNom('')
+        setTelephone('')
+        setMail('')
 
-        setNouveauPrenom('')
-        setNouveauNom('')
-        setNouveauTelephone('')
-        setNouveauEmail('')
     }
 
 
     return (
 
-            <SafeAreaView style={styles.container}>
 
-                <View style = {styles.header}>
+        <SafeAreaView style={styles.container}>
 
-                    <TouchableOpacity style = {{flex : 1}} onPress={() => navigation.navigate('DetailContact', {
 
-                                                                            id : id,
-                                                                            prenom: prenom,
-                                                                            nom: nom,
-                                                                            telephone: telephone,
-                                                                            email: email
+            <View style = {styles.header}>
 
-                                                                            })}>
-                                                                                
-                        <Feather name="x" size={25} color="black" />
-                    </TouchableOpacity>
+                <TouchableOpacity style = {{right : 40}} onPress={redirection}>
+                    <Octicons name="x" size={35} color="#FEFFFF" />
+                </TouchableOpacity>
 
-                    <View style = {{flex : 2}}>
-                        <Text style={{ fontSize: 18}}>Modifier un contact</Text>
-                    </View>
-
-                    <TouchableOpacity style={{ flex : 1, backgroundColor: "#DBAF2F", paddingLeft: 4,/*paddingLeft: 2,*/ borderRadius : 20 }}
-                                      onPress={enregistrerModification}>
-
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Enregistrer</Text>
-
-                    </TouchableOpacity>
-
+                <View /*style = {{flex : 0}}*/>
+                    <Text style={{ fontSize: 25, fontWeight: "bold", color : "#FEFFFF"}}>Créer un contact</Text>
                 </View>
 
-                <View style={{  flex : 1, alignItems : "center", justifyContent: 'center', backgroundColor: "#FEFFFF"}}>
+                <TouchableOpacity style = {{left : 40}}/*style={{ flex : 0.4, backgroundColor: "#DBAF2F", paddingLeft: 4, borderRadius : 20 }}*/
+                                onPress={enregistrerContact}>
 
-                        <TextInput
+                    <Octicons name="check" size={35} color="#FEFFFF" />
+
+                </TouchableOpacity>
+
+            </View>
+
+
+            <View  style = {{flex : 0.3,  backgroundColor : "#FEFFFF"}}/>
+
+
+            <ScrollView style = {{flex : 1,  backgroundColor : "#FEFFFF"}}>
+
+                <View style={{ alignItems : "center", marginBottom : 120, /*backgroundColor: "#FEFFFF"*/}}>
+
+                    <TextInput
+
                             style={styles.input}
+                            //selectionColor={'#808080'}
                             placeholder="Prénom"
-                            onChangeText={(text) => setNouveauPrenom(text)}
-                            value={nouveauPrenom} />
-
+                            onChangeText={(text) => setPrenom(text)}
+                            value={prenom} />
+                            
                         <TextInput
-                            style={styles.input}
+
+                            style={{ ...styles.input, marginBottom: 20 }}
                             placeholder="Nom"
-                            onChangeText={(text) => setNouveauNom(text)}
-                            value={nouveauNom} />
+                            onChangeText={(text) => setNom(text)}
+                            value={nom} />
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Téléphone"
-                            keyboardType='numeric'
-                            onChangeText={(text) => setNouveauTelephone(text)}
-                            value={String(nouveauTelephone)} />
+                        <PhoneInput
 
+                                placeholder = "Téléphone"
+                                value={telephone}
+                                onChangePhoneNumber={setTelephone}
+                                selectedCountry={selectedCountry}
+                                onChangeSelectedCountry={setSelectedCountry}
+                                modalSearchInputPlaceholder="Rechercher un pays"
+                                modalNotFoundCountryMessage="Pays non trouvé"
+                                defaultCountry="FR"
+
+                                phoneInputStyles={{
+
+                                    container: {
+                                
+                                        width: 300,
+                                        height: 50,
+                                        borderWidth: 1,
+                                        borderRadius : 7,
+                                        borderColor: "#808080",
+                                        marginBottom : 10
+                                    },
+
+
+                                    flagContainer: {
+
+                                        borderTopLeftRadius: 7,
+                                        borderBottomLeftRadius: 7,
+                                        ustifyContent: 'center',  
+                                    },
+
+                                }}
+                            />
 
                         <TextInput
                             style={styles.input}
                             placeholder="Email"
-                            onChangeText={(text) =>setNouveauEmail(text)}
-                            value={nouveauEmail} />
+                            onChangeText={(text) => setMail(text)}
+                            value={mail} />
+
                     </View>
 
-            </SafeAreaView>
+            </ScrollView>
+
+
+
+     
+
+        </SafeAreaView>
 
     )
 }
@@ -131,16 +177,17 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: "#ECCA37"
+        backgroundColor: "#1685E7"
 
     },
 
     header: {
 
+        //flex : 0.3,
         flexDirection: "row",
-        padding: 15
+        padding: 16,
+        justifyContent : 'center'
     },
-
 
     input: {
 
@@ -148,9 +195,13 @@ const styles = StyleSheet.create({
         width: 300,
         margin: 12,
         borderWidth: 1,
-        padding: 10
+        padding: 10,
+        borderRadius : 7,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF",
+        fontSize : 16
     }
-
+          
 })
 
-export default ModificationContact 
+export default  ModificationContact
