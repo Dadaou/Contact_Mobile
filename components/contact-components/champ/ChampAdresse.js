@@ -1,72 +1,71 @@
-import { useState} from 'react'
+import { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
+import SelectDropdown from 'react-native-select-dropdown'
 import { View, TouchableOpacity, TextInput, Text, StyleSheet } from 'react-native'
-import { SelectList } from 'react-native-dropdown-select-list'
 
 
-const ChampAdresse = ({onChangeAdresse}) => {
 
-    const libelle = [
-        
-        {key:'1', value:'Professionel'},
-        {key:'2', value:'Personnel'},
-        {key:'3', value:'Entreprise'}
-    ]
+const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
 
-    const [listAdresse, setListAdresse] = useState([{ adresseLigneUn: "" , adresseLigneDeux : "", adresseLigneTrois : "", codePostal : "", boitePostal : "", pays : "", ville : "", libelle : ""}])
+    const libelle = ['Professionel', 'Personnel', 'Entreprise']
+    const [listAdresse, setListAdresse] = useState(paramAdresse)
+
+    useEffect(() => {
+        setListAdresse(paramAdresse)
+    }, [paramAdresse])
 
     const changerAdresseLigneUn = (adresseLigneUn, index) => {
       const list = [...listAdresse]
-      list[index].adresseLigneUn = adresseLigneUn
+      list[index].addr_ligne1 = adresseLigneUn
       setListAdresse(list)
       onChangeAdresse(list)
     }
 
     const changerAdresseLigneDeux = (adresseLigneDeux, index) => {
         const list = [...listAdresse]
-        list[index].adresseLigneDeux = adresseLigneDeux
+        list[index].addr_ligne2 = adresseLigneDeux
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerAdresseLigneTrois = (adresseLigneTrois, index) => {
         const list = [...listAdresse]
-        list[index].adresseLigneTrois = adresseLigneTrois
+        list[index].addr_ligne3 = adresseLigneTrois
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerCodePostal = (codePostal, index) => {
         const list = [...listAdresse]
-        list[index].codePostal = codePostal
+        list[index].addr_cp = codePostal
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerBoitePostal = (boitePostal, index) => {
         const list = [...listAdresse]
-        list[index].boitePostal = boitePostal
+        list[index].addr_bp = boitePostal
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerPays = (pays, index) => {
         const list = [...listAdresse]
-        list[index].pays = pays
+        list[index].addr_pays = pays
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerVille = (ville, index) => {
         const list = [...listAdresse]
-        list[index].ville = ville
+        list[index].addr_ville = ville
         setListAdresse(list)
         onChangeAdresse(list)
     }
 
     const changerLibelle = (libelle, index) => {
         const list = [...listAdresse]
-        list[index].libelle = libelle
+        list[index].addr_libelle = libelle
         setListAdresse(list)
         onChangeAdresse(list)
     }
@@ -79,8 +78,8 @@ const ChampAdresse = ({onChangeAdresse}) => {
     }
   
     const ajouterChampAdresse = () => {
-      setListAdresse([...listAdresse, { adresseLigneUn: "" , adresseLigneDeux : "", adresseLigneTrois : "", codePostal : "", boitePostal : "", pays : "", ville : "", libelle : ""}])
-      onChangeAdresse([...listAdresse, { adresseLigneUn: "" , adresseLigneDeux : "", adresseLigneTrois : "", codePostal : "", boitePostal : "", pays : "", ville : "", libelle : ""}])
+      setListAdresse([...listAdresse, { addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
+      onChangeAdresse([...listAdresse, { addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
     }
   
     return (
@@ -92,13 +91,13 @@ const ChampAdresse = ({onChangeAdresse}) => {
                 <View key={index}>
 
 
-                    <View style = {{flexDirection : "row"}}>
+                    <View style = {{flexDirection : "row", marginTop : 20}}>
 
                         <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Adresse ligne 1"
                             onChangeText={(text) => changerAdresseLigneUn(text, index)}
-                            value={item.adresseLigneUn} />
+                            value={item.addr_ligne1} />
 
                         {listAdresse.length !== 1 && (
                             <TouchableOpacity onPress={() => supprimerChampAdresse(index)}>
@@ -109,59 +108,62 @@ const ChampAdresse = ({onChangeAdresse}) => {
                     </View>
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Adresse ligne 2"
                             onChangeText={(text) => changerAdresseLigneDeux(text, index)}
-                            value={item.adresseLigneDeux} />
+                            value={item.addr_ligne2} />
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Adresse ligne 3"
                             onChangeText={(text) => changerAdresseLigneTrois(text, index)}
-                            value={item.adresseLigneTrois} />
+                            value={item.addr_ligne3} />
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Code postal"
                             onChangeText={(text) => changerCodePostal(text, index)}
-                            value={item.codePostal} />
+                            value={item.addr_cp} />
 
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Boite postal"
                             onChangeText={(text) => changerBoitePostal(text, index)}
-                            value={item.boitePostal} />
+                            value={item.addr_bp} />
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 25}}
                             placeholder="Pays"
                             onChangeText={(text) => changerPays(text, index)}
-                            value={item.pays} />
+                            value={item.addr_pays} />
 
                     <TextInput
-                            style={styles.input}
+                            style={{...styles.input, marginBottom : 12}}
                             placeholder="Ville"
                             onChangeText={(text) => changerVille(text, index)}
-                            value={item.ville} />
+                            value={item.addr_ville} />
 
-                    <SelectList 
+                    <SelectDropdown
 
-                        setSelected={(val) => changerLibelle(val, index)} 
-                        data={libelle} 
-                        save="value"
-                        search={false}
-                        placeholder= "Libellé"
-                        inputStyles={{fontSize : 16}}
-                        boxStyles={{borderRadius:7, width : 200, marginLeft : 12, marginTop : 12, marginBottom : 4}}
-                        dropdownTextStyles = {{fontSize : 16}}
-
+                        data={libelle}
+                        defaultButtonText={'Libellé'}
+                        defaultValue={item.addr_libelle === '' ? '' : item.addr_libelle} 
+                        onSelect={(val) => changerLibelle(val, index)}
+                        buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+                        rowTextForSelection={(item) => {return item}}
+                        renderDropdownIcon={isOpened => {
+                            return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
+                        }}
+                        dropdownIconPosition={'right'}
+                        buttonStyle={styles.dropDownStyle}
+                        buttonTextStyle={styles.dropDownTextStyle}
                     />
 
                     {listAdresse.length - 1 === index && listAdresse.length < 4 && (
 
-                        <TouchableOpacity onPress={ajouterChampAdresse} style={{marginLeft : 13}}>
-                            <Feather name="plus-circle" size={30} color="#1685E7" />
+                        <TouchableOpacity onPress={ajouterChampAdresse}>
+                            <Feather name="plus-circle" size={30} color="#1685E7" style={{marginBottom : 12}}/>
                         </TouchableOpacity>
                     )}
 
@@ -180,12 +182,27 @@ const styles = StyleSheet.create({
 
         height: 50,
         width: 300,
-        margin: 12,
+        //margin: 12,
         borderWidth: 1,
         padding: 10,
         borderRadius : 7,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
+        fontSize : 16
+    },
+
+    dropDownStyle: {
+        width: 200,
+        height: 50,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius : 7,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF"
+    },
+
+    dropDownTextStyle: {
+        textAlign: 'left', 
         fontSize : 16
     }
           

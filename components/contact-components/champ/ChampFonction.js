@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampFonction = ({onChangeFonction}) => {
+const ChampFonction = ({paramFonction, onChangeFonction}) => {
 
 
-    const [fonction, setFonction] = useState('')
+    const [fonction, setFonction] = useState(paramFonction)
+
+    useEffect(() => {
+        setFonction(paramFonction)
+    }, [paramFonction])
+
 
     const ecouterChangementValeur = (valeur) => {
         setFonction(valeur)

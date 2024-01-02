@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampEntreprise = ({onChangeEntreprise}) => {
+const ChampEntreprise = ({paramEntreprise, onChangeEntreprise}) => {
 
+    const [entreprise, setEntreprise] = useState(paramEntreprise)
 
-    const [entreprise, setEntreprise] = useState('')
+    useEffect(() => {
+        setEntreprise(paramEntreprise)
+    }, [paramEntreprise])
+
 
     const ecouterChangementValeur = (valeur) => {
         setEntreprise(valeur)

@@ -15,7 +15,7 @@ const TitrePage = ({titre}) => {
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: '#ECCA37' //jaune
+        backgroundColor: '#F4C430' //jaune
     },
 
     titre : {

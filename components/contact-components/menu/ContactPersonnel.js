@@ -2,8 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from "react-native"
 import HeaderContact from "../HeaderContact"
 import TitrePage from "../TitrePage"
-import RechercherContact from "../RechercherContact"
-
+//import ChampRechercheContact from '../champ/ChampRechercheContact'
 
 const ContactPersonnel = () => {
 
@@ -15,7 +14,7 @@ const ContactPersonnel = () => {
 
               <HeaderContact />
               <TitrePage titre={titre}/>
-              <RechercherContact />
+              
               
             </View>
        

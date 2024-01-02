@@ -4,7 +4,7 @@ import ListContact from '../ListContact'
 import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderContact from "../HeaderContact"
 import TitrePage from "../TitrePage"
-import RechercherContact from "../RechercherContact"
+import ChampRechercheContact from '../champ/ChampRechercheContact'
 
 const TousLesContacts = () => {
 
@@ -16,7 +16,7 @@ const TousLesContacts = () => {
 
             <HeaderContact />
             <TitrePage titre={titre} />
-            <RechercherContact />
+            <ChampRechercheContact />
             <ListContact />
             <BoutonAjoutContact />
 

@@ -1,4 +1,4 @@
-const urlLogo = {
+const uriLogo = {
 
     urlLogoManao : "https://identification.manao.eu/assets/img/manao.png",
     urlLogoAchat : "https://licences.manao.eu/assets/img/manao_logiciels_new/achat-v2.png",
@@ -11,4 +11,4 @@ const urlLogo = {
     urlLogoAgenda : "https://licences.manao.eu/assets/img/manao_logiciels_new/agenda.png"
 }
 
-export default urlLogo
+export default uriLogo

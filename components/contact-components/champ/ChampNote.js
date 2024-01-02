@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampNote = (onChangeNote) => {
+const ChampNote = ({paramNote, onChangeNote}) => {
 
+    const [note, setNote] = useState(paramNote)
 
-    const [note, setNote] = useState('')
+    useEffect(() => {
+        setNote(paramNote)
+    }, [paramNote])
+
 
     const ecouterChangementValeur = (valeur) => {
         setNote(valeur)
@@ -15,7 +19,6 @@ const ChampNote = (onChangeNote) => {
 
         <View style = {{flex : 1}}>
 
-
             <TextInput
                 style={styles.input}
                 placeholder="Notes"
@@ -23,7 +26,6 @@ const ChampNote = (onChangeNote) => {
                 numberOfLines={10} 
                 onChangeText={(text) => ecouterChangementValeur(text)} 
                 value={note} />           
-
         </View>
 
     )
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
 
     input: {
 
-        height:200,
+        height:150,
         width: 300,
         margin: 12,
         borderWidth: 1,

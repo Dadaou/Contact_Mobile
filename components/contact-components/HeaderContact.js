@@ -1,7 +1,7 @@
-import urlLogo from "../../constant/Constant"
+import uriLogo from '../../constant/UriLogo'
 import { useNavigation  } from '@react-navigation/native'
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, Image, Text, TouchableOpacity, StyleSheet} from "react-native"
+import { View, Image, Text, TouchableOpacity, StyleSheet, StatusBar} from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 /*const afficherMenuCoulissant = () => {
@@ -16,10 +16,9 @@ const HeaderContact = () => {
 
     return (
 
-        
             <SafeAreaView style={styles.container}>
-                
 
+                <StatusBar backgroundColor = "#005F9D"/> 
                 <View style={styles.sectionMenu}>
 
                     <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -32,7 +31,7 @@ const HeaderContact = () => {
                 </View>
 
                 <View style={styles.sectionLogoContact}>
-                    <Image source={{ uri:  urlLogo.urlLogoContact }} style={styles.logo}/>
+                    <Image source={{ uri:  uriLogo.urlLogoContact }} style={styles.logo}/>
                     <Text style={{color : "#FEFFFF", fontWeight : "bold"}}>Contact</Text>
                 </View>
 
@@ -52,7 +51,7 @@ const HeaderContact = () => {
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: '#1685E7',
+        backgroundColor: '#005F9D',
         padding : 16,
         flexDirection: "row"
     },

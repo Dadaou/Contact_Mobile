@@ -1,16 +1,11 @@
-import urlLogo from "../../constant/Constant.js"
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet
-} from "react-native"
+import uriLogo from '../../constant/UriLogo'
+import { View, Text, Image, StyleSheet } from "react-native"
 import FormulaireAuthentification from "../login-components/FormulaireAuthentification.js"
 
 
 const Login = () => {
 
-    const logo = [urlLogo.urlLogoAchat, urlLogo.urlLogoContact, urlLogo.urlLogoBulletin, urlLogo.urlTreso, urlLogo.urlTableur, urlLogo.urlTexteur, urlLogo.urlLogoMessagerie, urlLogo.urlLogoAgenda]
+    const logo = [uriLogo.urlLogoAchat, uriLogo.urlLogoContact, uriLogo.urlLogoBulletin, uriLogo.urlTreso, uriLogo.urlTableur, uriLogo.urlTexteur, uriLogo.urlLogoMessagerie, uriLogo.urlLogoAgenda]
 
     return (
         
@@ -19,7 +14,7 @@ const Login = () => {
                 <View style={{marginBottom : 10}}>
 
                     <View> 
-                        <Image source={{ uri: urlLogo.urlLogoManao }} style={styles.logoPrincipalManao} />
+                        <Image source={{ uri: uriLogo.urlLogoManao }} style={styles.logoPrincipalManao} />
                         <Text style={styles.descriptionManao}>Plateforme logicielle pour l'organisation et la gestion d'entreprises</Text>
                     </View>
 

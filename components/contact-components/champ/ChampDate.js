@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import { Button, View, Text, TouchableOpacity, StyleSheet } from "react-native"
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
-import { FontAwesome } from '@expo/vector-icons'
 
-const ChampDate = ({onChangeDate}) => {
+const ChampDate = ({paramDate, onChangeDate}) => {
 
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(paramDate)
     const [estVisible, setVisible] = useState(false)
+
+    useEffect(() => {
+        setDate(paramDate)
+    }, [paramDate])
+
 
     const afficherCalendrier = () => {
       setVisible(true)
@@ -17,23 +21,28 @@ const ChampDate = ({onChangeDate}) => {
     }
   
     const handleConfirm = (date) => {
-      setDate(date.toLocaleString())
-      onChangeDate(date.toLocaleString())
+      setDate(date.toLocaleDateString())
+      onChangeDate(date.toLocaleDateString())
       cacherCalendrier()
     }
-  
+
     return (
 
         <View style = {styles.container}>
 
                 <TouchableOpacity style={styles.input} onPress={afficherCalendrier}>
-                    <Text style={{fontSize : 16, padding : 10, color : '#808080'}}>Anniversaire</Text>
-                    <FontAwesome style={styles.icon} name="calendar" size={24} color="#C19A6B"/>
+                    <View style = {{ padding : 10}}>
+                        <Image source={require('../../../assets/Calendrier.png')} style={{ width: 35, height: 30  }} />
+                    </View>
+                    {date == '' ? (<Text style={{fontSize : 16, paddingTop : 13, color : '#808080'}}>Anniversaire</Text>) : 
+                                  (<Text style={{fontSize : 16, paddingTop : 13}}>{date}</Text>  )}
+                    
                 </TouchableOpacity>
+
 
                 <DateTimePickerModal
                         isVisible={estVisible}
-                        mode="date"
+                        mode={'date'}
                         onConfirm={handleConfirm}
                         onCancel={cacherCalendrier}
                 />
@@ -47,7 +56,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        marginRight : 140,
+        flexDirection : 'row',
+        marginRight : 120,
         marginTop: 15,
         marginBottom : 10
     },
@@ -55,7 +65,7 @@ const styles = StyleSheet.create({
     input: {
 
         height: 50,
-        width: 160,
+        width: 170,
         borderWidth: 1,
         borderStyle : 'solid',
         borderRadius : 7,
@@ -65,7 +75,7 @@ const styles = StyleSheet.create({
     },
 
     icon : {
-        padding : 8,
+        padding : 12,
         marginLeft : 10
     }
 

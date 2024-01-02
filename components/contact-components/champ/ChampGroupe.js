@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { View, TextInput, StyleSheet } from "react-native"
-import { SelectList } from 'react-native-dropdown-select-list'
+import { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native"
+import { Feather } from '@expo/vector-icons'
+import SelectDropdown from 'react-native-select-dropdown'
 
-const ChampGroupe = ({onChangeGroupe}) => {
+const ChampGroupe = ({paramGroupe, onChangeGroupe}) => {
 
-    const listGroupe = [{key : "1", value : "Aucun groupe", disabled : true}]
-    const [groupeSelectionne, setGroupeSelectionne] = useState('')
+    const listGroupe = ['Aucun']
+    const [groupeSelectionne, setGroupeSelectionne] = useState(paramGroupe)
+
+    useEffect(() => {
+        setGroupeSelectionne(paramGroupe)
+    }, [paramGroupe])
+
     
     const ecouterChangementValeur = (valeur) => {
         setGroupeSelectionne(valeur)
@@ -17,16 +23,21 @@ const ChampGroupe = ({onChangeGroupe}) => {
 
         <View style = {{flex : 1}}>
 
-            <SelectList 
+            <SelectDropdown
 
-                setSelected={(valeur) => ecouterChangementValeur(valeur)} 
-                data={listGroupe} 
-                save="value"
-                search={false}
-                placeholder= "Sélectionner un groupe"
-                inputStyles={{fontSize : 16}}
-                boxStyles={{borderRadius:7, width : 300, marginTop: 13}}
-                dropdownTextStyles = {{fontSize : 16}}
+                data={listGroupe}
+                defaultButtonText={'Choisir un groupe...'}
+                defaultValue={groupeSelectionne === '' ? '' : groupeSelectionne} 
+                onSelect={(val) => ecouterChangementValeur(val)}
+                buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+                rowTextForSelection={(item) => {return item}}
+                renderDropdownIcon={isOpened => {
+                    return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
+                }}
+                dropdownIconPosition={'right'}
+                buttonStyle={styles.dropDownStyle}
+                buttonTextStyle={styles.dropDownTextStyle}
+                disabled = {true}
             />
 
         </View>
@@ -48,6 +59,21 @@ const styles = StyleSheet.create({
         borderRadius : 7,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
+        fontSize : 16
+    },
+
+    dropDownStyle: {
+        width: 200,
+        height: 50,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius : 7,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF"
+    },
+
+    dropDownTextStyle: {
+        textAlign: 'left', 
         fontSize : 16
     }
     

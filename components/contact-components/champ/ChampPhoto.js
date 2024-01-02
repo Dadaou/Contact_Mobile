@@ -1,12 +1,15 @@
-import { useState} from 'react'
+import { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker'
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native"
-import { Ionicons } from '@expo/vector-icons'
+import { View, StyleSheet,  TouchableOpacity, Image } from "react-native"
 
-
-const ChampPhoto = () => {
+const ChampPhoto = ({paramPhoto, onChangePhoto}) => {
   
-    const [image, setImage] = useState(null)
+    const [photo, setPhoto] = useState(paramPhoto)
+
+    useEffect(() => {
+      setPhoto(paramPhoto)
+    }, [paramPhoto])
+
 
 
     const pickImage = async () => {
@@ -15,33 +18,32 @@ const ChampPhoto = () => {
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
           aspect: [4, 3],
-          quality: 1,
-        });
+          quality: 1
+        })
     
-        //console.log("eto ", result);
     
         if (!result.canceled) {
-          setImage(result.assets[0].uri);
+          setPhoto(result.assets[0].uri)
+          onChangePhoto(result.assets[0].uri)
         }
-    };
+    }
 
     return (
 
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-
             <View>
 
-                {image ?  
+                {photo?  
 
         
                         <TouchableOpacity onPress={pickImage}>
-                            <Image source={{ uri: image }} style={{ borderRadius : 100, width: 150, height: 150  }} /> 
+                            <Image source={{ uri: photo }} style={{ borderRadius : 100, width: 150, height: 150  }} /> 
                         </TouchableOpacity> :
                         
-                        <TouchableOpacity onPress={pickImage}>
-                          <Image source={require('../../../assets/gallery.png')} style={{width: 150, height: 150 }}/>
+                        <TouchableOpacity onPress={pickImage} style = {styles.containerImage}>
+                          <Image source={require('../../../assets/gallery.png')} style={{width: 50, height: 50 }}/>
                         </TouchableOpacity>
      
                 }
@@ -50,10 +52,30 @@ const ChampPhoto = () => {
 
         </View>
         
-
     )
 
 }
+
+const styles = StyleSheet.create({
+
+  containerImage: {
+
+            flex : 1,
+            flexDirection: "row",  
+            alignItems: 'center',
+            height: 150,
+            width: 150,
+            borderWidth: 1,
+            padding: 50,
+            borderRadius : 100,
+            borderColor : "#008E97",
+            backgroundColor : "#008E97"
+      
+  }
+  
+  
+})
+
 
 
 export default ChampPhoto

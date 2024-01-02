@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampPrenom = ({onChangePrenom}) => {
+const ChampPrenom = ({paramPrenom, onChangePrenom}) => {
 
+    const [prenom, setPrenom] = useState(paramPrenom)
 
-    const [prenom, setPrenom] = useState('')
+    useEffect(() => {
+        setPrenom(paramPrenom)
+    }, [paramPrenom])
 
     const ecouterChangementValeur = (valeur) => {
         setPrenom(valeur)
@@ -15,7 +18,6 @@ const ChampPrenom = ({onChangePrenom}) => {
 
         <View style = {{flex : 1}}>
 
-            
             <TextInput
 
                 style={styles.input}

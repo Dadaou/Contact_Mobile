@@ -1,50 +1,46 @@
-import { useState} from 'react'
-import PhoneInput from 'react-native-international-phone-number'
-import { SelectList } from 'react-native-dropdown-select-list'
+import { useState, useEffect, useRef } from 'react'
+import CountryPicker from "rn-country-picker"
+import SelectDropdown from 'react-native-select-dropdown'
+//import { SelectList } from 'react-native-dropdown-select-list'
 import { Feather } from '@expo/vector-icons'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity,  StyleSheet, TextInput } from 'react-native'
 
 
-const ChampTelephone = ({onChangeTelephone}) => {
+const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
 
-    const libelle = [
-        
-        {key:'1', value:'Professionel'},
-        {key:'2', value:'Personnel'},
-        {key:'3', value:'Standard'},
-        {key:'4', value:'Mobile'},
-        {key:'5', value:'Fixe'},
-        {key:'6', value:'Ligne directe'},
-        {key:'7', value:'Secrétariat'}
-    ]
+    const libelle = ['Professionel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
+    const [listTelephone, setListTelephone] = useState(paramTelephone)
 
 
-    //const [selectedCountry, setSelectedCountry] = useState(null)
-    const [listTelephone, setListTelephone] = useState([{ pays: "FR", telephone: "", libelle : "" }])
-    
+    useEffect(() => {
+        setListTelephone(paramTelephone)
+    }, [paramTelephone])
+
 
     const changerTelephone = (numeroTelephone, index) => {
       const list = [...listTelephone]
-      list[index].telephone = numeroTelephone
+      list[index].tel_numero = numeroTelephone
       setListTelephone(list)
       onChangeTelephone(list)
+
     }
 
     const changerLibelle = (libelle, index) => {
         const list = [...listTelephone]
-        list[index].libelle = libelle
+        list[index].tel_libelle = libelle
         setListTelephone(list)
         onChangeTelephone(list)
     }
 
     const changerPays = (pays, index) => {
         const list = [...listTelephone]
-        list[index].pays = pays
+        list[index].tel_code_pays= pays
         setListTelephone(list)
         onChangeTelephone(list)
     }
-  
+
+
     const supprimerChampTelephone = (index) => {
       const list = [...listTelephone]
       list.splice(index, 1)
@@ -53,8 +49,8 @@ const ChampTelephone = ({onChangeTelephone}) => {
     }
   
     const ajouterChampTelephone = () => {
-      setListTelephone([...listTelephone, { pays: "FR", telephone: "", libelle : "" }])
-      onChangeTelephone([...listTelephone, { pays: "FR", telephone: "", libelle : "" }])
+      setListTelephone([...listTelephone, { tel_libelle: "", tel_numero: "", tel_code_pays : "33"  }])
+      onChangeTelephone([...listTelephone, { tel_libelle: "", tel_numero: "", tel_code_pays : "33" }])
     }  
 
 
@@ -68,42 +64,30 @@ const ChampTelephone = ({onChangeTelephone}) => {
 
                     <View style = {{flexDirection : "row"}}>
 
-                        <PhoneInput
-
-                            placeholder = "Téléphone"
-                            value={item.telephone}
-                            onChangePhoneNumber={(text) => changerTelephone(text, index)}
-                            selectedCountry={item.pays}
-                            onChangeSelectedCountry={(text) => changerPays(text, index)}
-                            modalSearchInputPlaceholder="Rechercher un pays"
-                            modalNotFoundCountryMessage="Pays non trouvé"
-                            defaultCountry="FR"
-
-                            phoneInputStyles={{
-
-                                container: {
-
-                                    width: 300,
-                                    height: 50,
-                                    borderWidth: 1,
-                                    borderRadius : 7,
-                                    borderColor: "#808080",
-                                    //margin: 22
-                                },
-
-
-                                flagContainer: {
-
-                                    borderTopLeftRadius: 7,
-                                    borderBottomLeftRadius: 7,
-                                    ustifyContent: 'center'
-                                },
-
-                            }}
-
+                        <CountryPicker
+                                disable={false}
+                                containerStyle={styles.flag}
+                                animationType={"slide"}
+                                language="fra"
+                                pickerTitle={"Liste des pays"}
+                                searchBarPlaceHolder={"Rechercher un pays"}
+                                hideCountryFlag={false}
+                                hideCountryCode={false}
+                                countryCode={item.tel_code_pays}
+                                selectedValue={(text) => changerPays(text, index)}
+                                
                         />
 
-                            
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Télephone"
+                            keyboardType='numeric'
+                            //maxLength={9}
+                            onChangeText={(text) => changerTelephone(text, index)}
+                            value={item.tel_numero} 
+                        />
+
+
                         {listTelephone.length !== 1 && (
                             <TouchableOpacity onPress={() => supprimerChampTelephone(index)}>
                                 <Feather name="x-circle" size={24} color="#D70040" />
@@ -113,17 +97,20 @@ const ChampTelephone = ({onChangeTelephone}) => {
     
                     </View>
 
-                    <SelectList 
+                    <SelectDropdown
 
-                        setSelected={(val) => changerLibelle(val, index)} 
-                        data={libelle} 
-                        save="value"
-                        search={false}
-                        placeholder= "Libellé"
-                        inputStyles={{fontSize : 16}}
-                        boxStyles={{borderRadius:7, width : 200, marginTop : 10, marginBottom : 4}}
-                        dropdownTextStyles = {{fontSize : 16}}
-
+                        data={libelle}
+                        defaultButtonText={'Libellé'}
+                        defaultValue={item.tel_libelle === '' ? '' : item.tel_libelle} 
+                        onSelect={(val) => changerLibelle(val, index)}
+                        buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+                        rowTextForSelection={(item) => {return item}}
+                        renderDropdownIcon={isOpened => {
+                            return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
+                        }}
+                        dropdownIconPosition={'right'}
+                        buttonStyle={styles.dropDownStyle}
+                        buttonTextStyle={styles.dropDownTextStyle}
                     />
                     
                     {listTelephone.length - 1 === index && listTelephone.length < 4 && (
@@ -139,6 +126,48 @@ const ChampTelephone = ({onChangeTelephone}) => {
         </>
     )
 }
+
+const styles = StyleSheet.create({
+
+    input: {
+       
+        height: 50,
+        width: 180,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius : 7,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF",
+        fontSize : 16
+    },
+
+	flag: {
+		height: 50,
+		width: 100,
+		borderColor: "#808080",
+		alignItems: "center",
+		marginHorizontal: 3,
+		backgroundColor: "white",
+		borderRadius: 7,
+        backgroundColor : "#E5E4E2"
+	},
+
+    dropDownStyle: {
+        width: 200,
+        height: 50,
+        borderWidth: 1,
+        padding: 10,
+        borderRadius : 7,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF"
+    },
+
+    dropDownTextStyle: {
+        textAlign: 'left', 
+        fontSize : 16
+    }
+
+ });
 
 
 

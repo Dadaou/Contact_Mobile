@@ -14,8 +14,8 @@ const BoutonAjoutContact = () => {
 
                     <AntDesign 
                             name="pluscircle"  
-                            size={40}
-                            color= '#1685E7' />
+                            size={50}
+                            color= '#005F9D' />
 
                 </TouchableOpacity>
            

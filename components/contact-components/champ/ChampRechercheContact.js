@@ -1,15 +1,15 @@
 import { View, TextInput, StyleSheet } from "react-native"
 
-const RechercherContact = () => {
+const ChampRechercheContact = () => {
 
     return (
 
         <>
-            <View>
+            <View style ={{alignItems : 'center'}}>
 
                 <TextInput
 
-                    style={styles.champDeRecherche}
+                    style={styles.input}
                     placeholder="Rechercher un contact" />
             </View>
 
@@ -20,16 +20,19 @@ const RechercherContact = () => {
 
 const styles = StyleSheet.create({
 
-
-    champDeRecherche: {
+    input: {
         
-        height: 40,
+        height: 50,
+        width: 350,
         margin: 12,
         borderWidth: 1,
         padding: 10,
-        borderRadius: 20
+        borderRadius : 100,
+        borderColor: "#808080",
+        backgroundColor : "#FEFFFF",
+        fontSize : 16
     },
 
 })
 
-export default RechercherContact;
+export default ChampRechercheContact

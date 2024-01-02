@@ -1,6 +1,7 @@
+import requetes from '../../constant/RequeteSql'
 import { useState } from 'react'
 import * as SQLite from 'expo-sqlite'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native"
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Octicons } from '@expo/vector-icons'
 
@@ -19,70 +20,140 @@ import ChampAdresse from '../contact-components/champ/ChampAdresse'
 import ChampNote from '../contact-components/champ/ChampNote'
 import ChampService from '../contact-components/champ/ChampService'
 import ChampSiteWeb from '../contact-components/champ/ChampSiteWeb'
-import ChampReseauSociaux from '../contact-components/champ/ChampReseauSociaux'
+import ChampTwitter from '../contact-components/champ/ChampTwitter'
+import ChampLinkedin from '../contact-components/champ/ChampLinkedin'
+import ChampFacebook from '../contact-components/champ/ChampFacebook'
+import ChampSkype from '../contact-components/champ/ChampSkype'
 
 
 const AjoutContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase('Contact.db')
 
+    const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState('')
     const [prenom, setPrenom] = useState('')
     const [prenomUsage, setPrenomUsage] = useState('')
     const [groupe, setGroupe] = useState('')
     const [entreprise, setEntreprise] = useState('')
     const [fonction, setFonction] = useState('')
-    const [telephone, setTelephone] = useState([])
-    const [mail, setMail] = useState([])
-    const [date, setDate] = useState([])
+    const [telephone, setTelephone] = useState([{tel_code_pays: "33", tel_libelle: "", tel_numero: ""}])
+    const [mail, setMail] = useState([{ ml_libelle : "", ml_mail : "" }])
+    const [date, setDate] = useState('')
     const [note, setNote] = useState('')
-    const [adresse, setAdresse] = useState([])
+    const [adresse, setAdresse] = useState([{ addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
     const [service, setService] = useState('')
     const [siteWeb, setSiteWeb] = useState('')
-    const [reseauSociaux, setReseauSociaux] = useState([])
+    const [twitter, setTwitter] = useState('')
+    const [linkedin, setLinkedin] = useState('')
+    const [facebook, setFacebook] = useState('')
+    const [skype, setSkype] = useState('')
+    const [etat, setEtat] = useState(true)
 
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
-console.log(mail)
-
     const redirection = () => {
+
+        setPhoto('')
+        setNom('')
+        setPrenom ('')
+        setPrenomUsage('')
+        setGroupe('')
+        setEntreprise('')
+        setFonction('')
+        setTelephone([{ tel_libelle: "", tel_numero: "", tel_code_pays : "33" }])
+        setMail([{ ml_libelle : "", ml_mail : "" }])
+        setDate('')
+        setNote('')
+        setAdresse([{ addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
+        setService('')
+        setSiteWeb('')
+        setTwitter('')
+        setLinkedin('')
+        setFacebook('')
+        setSkype('')
+        setEtat(true)
+
         navigation.navigate('Accueil')
     }
 
 
     const enregistrerContact = () => {
 
-        /*if (nom == '' || prenom == '') {
+        if (nom == '' || prenom == '') {
 
             Alert.alert(
 
                 'Information',
-                'Veuillez ajouter des informations pour créer un contact',
+                'Veuillez ajouter un nom et un prénom au minimun pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
-            );
+            )
         }
 
         else {
 
             db.transaction((tx) => {
 
-                tx.executeSql(
-                    'INSERT INTO contact (ctt_prenom, ctt_nom) VALUES (?,?)', [prenom, nom]
+                tx.executeSql(requetes.InsererContact, 
+                              [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
+
+                              (txObj, resultSet) => {
+                                    console.log('insertion contact réussi')
+                               },
+                               (txObj, error) => console.log('contact error',error)
                 )
 
-                tx.executeSql(
-                    'INSERT INTO telephone (tel_numero, ctt_id) VALUES (?,(SELECT MAX(ctt_id) FROM  contact ))', [telephone]
-                )
+                telephone.forEach((item) => {
 
-                tx.executeSql(
-                    'INSERT INTO mail (ml_mail, ctt_id) VALUES (?,(SELECT MAX(ctt_id) FROM  contact ))', [mail]
-                )
+                    tx.executeSql( requetes.InsererTelephone, 
+                                   [item.tel_numero, item.tel_code_pays, item.tel_libelle], 
 
-            })*/
+                         (txObj, resultSet) => {
+                            console.log('insertion téléphone réussi')
+                        },
+    
+                        (txObj, error) => console.log('telephone error ',error)
+                    )
 
+                })
 
-        redirection()
+                mail.forEach((item) => {
+
+                    tx.executeSql(requetes.InsererMail, 
+                                  [item.ml_mail, item.ml_libelle],
+
+                                  (txObj, resultSet) => {
+                                    console.log('insertion mail réussi')
+                                  },
+                    
+                                  (txObj, error) => console.log('mail error ',error)
+
+                    )
+
+                })
+
+                adresse.forEach((item) => {
+
+                    tx.executeSql(requetes.InsererAdresse, 
+                                  [item.adresseLigneUn, item.adresseLigneDeux, item.adresseLigneTrois, item.codePostal, item.boitePostal, item.pays, item.ville, item.libelle],
+                                    (txObj, resultSet) => {
+                                                console.log('insertion adresse réussi')
+                                            },
+                        
+                                            (txObj, error) => console.log('adresse error ',error)
+
+                    )
+
+                })
+
+            })
+
+            redirection()
+
+        }
+
+       
 
     }
 
@@ -92,6 +163,7 @@ console.log(mail)
 
         <SafeAreaView style={styles.container}>
 
+            <StatusBar backgroundColor = "#005F9D"/> 
 
             <View style={styles.header}>
 
@@ -120,23 +192,23 @@ console.log(mail)
 
                     <View style={{ flex: 1, padding: 10 }} />
 
-                    <ChampPhoto />
+                    <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto}/>
 
-                    <ChampNom onChangeNom={setNom}/>
+                    <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom}/>
 
-                    <ChampPrenom />
+                    <ChampNom paramNom={nom} onChangeNom={setNom}/>
 
-                    <ChampPrenomUsage />
+                    <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage}/>
 
-                    <ChampGroupe />
+                    <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe}/>
 
-                    <ChampEntreprise />
+                    <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise}/>
 
-                    <ChampFonction />
+                    <ChampFonction paramFonction={fonction} onChangeFonction={setFonction}/>
 
-                    <ChampTelephone />
+                    <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone}/>
 
-                    <ChampEmail onChangeMail={setMail}/>
+                    <ChampEmail paramMail={mail} onChangeMail={setMail}/>
 
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
@@ -146,25 +218,32 @@ console.log(mail)
 
                     </TouchableOpacity>
 
-                    {afficherAutreChamp ? (
+                    { afficherAutreChamp ? (
 
-                        <>
+                                                <>
 
-                            <ChampDate />
+                                                    <ChampDate paramDate={date} onChangeDate={setDate} />
 
-                            <ChampNote />
+                                                    <ChampNote paramNote={note} onChangeNote={setNote} />
 
-                            <ChampAdresse />
+                                                    <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
 
-                            <ChampService />
+                                                    <ChampService paramServie={service} onChangeService={setService} />
 
-                            <ChampSiteWeb />
-                            
-                            <ChampReseauSociaux />
+                                                    <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
 
-                        </>
+                                                    <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
 
-                    ) : null}
+                                                    <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
+
+                                                    <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
+
+                                                    <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
+                                                    
+                                                </>
+
+                                            ) : null
+                    }
 
                 </View>
 
@@ -182,8 +261,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: "#1685E7"
-
+        backgroundColor: "#005F9D"
     },
 
     header: {

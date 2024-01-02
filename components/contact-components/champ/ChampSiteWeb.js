@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampSiteWeb = ({onChangeSiteWeb}) => {
+const ChampSiteWeb = ({paramSiteWeb, onChangeSiteWeb}) => {
 
+    const [siteWeb, setSiteWeb] = useState(paramSiteWeb)
 
-    const [siteWeb, setSiteWeb] = useState('')
+    useEffect(() => {
+        setSiteWeb(paramSiteWeb)
+    }, [paramSiteWeb])
 
     const ecouterChangementValeur = (valeur) => {
         setSiteWeb(valeur)

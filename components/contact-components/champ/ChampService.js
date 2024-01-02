@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet } from "react-native"
 
-const ChampService = ({onChangeService}) => {
+const ChampService = ({paramServie, onChangeService}) => {
 
-    const [service, setService] = useState('')
+    const [service, setService] = useState(paramServie)
+
+    useEffect(() => {
+        setService(paramServie)
+    }, [paramServie])
 
     const ecouterChangementValeur = (valeur) => {
         setService(valeur)
