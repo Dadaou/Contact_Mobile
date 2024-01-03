@@ -136,9 +136,9 @@ const AjoutContact = ({ navigation }) => {
                 adresse.forEach((item) => {
 
                     tx.executeSql(requetes.InsererAdresse, 
-                                  [item.adresseLigneUn, item.adresseLigneDeux, item.adresseLigneTrois, item.codePostal, item.boitePostal, item.pays, item.ville, item.libelle],
+                                  [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
                                     (txObj, resultSet) => {
-                                                console.log('insertion adresse réussi')
+                                        console.log('insertion adresse réussi')
                                             },
                         
                                             (txObj, error) => console.log('adresse error ',error)

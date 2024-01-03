@@ -9,7 +9,7 @@ import { View, TouchableOpacity,  StyleSheet, TextInput } from 'react-native'
 const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
 
-    const libelle = ['Professionel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
+    const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
     const [listTelephone, setListTelephone] = useState(paramTelephone)
 
 
@@ -115,8 +115,8 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                     
                     {listTelephone.length - 1 === index && listTelephone.length < 4 && (
 
-                        <TouchableOpacity onPress={ajouterChampTelephone} /*style={{padding : 15}}*/>
-                            <Feather name="plus-circle" size={30} color="#1685E7" />
+                        <TouchableOpacity onPress={ajouterChampTelephone} style={{marginBottom : 15}}>
+                            <Feather name="plus-circle" size={30} color="#36454F" />
                         </TouchableOpacity>
                     )}
 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     input: {
        
         height: 50,
-        width: 180,
+        width: 190,
         borderWidth: 1,
         padding: 10,
         borderRadius : 7,
@@ -159,7 +159,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 7,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF"
+        backgroundColor : "#FEFFFF",
+        marginTop : 10,
+        marginBottom : 10
     },
 
     dropDownTextStyle: {

@@ -21,7 +21,7 @@ const ChampGroupe = ({paramGroupe, onChangeGroupe}) => {
 
     return (
 
-        <View style = {{flex : 1}}>
+        <View style = {{flex : 1, paddingTop : 10, paddingRight : 100}}>
 
             <SelectDropdown
 

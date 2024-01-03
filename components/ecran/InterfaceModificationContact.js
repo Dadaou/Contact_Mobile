@@ -53,7 +53,6 @@ const  ModificationContact = ({ navigation, route }) => {
 
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
-
     const getInfoContact = () => {
 
         db.transaction((tx) => {
@@ -122,24 +121,24 @@ const  ModificationContact = ({ navigation, route }) => {
 
             telephone.forEach((item) => {
 
-                tx.executeSql( requetes.InsererTelephone, 
-                               [item.tel_numero, item.tel_code_pays, item.tel_libelle]
+                tx.executeSql( "INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)", 
+                               [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id]
                 )
 
             })
 
             mail.forEach((item) => {
 
-                tx.executeSql(requetes.InsererMail, 
-                              [item.ml_mail, item.ml_libelle]
+                tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)", 
+                              [item.ml_mail, item.ml_libelle, ctt_id]
                 )
 
             })
 
             adresse.forEach((item) => {
 
-                tx.executeSql(requetes.InsererAdresse, 
-                              [item.adresseLigneUn, item.adresseLigneDeux, item.adresseLigneTrois, item.codePostal, item.boitePostal, item.pays, item.ville, item.libelle]
+                tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)", 
+                              [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
 
                 )
 

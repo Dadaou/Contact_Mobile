@@ -14,6 +14,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
         setListAdresse(paramAdresse)
     }, [paramAdresse])
 
+
     const changerAdresseLigneUn = (adresseLigneUn, index) => {
       const list = [...listAdresse]
       list[index].addr_ligne1 = adresseLigneUn
@@ -163,7 +164,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                     {listAdresse.length - 1 === index && listAdresse.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampAdresse}>
-                            <Feather name="plus-circle" size={30} color="#1685E7" style={{marginBottom : 12}}/>
+                            <Feather name="plus-circle" size={30} color="#36454F" style={{marginBottom : 12}}/>
                         </TouchableOpacity>
                     )}
 
@@ -198,7 +199,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 7,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF"
+        backgroundColor : "#FEFFFF",
+        marginTop : 5,
+        marginBottom : 10
     },
 
     dropDownTextStyle: {

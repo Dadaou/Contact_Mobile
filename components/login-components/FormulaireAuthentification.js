@@ -20,11 +20,11 @@ const FormulaireAuthentification = () => {
     useEffect(() => {
 
         if (identifiant !== '' && motDePasse !== '') {
-            setBoutonDesactive(false); // Activez le bouton
+            setBoutonDesactive(false) 
         } else {
-            setBoutonDesactive(true); // Désactivez le bouton
+            setBoutonDesactive(true) 
         }
-    }, [identifiant, motDePasse]);
+    }, [identifiant, motDePasse])
 
     const navigation = useNavigation()
 

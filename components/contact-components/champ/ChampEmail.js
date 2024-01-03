@@ -8,10 +8,21 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
 
     const libelle = ['Professionel', 'Personnel', 'Entreprise']
     const [listMail, setListMail] = useState(paramMail)
+    const [libelleVisible, setLibelleVisible] = useState(true)
 
     useEffect(() => {
         setListMail(paramMail)
     }, [paramMail])
+
+    /*useEffect(() => {
+
+        listMail.forEach((item, index) => {
+
+          const isChampEmailVide = item.ml_mail === ""
+          !isChampEmailVide ? setLibelleVisible(true) : setLibelleVisible(false)
+          //console.log(`ml_mail de l'élément ${index} est vide !`)
+        })
+    }, [listMail])*/
 
 
     const changerMail = (mail, index) => {
@@ -64,26 +75,32 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
     
                     </View>
 
-                    <SelectDropdown
+                    { libelleVisible ? ( <SelectDropdown
 
-                        data={libelle}
-                        defaultButtonText={'Libellé'}
-                        defaultValue={item.ml_libelle === '' ? '' : item.ml_libelle} 
-                        onSelect={(val) => changerLibelle(val, index)}
-                        buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
-                        rowTextForSelection={(item) => {return item}}
-                        renderDropdownIcon={isOpened => {
-                          return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
-                        }}
-                        dropdownIconPosition={'right'}
-                        buttonStyle={styles.dropDownStyle}
-                        buttonTextStyle={styles.dropDownTextStyle}
-                    />
+                                            data={libelle}
+                                            defaultButtonText={'Libellé'}
+                                            defaultValue={item.ml_libelle === '' ? '' : item.ml_libelle} 
+                                            onSelect={(val) => changerLibelle(val, index)}
+                                            buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+                                            rowTextForSelection={(item) => {return item}}
+                                            renderDropdownIcon={isOpened => {
+                                            return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
+                                            }}
+                                            dropdownIconPosition={'right'}
+                                            buttonStyle={styles.dropDownStyle}
+                                            buttonTextStyle={styles.dropDownTextStyle}
+                                            />
+
+                                        ) : null
+
+                    }
+
+
                     
                     {listMail.length - 1 === index && listMail.length < 4 && (
 
-                        <TouchableOpacity onPress={ajouterChampMail} style={{marginLeft : 13}}>
-                            <Feather name="plus-circle" size={30} color="#1685E7" />
+                        <TouchableOpacity onPress={ajouterChampMail} style={{marginLeft : 13, marginBottom : 15}}>
+                            <Feather name="plus-circle" size={30} color="#36454F" />
                         </TouchableOpacity>
                     )}
 
@@ -119,7 +136,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 7,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF"
+        backgroundColor : "#FEFFFF",
+        marginBottom : 10,
+        marginRight : 12
     },
 
     dropDownTextStyle: {

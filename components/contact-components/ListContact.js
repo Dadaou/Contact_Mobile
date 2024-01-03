@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
+import requetes from '../../constant/RequeteSql'
 
 const Item = ({ ctt_id, photo, prenom, nom}) => {
 
@@ -56,27 +57,26 @@ const ListContact = () => {
 
                 tx.executeSql(
                     //'DROP TABLE IF EXISTS contact'
-                    'CREATE TABLE IF NOT EXISTS contact (ctt_id INTEGER PRIMARY KEY AUTOINCREMENT, ctt_photo TEXT, ctt_nom TEXT, ctt_prenom TEXT, ctt_prenom_usage TEXT, ctt_entreprise TEXT, ctt_service TEXT, ctt_fonction TEXT, ctt_anniversaire DATE, ctt_siteweb TEXT, ctt_twitter TEXT, ctt_linkedin TEXT, ctt_facebook TEXT, ctt_skype TEXT, ctt_notes TEXT, ctt_corbeille INTEGER, ctt_favoris INTEGER, ctt_etat INTEGER)'
+                    requetes.CreerTableContact
                 )
     
                 tx.executeSql(
                     //'DROP TABLE IF EXISTS telephone'
-                    'CREATE TABLE IF NOT EXISTS telephone (tel_id INTEGER PRIMARY KEY AUTOINCREMENT, tel_numero TEXT, tel_code_pays TEXT, tel_libelle TEXT, ctt_id INTEGER, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))'
+                    requetes.CreerTableTelephone
                 )
     
                 tx.executeSql(
                     //'DROP TABLE IF EXISTS mail'
-                    'CREATE TABLE IF NOT EXISTS mail (ml_id INTEGER PRIMARY KEY AUTOINCREMENT, ml_mail TEXT, ml_libelle TEXT, ctt_id INTEGER, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))'
+                    requetes.CreerTableMail
                 )
     
                 tx.executeSql(
                     //'DROP TABLE IF EXISTS adresse'
-                    'CREATE TABLE IF NOT EXISTS adresse (addr_id INTEGER PRIMARY KEY AUTOINCREMENT, addr_ligne1 TEXT, addr_ligne2 TEXT, addr_ligne3 TEXT, addr_ville TEXT, addr_pays TEXT, addr_bp TEXT, addr_cp INTEGER, addr_libelle TEXT, ctt_id INTEGER, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))'
+                    requetes.CreerTableAdresse
                 )
 
 
                 tx.executeSql('SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom FROM contact', null,
-
                 
                     (_, resultSet) => {
                         setData(resultSet.rows._array)
