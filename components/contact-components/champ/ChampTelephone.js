@@ -116,7 +116,7 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                     {listTelephone.length - 1 === index && listTelephone.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampTelephone} style={{marginBottom : 15}}>
-                            <Feather name="plus-circle" size={30} color="#36454F" />
+                            <Feather name="plus-circle" size={30} color="#708090" />
                         </TouchableOpacity>
                     )}
 

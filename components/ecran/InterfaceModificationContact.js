@@ -2,10 +2,11 @@ import requetes from '../../constant/RequeteSql'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native"
 import { Octicons } from '@expo/vector-icons'
 
 import Separateur from '../contact-components/Separateur'
+import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
 import ChampNom from '../contact-components/champ/ChampNom'
 import ChampPrenom from '../contact-components/champ/ChampPrenom'
@@ -75,13 +76,13 @@ const  ModificationContact = ({ navigation, route }) => {
                     setLinkedin(resultSet.rows._array[0].ctt_linkedin)
                     setFacebook(resultSet.rows._array[0].ctt_facebook)
                     setSkype(resultSet.rows._array[0].ctt_skype)
+                    setEtat(resultSet.rows._array[0].ctt_etat)
                 },
                 (_, error) => console.log(error)
             )
 
             tx.executeSql(requetes.GetTelephone, [ctt_id],
                 (_, resultSet) => {
-                    //console.log(resultSet.rows._array)
                     setTelephone(resultSet.rows._array)
                 },
                 (_, error) => console.log(error)
@@ -89,7 +90,6 @@ const  ModificationContact = ({ navigation, route }) => {
 
             tx.executeSql(requetes.GetMail, [ctt_id],
                 (_, resultSet) => {
-                    //console.log(resultSet.rows._array)
                     setMail(resultSet.rows._array)
                 },
                 (_, error) => console.log(error)
@@ -97,7 +97,6 @@ const  ModificationContact = ({ navigation, route }) => {
 
             tx.executeSql(requetes.GetAdresse, [ctt_id],
                 (_, resultSet) => {
-                    //console.log(resultSet.rows._array)
                     setAdresse(resultSet.rows._array)
                 },
                 (_, error) => console.log(error)
@@ -109,54 +108,74 @@ const  ModificationContact = ({ navigation, route }) => {
 
     const misAJourInfoContact = () => {
 
-        db.transaction((tx) => {
+        if (nom == '' || prenom == '') {
 
-            tx.executeSql(requetes.SupprTelephone, [ctt_id]) 
-            tx.executeSql(requetes.SupprMail, [ctt_id]) 
-            tx.executeSql(requetes.SupprAdresse, [ctt_id]) 
+            Alert.alert(
+
+                'Information',
+                'Veuillez ne pas laisser le nom et le prénom vide',
+                [{ text: "OK" }],
+                { cancelable: false }
+            )
+        }
+
+        else {
+
+            try {
+
+                db.transaction((tx) => {
+                    
+                    try {
+
+                            tx.executeSql(requetes.SupprTelephone, [ctt_id])
+                            tx.executeSql(requetes.SupprMail, [ctt_id])
+                            tx.executeSql(requetes.SupprAdresse, [ctt_id])
             
-            tx.executeSql(requetes.MajContact, 
-                         [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, twitter, linkedin, facebook, skype, note, etat, ctt_id]
-            ) 
-
-            telephone.forEach((item) => {
-
-                tx.executeSql( "INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)", 
-                               [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id]
-                )
-
-            })
-
-            mail.forEach((item) => {
-
-                tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)", 
-                              [item.ml_mail, item.ml_libelle, ctt_id]
-                )
-
-            })
-
-            adresse.forEach((item) => {
-
-                tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)", 
-                              [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
-
-                )
-
-            })
-        
-        })
-
-        redirection()
+                            tx.executeSql(requetes.MajContact,
+                                [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, twitter, linkedin, facebook, skype, note, etat, ctt_id]
+                            )
+            
+                            telephone.forEach((item) => {
+                                tx.executeSql("INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)",
+                                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id]
+                                )
+                            })
+            
+                            mail.forEach((item) => {
+                                tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)",
+                                    [item.ml_mail, item.ml_libelle, ctt_id]
+                                )
+                            })
+            
+                            adresse.forEach((item) => {
+                                tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
+                                )
+                            })
+                    } 
+                    
+                    catch (error) {
+                        console.error('Erreur lors de l\'exécution des requêtes d\'insertion:', error)
+                        throw error
+                    }
+                })
+                
+                redirection(true)
+            } 
+            
+            catch (error) {
+                console.error('Une erreur est survenue lors de la transaction:', error)
+            }
+        }
 
     }
-
 
     useEffect(() => { 
         getInfoContact()
     }, [])
 
     
-    const redirection = () => {
+    const redirection = (showModal) => {
 
         setPhoto('')
         setNom('')
@@ -178,7 +197,7 @@ const  ModificationContact = ({ navigation, route }) => {
         setSkype('')
         setEtat(true)
 
-        navigation.navigate('DetailContact', { ctt_id: ctt_id })
+        navigation.navigate('DetailContact', { ctt_id: ctt_id, showModal: showModal })
 
     }
 
@@ -190,9 +209,9 @@ const  ModificationContact = ({ navigation, route }) => {
 
             <View style={styles.header}>
 
-                <StatusBar  backgroundColor = "#005F9D"/>  
+                <StatusBar  backgroundColor = "#005F9D" barStyle = "light-content"/>  
 
-                <TouchableOpacity style={{ right: 30 }} onPress={redirection}>
+                <TouchableOpacity style={{ right: 30 }} onPress={() => redirection(false)}>
                     <Octicons name="x" size={35} color="#FEFFFF" />
                 </TouchableOpacity>
 
@@ -209,7 +228,7 @@ const  ModificationContact = ({ navigation, route }) => {
 
             </View>
 
-
+            <EtatContact paramEtat={etat} onChangeEtat={setEtat}/>
 
             <ScrollView style={{ flex: 1, backgroundColor: "#FEFFFF" }}>
 
@@ -238,7 +257,7 @@ const  ModificationContact = ({ navigation, route }) => {
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
                         {!afficherAutreChamp ?
-                            <Text style={{ paddingRight: 170, paddingTop: 15, fontSize: 17, marginBottom: 20, color: "#C19A6B" }}>Autres champs?</Text> : null
+                            <Text style={{ paddingRight: 170, paddingTop: 15, fontSize: 17, marginBottom: 20, color: "#708090" }}>Autres champs?</Text> : null
                         }
 
                     </TouchableOpacity>

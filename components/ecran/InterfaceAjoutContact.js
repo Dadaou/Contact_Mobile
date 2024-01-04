@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Octicons } from '@expo/vector-icons'
 
 import Separateur from '../contact-components/Separateur'
+import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
 import ChampNom from '../contact-components/champ/ChampNom'
 import ChampPrenom from '../contact-components/champ/ChampPrenom'
@@ -52,7 +53,7 @@ const AjoutContact = ({ navigation }) => {
 
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
-    const redirection = () => {
+    const redirection = (showModal) => {
 
         setPhoto('')
         setNom('')
@@ -74,8 +75,9 @@ const AjoutContact = ({ navigation }) => {
         setSkype('')
         setEtat(true)
 
-        navigation.navigate('Accueil')
+        navigation.navigate('Accueil', { showModal: showModal })
     }
+
 
 
     const enregistrerContact = () => {
@@ -93,68 +95,72 @@ const AjoutContact = ({ navigation }) => {
 
         else {
 
-            db.transaction((tx) => {
+            try {
 
-                tx.executeSql(requetes.InsererContact, 
-                              [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
+                db.transaction((tx) => {
 
-                              (txObj, resultSet) => {
-                                    console.log('insertion contact réussi')
-                               },
-                               (txObj, error) => console.log('contact error',error)
-                )
-
-                telephone.forEach((item) => {
-
-                    tx.executeSql( requetes.InsererTelephone, 
-                                   [item.tel_numero, item.tel_code_pays, item.tel_libelle], 
-
-                         (txObj, resultSet) => {
-                            console.log('insertion téléphone réussi')
+                    tx.executeSql(requetes.InsererContact,
+                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
+                        (txObj, resultSet) => {
+                            console.log('insertion contact réussi')
                         },
-    
-                        (txObj, error) => console.log('telephone error ',error)
+                        (txObj, error) => {
+                            console.log('contact error', error)
+                            throw error
+                        }
                     )
+        
+                    telephone.forEach((item) => {
 
+                        tx.executeSql(requetes.InsererTelephone,
+                            [item.tel_numero, item.tel_code_pays, item.tel_libelle],
+                            (txObj, resultSet) => {
+                                console.log('insertion téléphone réussi')
+                            },
+                            (txObj, error) => {
+                                console.log('telephone error ', error)
+                                throw error
+                            }
+                        )
+                    })
+        
+                    mail.forEach((item) => {
+
+                        tx.executeSql(requetes.InsererMail,
+                            [item.ml_mail, item.ml_libelle],
+                            (txObj, resultSet) => {
+                                console.log('insertion mail réussi')
+                            },
+                            (txObj, error) => {
+                                console.log('mail error ', error)
+                                throw error
+                            }
+                        );
+                    });
+        
+                    adresse.forEach((item) => {
+
+                        tx.executeSql(requetes.InsererAdresse,
+                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
+                            (txObj, resultSet) => {
+                                console.log('insertion adresse réussi')
+                            },
+                            (txObj, error) => {
+                                console.log('adresse error ', error)
+                                throw error
+                            }
+                        )
+                    })
+        
+                    redirection(true)
                 })
-
-                mail.forEach((item) => {
-
-                    tx.executeSql(requetes.InsererMail, 
-                                  [item.ml_mail, item.ml_libelle],
-
-                                  (txObj, resultSet) => {
-                                    console.log('insertion mail réussi')
-                                  },
-                    
-                                  (txObj, error) => console.log('mail error ',error)
-
-                    )
-
-                })
-
-                adresse.forEach((item) => {
-
-                    tx.executeSql(requetes.InsererAdresse, 
-                                  [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
-                                    (txObj, resultSet) => {
-                                        console.log('insertion adresse réussi')
-                                            },
-                        
-                                            (txObj, error) => console.log('adresse error ',error)
-
-                    )
-
-                })
-
-            })
-
-            redirection()
-
+            } 
+            
+            catch (error) {
+                console.error('Une erreur est survenue lors de la transaction:', error)
+            }
         }
-
-       
-
+        
     }
 
 
@@ -167,7 +173,7 @@ const AjoutContact = ({ navigation }) => {
 
             <View style={styles.header}>
 
-                <TouchableOpacity style={{ right: 40 }} onPress={redirection}>
+                <TouchableOpacity style={{ right: 40 }} onPress={() => redirection(false)}>
                     <Octicons name="x" size={35} color="#FEFFFF" />
                 </TouchableOpacity>
 
@@ -184,7 +190,7 @@ const AjoutContact = ({ navigation }) => {
 
             </View>
 
-
+            <EtatContact paramEtat={etat} onChangeEtat={setEtat}/>
 
             <ScrollView style={{ flex: 1, backgroundColor: "#FEFFFF" }}>
 
@@ -213,7 +219,7 @@ const AjoutContact = ({ navigation }) => {
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
                         {!afficherAutreChamp ?
-                            <Text style={{ paddingRight: 170, paddingTop: 15, fontSize: 17, marginBottom: 20, color: "#C19A6B" }}>Autres champs?</Text> : null
+                            <Text style={{ paddingRight: 170, paddingTop: 15, fontSize: 17, marginBottom: 20, color: "#708090" }}>Autres champs?</Text> : null
                         }
 
                     </TouchableOpacity>

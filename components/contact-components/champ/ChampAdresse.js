@@ -164,7 +164,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                     {listAdresse.length - 1 === index && listAdresse.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampAdresse}>
-                            <Feather name="plus-circle" size={30} color="#36454F" style={{marginBottom : 12}}/>
+                            <Feather name="plus-circle" size={30} color="#708090" style={{marginBottom : 12}}/>
                         </TouchableOpacity>
                     )}
 

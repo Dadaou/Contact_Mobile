@@ -7,13 +7,20 @@ import ContactPersonnel from '../contact-components/menu/ContactPersonnel'
 
 const Drawer = createDrawerNavigator()
 
-const MenuCoulissant = () => {
+const MenuCoulissant = ({ route }) => {
+
+  const { showModal } = route.params || {}
+
+  //console.log('Eto', showModal)
 
   return (
 
     <Drawer.Navigator screenOptions={{ headerShown: false }}>
 
-      <Drawer.Screen name="Tous les contats" component={TousLesContacts} />
+      <Drawer.Screen name="Tous les contats">
+        {(props) => <TousLesContacts {...props} showModal={showModal} />}
+      </Drawer.Screen>
+
       <Drawer.Screen name="Contacts Favoris" component={ContactFavori} />
       <Drawer.Screen name="Contacts Personnels" component={ContactPersonnel} />
 

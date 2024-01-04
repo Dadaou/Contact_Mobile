@@ -64,6 +64,7 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
                         <TextInput
                             style={styles.input}
                             placeholder="Email"
+                            keyboardType="email-address"
                             onChangeText={(text) => changerMail(text, index)}
                             value={item.ml_mail} />
 
@@ -95,12 +96,11 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
 
                     }
 
-
-                    
+  
                     {listMail.length - 1 === index && listMail.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampMail} style={{marginLeft : 13, marginBottom : 15}}>
-                            <Feather name="plus-circle" size={30} color="#36454F" />
+                            <Feather name="plus-circle" size={30} color="#708090" />
                         </TouchableOpacity>
                     )}
 
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     },
 
     dropDownStyle: {
+        
         width: 200,
         height: 50,
         borderWidth: 1,

@@ -75,8 +75,7 @@ const ListContact = () => {
                     requetes.CreerTableAdresse
                 )
 
-
-                tx.executeSql('SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom FROM contact', null,
+                tx.executeSql('SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom FROM contact ORDER BY ctt_prenom ASC', null,
                 
                     (_, resultSet) => {
                         setData(resultSet.rows._array)

@@ -1,15 +1,15 @@
-import { useState } from "react"
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native"
+import { useState, useEffect } from "react"
+import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 
+import Toast from "../contact-components/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
 import InformationContact from "../contact-components/affichage-information-contact/InformationContact"
 
 /*
-
     <TouchableOpacity onPress={() => setAfficherAutreInfo(!afficherAutreInfo)} style={{ alignItems: 'center', justifyContent : 'center', paddingRight: 170}}>
 
             {!afficherAutreInfo ?
@@ -21,15 +21,42 @@ import InformationContact from "../contact-components/affichage-information-cont
 
 const DetailContact = ({ route }) => {
 
-    const { ctt_id } = route.params
+    const { ctt_id, showModal } = route.params
+
     const navigation = useNavigation()
 
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
     const [favori, setFavori] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false)
 
     const toggleFavori = () => {
         setFavori(!favori)
     }
+
+
+    const toggleModal = () => {
+
+        setModalVisible(true)
+        setTimeout(() => {
+          setModalVisible(false)
+        }, 1500)
+
+    }
+
+    useEffect(() => {
+
+        const listener = navigation.addListener('focus', () => {
+
+            if (showModal && showModal !== undefined) {
+                toggleModal();
+                navigation.setParams({ showModal: false });
+            }
+        
+        })
+
+        return () => listener()
+
+    }, [showModal, navigation])
 
 
     return (
@@ -38,6 +65,7 @@ const DetailContact = ({ route }) => {
             <SafeAreaView style={styles.container}>
 
                 <StatusBar backgroundColor = "#E5E4E2" barStyle = "dark-content"/> 
+                <Toast title='Contact modifié' isVisible={isModalVisible} />
 
                 <View style = {styles.header}>
 
