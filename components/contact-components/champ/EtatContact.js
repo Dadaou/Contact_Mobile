@@ -24,7 +24,7 @@ const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
         <View style={styles.container}>
 
-            <Text style={styles.text}>État :</Text>
+            <Text style={styles.text}>Etat :</Text>
 
             <View style={{ flexDirection: "row", paddingLeft : 15 }}>
 
