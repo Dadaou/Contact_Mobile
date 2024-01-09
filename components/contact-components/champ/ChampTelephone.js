@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import CountryPicker from "rn-country-picker"
 import SelectDropdown from 'react-native-select-dropdown'
-//import { SelectList } from 'react-native-dropdown-select-list'
+import { AsYouType,  isValidPhoneNumber } from 'libphonenumber-js'
+
 import { Feather } from '@expo/vector-icons'
-import { View, TouchableOpacity,  StyleSheet, TextInput } from 'react-native'
+import { View, TouchableOpacity,  StyleSheet, TextInput, Text } from 'react-native'
 
 
 const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
@@ -12,7 +13,7 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
     const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
     const [listTelephone, setListTelephone] = useState(paramTelephone)
 
-
+    console.log(listTelephone)
     useEffect(() => {
         setListTelephone(paramTelephone)
     }, [paramTelephone])
@@ -20,7 +21,11 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
     const changerTelephone = (numeroTelephone, index) => {
       const list = [...listTelephone]
-      list[index].tel_numero = numeroTelephone
+      const numeroTelephoneFormate = new AsYouType().input(`+${list[index].tel_code_pays}${numeroTelephone}`)
+      //const phoneNumber = isValidPhoneNumber(`+${list[index].tel_code_pays}${numeroTelephone}`)
+      //console.log(phoneNumber)
+      //console.log(numeroTelephoneFormate.replace(list[index].tel_code_pays, ''))
+      list[index].tel_numero = numeroTelephoneFormate.substring(list[index].tel_code_pays.length + 1)//numeroTelephone
       setListTelephone(list)
       onChangeTelephone(list)
 
@@ -87,7 +92,6 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                             value={item.tel_numero} 
                         />
 
-
                         {listTelephone.length !== 1 && (
                             <TouchableOpacity onPress={() => supprimerChampTelephone(index)}>
                                 <Feather name="x-circle" size={24} color="#D70040" />
@@ -112,7 +116,9 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                         buttonStyle={styles.dropDownStyle}
                         buttonTextStyle={styles.dropDownTextStyle}
                     />
-                    
+
+
+   
                     {listTelephone.length - 1 === index && listTelephone.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampTelephone} style={{marginBottom : 15}}>
@@ -174,3 +180,122 @@ const styles = StyleSheet.create({
 
 
 export default ChampTelephone
+
+/*import { useState} from 'react'
+import PhoneInput from 'react-native-international-phone-number'
+import { Feather } from '@expo/vector-icons'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+
+
+const ChampTelephone = ({onChangeTelephone}) => {
+
+    //const [selectedCountry, setSelectedCountry] = useState(null)
+    const [listTelephone, setListTelephone] = useState([{ pays: "", telephone: "", numero : "" }])
+
+    console.log(listTelephone)
+
+    const changerTelephone = (numeroTelephone, index) => {
+
+      const list = [...listTelephone]
+      list[index].telephone = numeroTelephone
+      //list[index].numero = `${list[index].pays?.callingCode} ${numeroTelephone}`
+
+      setListTelephone(list)
+      onChangeTelephone(list)
+    }
+
+
+    const changerPays = (pays, index) => {
+        const list = [...listTelephone]
+        list[index].pays = pays
+        setListTelephone(list)
+        onChangeTelephone(list)
+    }
+  
+    const supprimerChampTelephone = (index) => {
+      const list = [...listTelephone]
+      list.splice(index, 1)
+      setListTelephone(list)
+      onChangeTelephone(list)
+    }
+  
+    const ajouterChampTelephone = () => {
+      setListTelephone([...listTelephone, { pays: "FR", telephone: "", libelle : "" }])
+      onChangeTelephone([...listTelephone, { pays: "FR", telephone: "", libelle : "" }])
+    }  
+
+
+    return (
+     
+        <>
+
+            {listTelephone.map((item, index) => (
+
+                <View key={index}>
+
+                    <View style = {{flexDirection : "row"}}>
+
+                        <PhoneInput
+
+                            placeholder = "Téléphone"
+                            value={item.telephone}
+                            onChangePhoneNumber={(text) => changerTelephone(text, index)}
+                            selectedCountry={item.pays}
+                            onChangeSelectedCountry={(text) => changerPays(text, index)}
+                            modalSearchInputPlaceholder="Rechercher un pays"
+                            modalNotFoundCountryMessage="Pays non trouvé"
+                            defaultCountry="FR"
+                            defaultValue={item.numero !== "" ? item.numero : null}
+
+                            phoneInputStyles={{
+
+                                container: {
+
+                                    width: 300,
+                                    height: 50,
+                                    borderWidth: 1,
+                                    borderRadius : 7,
+                                    borderColor: "#808080",
+                                    //margin: 22
+                                },
+
+
+                                flagContainer: {
+
+                                    borderTopLeftRadius: 7,
+                                    borderBottomLeftRadius: 7,
+                                    ustifyContent: 'center'
+                                },
+
+                            }}
+
+                        />
+
+                            
+                        {listTelephone.length !== 1 && (
+                            <TouchableOpacity onPress={() => supprimerChampTelephone(index)}>
+                                <Feather name="x-circle" size={24} color="#D70040" />
+                            </TouchableOpacity>
+                        )}
+
+    
+                    </View>
+
+                    
+                    {listTelephone.length - 1 === index && listTelephone.length < 4 && (
+
+                        <TouchableOpacity onPress={ajouterChampTelephone}>
+                            <Feather name="plus-circle" size={30} color="#1685E7" />
+                        </TouchableOpacity>
+                    )}
+
+                </View>
+            ))}
+
+        </>
+    )
+}
+
+     {!isValidPhoneNumber(`+${item.tel_code_pays}${item.tel_numero}`) ? (<Text style={{color : 'red', marginLeft : 5}}>Numéro invalide</Text>) : null}
+
+export default ChampTelephone*/

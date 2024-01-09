@@ -137,7 +137,14 @@ const  ModificationContact = ({ navigation, route }) => {
             
                             telephone.forEach((item) => {
                                 tx.executeSql("INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)",
-                                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id]
+                                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+                                    (txObj, resultSet) => {
+                                        console.log('modification téléphone réussi')
+                                    },
+                                    (txObj, error) => {
+                                        console.log('telephone error ', error)
+                                        throw error
+                                    }
                                 )
                             })
             

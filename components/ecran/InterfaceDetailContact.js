@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 
+
 import Toast from "../contact-components/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
