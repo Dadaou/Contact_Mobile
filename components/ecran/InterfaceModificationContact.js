@@ -214,24 +214,30 @@ const  ModificationContact = ({ navigation, route }) => {
 
         <SafeAreaView style={styles.container}>
 
+            <StatusBar  backgroundColor = "#005F9D" barStyle = "light-content"/>  
+
             <View style={styles.header}>
 
-                <StatusBar  backgroundColor = "#005F9D" barStyle = "light-content"/>  
+                <View style = {{flex : 1, alignItems : 'flex-start'}}>
 
-                <TouchableOpacity style={{ right: 30 }} onPress={() => redirection(false)}>
-                    <Octicons name="x" size={35} color="#FEFFFF" />
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => redirection(false)}>
+                        <Octicons name="x" size={35} color="#FEFFFF" />
+                    </TouchableOpacity>
 
-                <View /*style = {{flex : 0}}*/>
+                </View>
+
+
+                <View style = {{alignItems : 'center'}}>
                     <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FEFFFF" }}>Modifier un contact</Text>
                 </View>
 
-                <TouchableOpacity style={{ left: 30 }}/*style={{ flex : 0.4, backgroundColor: "#DBAF2F", paddingLeft: 4, borderRadius : 20 }}*/
-                    onPress={misAJourInfoContact}>
+                <View style = {{flex : 1, alignItems : 'flex-end'}}>
 
-                    <Octicons name="check" size={35} color="#FEFFFF" />
+                    <TouchableOpacity onPress={misAJourInfoContact}>
+                        <Octicons name="check" size={35} color="#FEFFFF" />
+                    </TouchableOpacity>
 
-                </TouchableOpacity>
+                </View>
 
             </View>
 
@@ -317,10 +323,10 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        //flex : 0.3,
+
         flexDirection: "row",
         padding: 16,
-        justifyContent: 'center'
+        alignItems: 'center'
 
     }
 

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-
+import { Feather } from '@expo/vector-icons';
 
 import Toast from "../contact-components/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
@@ -50,7 +50,7 @@ const DetailContact = ({ route }) => {
 
             if (showModal && showModal !== undefined) {
                 toggleModal();
-                navigation.setParams({ showModal: false });
+                navigation.setParams({ showModal: false })
             }
         
         })
@@ -70,23 +70,35 @@ const DetailContact = ({ route }) => {
 
                 <View style = {styles.header}>
 
-                    <View style={{ flex: 3 }} />
+                    <View style = {{flex : 1, alignItems : 'flex-start'}}>
 
-                    <TouchableOpacity onPress={toggleFavori} style = {{ marginHorizontal : 25}}>
-                        <Ionicons
-                            name={favori ? 'star' : 'star-outline'}
-                            size={25} 
-                            color={'#ECCA37'}/>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Feather name="arrow-left" size={25} color="black" />
+                        </TouchableOpacity>
 
-                    <TouchableOpacity  onPress={() => navigation.navigate('ModificationContact', { ctt_id : ctt_id })}>
+                    </View>
 
-                        <Ionicons
-                            name={'pencil'}
-                            size={25}
-                            color={'#005F9D'} />
-                            
-                    </TouchableOpacity>
+
+                    <View style = {{alignItems : 'flex-end', flexDirection : 'row'}}>
+
+                        <TouchableOpacity onPress={toggleFavori} style = {{ marginHorizontal : 25}}>
+                            <Ionicons
+                                name={favori ? 'star' : 'star-outline'}
+                                size={25} 
+                                color={'#ECCA37'}/>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity  onPress={() => navigation.navigate('ModificationContact', { ctt_id : ctt_id })}>
+
+                            <Ionicons
+                                name={'pencil'}
+                                size={25}
+                                color={'#005F9D'} />
+                                
+                        </TouchableOpacity>
+
+                    </View>
+
 
                 </View>
 
@@ -127,9 +139,11 @@ const styles = StyleSheet.create({
     header: {
 
         flexDirection: "row",
+        alignItems : 'center',
+        //justifyContent : 'center',
         padding: 16, 
         //backgroundColor : "#005F9D",
-        height : 60
+        //height : 60
     }
 
 })

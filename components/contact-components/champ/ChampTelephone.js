@@ -13,7 +13,7 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
     const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
     const [listTelephone, setListTelephone] = useState(paramTelephone)
 
-    console.log(listTelephone)
+    //console.log(listTelephone)
     useEffect(() => {
         setListTelephone(paramTelephone)
     }, [paramTelephone])

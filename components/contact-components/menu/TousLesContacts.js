@@ -6,39 +6,10 @@ import HeaderContact from "../HeaderContact"
 import TitrePage from "../TitrePage"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
 
-import Toast from '../Toast'
 
 const TousLesContacts = ({ navigation, showModal }) => {
 
     const titre = "Tous les contacts"
-
-    const [isModalVisible, setModalVisible] = useState(false)
-
-    //console.log(isModalVisible)
-
-    const toggleModal = () => {
-
-        setModalVisible(true)
-        setTimeout(() => {
-          setModalVisible(false)
-        }, 1500)
-
-    }
-
-    useEffect(() => {
-
-        const listener = navigation.addListener('focus', () => {
-
-            if (showModal && showModal !== undefined) {
-                toggleModal()
-            }
-        
-        })
-
-        return () => listener()
-
-    }, [showModal, navigation])
-
 
     return (
 
@@ -49,8 +20,7 @@ const TousLesContacts = ({ navigation, showModal }) => {
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />
-            <Toast title='Contact enregistré' isVisible={isModalVisible} />
-
+        
         </View>
 
     )

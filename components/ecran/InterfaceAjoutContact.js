@@ -152,20 +152,27 @@ const AjoutContact = ({ navigation }) => {
 
             <View style={styles.header}>
 
-                <TouchableOpacity style={{ right: 40 }} onPress={() => redirection(false)}>
-                    <Octicons name="x" size={35} color="#FEFFFF" />
-                </TouchableOpacity>
+                <View style = {{flex : 1, alignItems : 'flex-start'}}>
 
-                <View /*style = {{flex : 0}}*/>
+                    <TouchableOpacity onPress={() => redirection(false)}>
+                        <Octicons name="x" size={35} color="#FEFFFF" />
+                    </TouchableOpacity>
+
+                </View>
+
+
+                <View style = {{alignItems : 'center'}}>
                     <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FEFFFF" }}>Créer un contact</Text>
                 </View>
 
-                <TouchableOpacity style={{ left: 40 }}/*style={{ flex : 0.4, backgroundColor: "#DBAF2F", paddingLeft: 4, borderRadius : 20 }}*/
-                    onPress={enregistrerContact}>
+                <View style = {{flex : 1, alignItems : 'flex-end'}}>
 
-                    <Octicons name="check" size={35} color="#FEFFFF" />
+                    <TouchableOpacity onPress={enregistrerContact}>
+                        <Octicons name="check" size={35} color="#FEFFFF" />
+                    </TouchableOpacity>
 
-                </TouchableOpacity>
+                </View>
+
 
             </View>
 
@@ -250,13 +257,15 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        //flex : 0.3,
         flexDirection: "row",
         padding: 16,
-        justifyContent: 'center'
+        alignItems : 'center'
 
     }
 
 })
 
 export default AjoutContact
+
+
+/**/
