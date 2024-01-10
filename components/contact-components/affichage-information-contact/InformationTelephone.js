@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native"
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"
@@ -47,14 +47,6 @@ const  InformationTelephone = ({id}) => {
     }, [])
 
 
-
- 
-        // Opération à effectuer sur chaque élément du tableau
-        //console.log(getIsoCode(convertirEnArray(telephone[0].tel_code_pays)[0]).toLowerCase()) // Par exemple, convertir chaque élément en majuscules
-     
-
-
-
     return (
 
         <View style={{ flex: 1 }}>
@@ -79,7 +71,7 @@ const  InformationTelephone = ({id}) => {
 
                             <View key={index}  style={{ flexDirection: "row", alignItems: "center", marginBottom : 25 }}>
 
-                                <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                <TouchableOpacity style = {{marginHorizontal : 12}} onPress={()=>{Linking.openURL(`tel:+${convertirEnArray(telephone[0].tel_code_pays)[index]}${numero}`)}}>
                                     <FontAwesome name="phone" size={25} color="#000000" />
                                 </TouchableOpacity>
 
