@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native"
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
@@ -68,7 +68,7 @@ const  InformationMail = ({id}) => {
 
                             <View key={index} style={{ flexDirection: "row"}}>
 
-                                <TouchableOpacity style = {{marginHorizontal : 12}}>
+                                <TouchableOpacity style = {{marginHorizontal : 12}} onPress={() => Linking.openURL(`mailto:${mail}`)}>
                                     <FontAwesome name="envelope" size={23} color="#000000" />
                                 </TouchableOpacity>
 
