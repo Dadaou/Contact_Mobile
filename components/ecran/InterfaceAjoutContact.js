@@ -100,55 +100,34 @@ const AjoutContact = ({ navigation }) => {
                 db.transaction((tx) => {
 
                     tx.executeSql(requetes.InsererContact,
-                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
-                        (txObj, resultSet) => {
+                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat]
+                        /*,(txObj, resultSet) => {
                             console.log('insertion contact réussi')
                         },
                         (txObj, error) => {
                             console.log('contact error', error)
                             throw error
-                        }
+                        }*/
                     )
         
                     telephone.forEach((item) => {
 
                         tx.executeSql(requetes.InsererTelephone,
-                            [item.tel_numero, item.tel_code_pays, item.tel_libelle],
-                            (txObj, resultSet) => {
-                                console.log('insertion téléphone réussi')
-                            },
-                            (txObj, error) => {
-                                console.log('telephone error ', error)
-                                throw error
-                            }
+                            [item.tel_numero, item.tel_code_pays, item.tel_libelle]
                         )
                     })
         
                     mail.forEach((item) => {
 
                         tx.executeSql(requetes.InsererMail,
-                            [item.ml_mail, item.ml_libelle],
-                            (txObj, resultSet) => {
-                                console.log('insertion mail réussi')
-                            },
-                            (txObj, error) => {
-                                console.log('mail error ', error)
-                                throw error
-                            }
+                            [item.ml_mail, item.ml_libelle]
                         );
                     });
         
                     adresse.forEach((item) => {
 
                         tx.executeSql(requetes.InsererAdresse,
-                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
-                            (txObj, resultSet) => {
-                                console.log('insertion adresse réussi')
-                            },
-                            (txObj, error) => {
-                                console.log('adresse error ', error)
-                                throw error
-                            }
+                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle]
                         )
                     })
         

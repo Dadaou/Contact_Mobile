@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import PhoneInput from 'react-native-phone-input'
 import CountryFlag from "react-native-country-flag"
 import * as SQLite from 'expo-sqlite'
 import getIsoCode from "../../../constant/getIsoCode"
@@ -120,16 +119,3 @@ const styles = StyleSheet.create({
 
 export default InformationTelephone
 
-/*
-
-<CountryFlag isoCode={`${(getIsoCode(convertirEnArray(telephone[0].tel_code_pays)[index])).toLowerCase()}`} size={25} />
-
-
-                                <PhoneInput disabled = {true}
-                                        initialValue={`${convertirEnArray(telephone[0].tel_code_pays)[index]}`}//"33 46 46 46 64 56" 
-                                        textStyle={{fontSize : 18, color : 'black', marginTop : 5}}/>
-
-    ${numero}
-
-    <Text>${numero}</Text>
-*/
