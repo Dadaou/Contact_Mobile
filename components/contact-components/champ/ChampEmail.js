@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
-import { View, TouchableOpacity, TextInput, Text, StyleSheet } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 
 const ChampEmail = ({paramMail, onChangeMail}) => {
@@ -63,7 +64,9 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
 
                         <TextInput
                             style={styles.input}
-                            placeholder="Email"
+                            label = "Email"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             keyboardType="email-address"
                             onChangeText={(text) => changerMail(text, index)}
                             value={item.ml_mail} />
@@ -117,16 +120,9 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
 const styles = StyleSheet.create({
 
     input: {
-
-        height: 50,
         width: 300,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 7,
-        borderColor: "#808080",
         backgroundColor : "#FEFFFF",
-        fontSize : 16
-        
+        marginBottom: 5
     },
 
     dropDownStyle: {
@@ -135,7 +131,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         padding: 10,
-        borderRadius : 7,
+        borderRadius : 5,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
         marginBottom : 10,

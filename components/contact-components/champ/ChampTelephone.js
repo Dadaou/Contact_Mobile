@@ -4,7 +4,8 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { AsYouType,  isValidPhoneNumber } from 'libphonenumber-js'
 
 import { Feather } from '@expo/vector-icons'
-import { View, TouchableOpacity,  StyleSheet, TextInput, Text } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { View, TouchableOpacity,  StyleSheet } from 'react-native'
 
 
 const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
@@ -13,7 +14,6 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
     const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
     const [listTelephone, setListTelephone] = useState(paramTelephone)
 
-    //console.log(listTelephone)
     useEffect(() => {
         setListTelephone(paramTelephone)
     }, [paramTelephone])
@@ -85,9 +85,10 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
                         <TextInput
                             style={styles.input}
-                            placeholder="Télephone"
+                            label = "Téléphone"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             keyboardType='numeric'
-                            //maxLength={9}
                             onChangeText={(text) => changerTelephone(text, index)}
                             value={item.tel_numero} 
                         />
@@ -137,14 +138,9 @@ const styles = StyleSheet.create({
 
     input: {
        
-        height: 50,
-        width: 190,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 7,
-        borderColor: "#808080",
+        width: 195,
         backgroundColor : "#FEFFFF",
-        fontSize : 16
+        marginBottom : 5
     },
 
 	flag: {
@@ -152,9 +148,11 @@ const styles = StyleSheet.create({
 		width: 100,
 		borderColor: "#808080",
 		alignItems: "center",
+        padding : 20,
 		marginHorizontal: 3,
+        marginTop : 6,
 		backgroundColor: "white",
-		borderRadius: 7,
+		borderRadius: 5,
         backgroundColor : "#E5E4E2"
 	},
 

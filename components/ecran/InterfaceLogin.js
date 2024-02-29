@@ -1,5 +1,5 @@
-import uriLogo from '../../constant/UriLogo'
-import { View, Text, Image, StyleSheet } from "react-native"
+import uriLogo from '../../Utils/UriLogo.js'
+import { View, Text, Image, StyleSheet, StatusBar, ScrollView } from "react-native"
 import FormulaireAuthentification from "../login-components/FormulaireAuthentification.js"
 
 
@@ -8,17 +8,19 @@ const Login = () => {
     const logo = [uriLogo.urlLogoAchat, uriLogo.urlLogoContact, uriLogo.urlLogoBulletin, uriLogo.urlTreso, uriLogo.urlTableur, uriLogo.urlTexteur, uriLogo.urlLogoMessagerie, uriLogo.urlLogoAgenda]
 
     return (
-        
+
+        <ScrollView>
+
             <View style={styles.container}>
 
-                <View style={{marginBottom : 10}}>
+                <View style={{ marginBottom: 10 }}>
 
-                    <View> 
+                    <View>
                         <Image source={{ uri: uriLogo.urlLogoManao }} style={styles.logoPrincipalManao} />
                         <Text style={styles.descriptionManao}>Plateforme logicielle pour l'organisation et la gestion d'entreprises</Text>
                     </View>
 
-                    <View style={{  flexDirection: 'row' }}> 
+                    <View style={{ flexDirection: 'row' }}>
                         {logo.map((url, index) => (
                             <Image key={index} source={{ uri: url }} style={styles.logo} />
                         ))}
@@ -28,9 +30,11 @@ const Login = () => {
 
                 <FormulaireAuthentification />
 
-                <Text style = {{textAlign: 'center'}}>Manao© 2023</Text>
-              
+                <Text style={{ textAlign: 'center' }}>Manao© 2024</Text>
+
             </View>
+
+        </ScrollView>
 
 
     );
@@ -44,6 +48,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 70
     },
 
     descriptionManao: {
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        
+
         width: 30,
         height: 30,
         marginHorizontal: 5,

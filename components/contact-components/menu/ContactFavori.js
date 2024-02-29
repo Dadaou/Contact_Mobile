@@ -1,5 +1,4 @@
 import { View, StyleSheet } from "react-native"
-import HeaderContact from "../HeaderContact"
 import TitrePage from "../TitrePage"
 //import ChampRechercheContact from "../champ/ChampRechercheContact"
 
@@ -9,22 +8,22 @@ const ContactFavori = () => {
 
     return (
 
-            <View style={styles.container}>
+        <View style={styles.container}>
 
-                <HeaderContact />
-                <TitrePage titre={titre}/>
-              
+    
+            <TitrePage titre={titre} />
 
-            </View>
+
+        </View>
 
     )
 }
 
 const styles = StyleSheet.create({
 
-  container: {
-      flex: 1
-  }
+    container: {
+        flex: 1
+    }
 
 })
 

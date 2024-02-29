@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
-import { View, TouchableOpacity, TextInput, Text, StyleSheet } from 'react-native'
-
+import { TextInput } from 'react-native-paper';
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 
 const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
@@ -95,8 +95,10 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                     <View style = {{flexDirection : "row", marginTop : 20}}>
 
                         <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Adresse ligne 1"
+                            style={styles.input}
+                            label = "Adresse ligne 1"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerAdresseLigneUn(text, index)}
                             value={item.addr_ligne1} />
 
@@ -109,39 +111,51 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                     </View>
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Adresse ligne 2"
+                            style={styles.input}
+                            label = "Adresse ligne 2"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerAdresseLigneDeux(text, index)}
                             value={item.addr_ligne2} />
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Adresse ligne 3"
+                            style={styles.input}
+                            label = "Adresse ligne 3"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerAdresseLigneTrois(text, index)}
                             value={item.addr_ligne3} />
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Code postal"
+                            style={styles.input}
+                            label = "Code postal"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerCodePostal(text, index)}
                             value={item.addr_cp} />
 
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Boite postal"
+                            style={styles.input}
+                            label = "Boite postal"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerBoitePostal(text, index)}
                             value={item.addr_bp} />
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 25}}
-                            placeholder="Pays"
+                            style={styles.input}
+                            label = "Pays"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerPays(text, index)}
                             value={item.addr_pays} />
 
                     <TextInput
-                            style={{...styles.input, marginBottom : 12}}
-                            placeholder="Ville"
+                            style={styles.input}
+                            label = "Ville"
+                            mode='outlined'
+                            activeOutlineColor = "#005F9D"
                             onChangeText={(text) => changerVille(text, index)}
                             value={item.addr_ville} />
 
@@ -164,7 +178,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                     {listAdresse.length - 1 === index && listAdresse.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampAdresse}>
-                            <Feather name="plus-circle" size={30} color="#708090" style={{marginBottom : 12}}/>
+                            <Feather name="plus-circle" size={30} color="#708090" style={{marginBottom : 20}}/>
                         </TouchableOpacity>
                     )}
 
@@ -181,15 +195,10 @@ const styles = StyleSheet.create({
 
     input: {
 
-        height: 50,
         width: 300,
-        //margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 7,
-        borderColor: "#808080",
         backgroundColor : "#FEFFFF",
-        fontSize : 16
+        marginBottom : 20
+
     },
 
     dropDownStyle: {
@@ -197,7 +206,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         padding: 10,
-        borderRadius : 7,
+        borderRadius : 5,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
         marginTop : 5,

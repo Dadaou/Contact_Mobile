@@ -49,18 +49,6 @@ const ChampGroupe = ({paramGroupe, onChangeGroupe}) => {
 
 const styles = StyleSheet.create({
 
-    input: {
-
-        height: 50,
-        width: 300,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 7,
-        borderColor: "#808080",
-        backgroundColor : "#FEFFFF",
-        fontSize : 16
-    },
 
     dropDownStyle: {
         width: 200,
@@ -69,7 +57,8 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 7,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF"
+        backgroundColor : "#FEFFFF",
+        marginBottom : 20
     },
 
     dropDownTextStyle: {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet,  } from "react-native"
 import ListContact from '../ListContact'
 import BoutonAjoutContact from '../BoutonAjoutContact'
-import HeaderContact from "../HeaderContact"
+import HeaderPrincipal from "../HeaderPrincipal"
 import TitrePage from "../TitrePage"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
 
 
-const TousLesContacts = ({ navigation, showModal }) => {
+const TousLesContacts = ({ navigation, infoUtilisateur }) => {
 
     const titre = "Tous les contacts"
 
@@ -15,12 +15,12 @@ const TousLesContacts = ({ navigation, showModal }) => {
 
         <View style={styles.container}>
 
-            <HeaderContact />
+            <HeaderPrincipal infoUtilisateur={infoUtilisateur} />
             <TitrePage titre={titre} />
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />
-        
+
         </View>
 
     )

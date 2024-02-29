@@ -59,16 +59,16 @@ const styles = StyleSheet.create({
         flexDirection : 'row',
         marginRight : 120,
         marginTop: 15,
-        marginBottom : 10
+        marginBottom : 20
     },
 
     input: {
 
         height: 50,
-        width: 170,
+        width: 180,
         borderWidth: 1,
         borderStyle : 'solid',
-        borderRadius : 7,
+        borderRadius : 5,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
         flexDirection : 'row'

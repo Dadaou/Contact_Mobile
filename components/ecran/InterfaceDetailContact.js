@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons';
 
-import Toast from "../contact-components/Toast"
+import Toast from "../Modal/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
 import InformationContact from "../contact-components/affichage-information-contact/InformationContact"
@@ -18,7 +18,7 @@ import InformationContact from "../contact-components/affichage-information-cont
             }
 
     </TouchableOpacity>
-*/ 
+*/
 
 const DetailContact = ({ route }) => {
 
@@ -39,7 +39,7 @@ const DetailContact = ({ route }) => {
 
         setModalVisible(true)
         setTimeout(() => {
-          setModalVisible(false)
+            setModalVisible(false)
         }, 1500)
 
     }
@@ -52,7 +52,7 @@ const DetailContact = ({ route }) => {
                 toggleModal();
                 navigation.setParams({ showModal: false })
             }
-        
+
         })
 
         return () => listener()
@@ -62,67 +62,67 @@ const DetailContact = ({ route }) => {
 
     return (
 
-        
-            <SafeAreaView style={styles.container}>
 
-                <StatusBar backgroundColor = "#E5E4E2" barStyle = "dark-content"/> 
-                <Toast title='Contact modifié' isVisible={isModalVisible} />
+        <SafeAreaView style={styles.container}>
 
-                <View style = {styles.header}>
+            <StatusBar backgroundColor="#E5E4E2" barStyle="dark-content" />
+            <Toast title='Contact modifié' isVisible={isModalVisible} />
 
-                    <View style = {{flex : 1, alignItems : 'flex-start'}}>
+            <View style={styles.header}>
 
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <Feather name="arrow-left" size={25} color="black" />
-                        </TouchableOpacity>
+                <View style={{ flex: 1, alignItems: 'flex-start' }}>
 
-                    </View>
-
-
-                    <View style = {{alignItems : 'flex-end', flexDirection : 'row'}}>
-
-                        <TouchableOpacity onPress={toggleFavori} style = {{ marginHorizontal : 25}}>
-                            <Ionicons
-                                name={favori ? 'star' : 'star-outline'}
-                                size={25} 
-                                color={'#ECCA37'}/>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity  onPress={() => navigation.navigate('ModificationContact', { ctt_id : ctt_id })}>
-
-                            <Ionicons
-                                name={'pencil'}
-                                size={25}
-                                color={'#005F9D'} />
-                                
-                        </TouchableOpacity>
-
-                    </View>
-
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Feather name="arrow-left" size={25} color="black" />
+                    </TouchableOpacity>
 
                 </View>
 
-                <ScrollView>
 
-                    <View  style={{paddingTop:20}}>
+                <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
 
-                        <InformationContact id={ctt_id} />
+                    <TouchableOpacity onPress={toggleFavori} style={{ marginHorizontal: 25 }}>
+                        <Ionicons
+                            name={favori ? 'star' : 'star-outline'}
+                            size={25}
+                            color={'#ECCA37'} />
+                    </TouchableOpacity>
 
-                        <View style={{ padding : 25}}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })}>
 
-                            <InformationTelephone id={ctt_id} />
+                        <Ionicons
+                            name={'pencil'}
+                            size={25}
+                            color={'#005F9D'} />
 
-                            <InformationMail id={ctt_id} />
+                    </TouchableOpacity>
 
-                        </View>
+                </View>
+
+
+            </View>
+
+            <ScrollView>
+
+                <View style={{ paddingTop: 20 }}>
+
+                    <InformationContact id={ctt_id} />
+
+                    <View style={{ padding: 25 }}>
+
+                        <InformationTelephone id={ctt_id} />
+
+                        <InformationMail id={ctt_id} />
 
                     </View>
 
-                </ScrollView>
+                </View>
 
-            </SafeAreaView>
+            </ScrollView>
 
-    ) 
+        </SafeAreaView>
+
+    )
 
 }
 
@@ -132,16 +132,16 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: 'column',
-        backgroundColor : "#E5E4E2"
+        backgroundColor: "#E5E4E2"
 
     },
 
     header: {
 
         flexDirection: "row",
-        alignItems : 'center',
+        alignItems: 'center',
         //justifyContent : 'center',
-        padding: 16, 
+        padding: 16,
         //backgroundColor : "#005F9D",
         //height : 60
     }

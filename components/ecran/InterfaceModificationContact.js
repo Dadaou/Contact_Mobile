@@ -1,4 +1,4 @@
-import requetes from '../../constant/RequeteSql'
+import requetes from '../../Utils/RequeteSql'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -26,7 +26,7 @@ import ChampLinkedin from '../contact-components/champ/ChampLinkedin'
 import ChampFacebook from '../contact-components/champ/ChampFacebook'
 import ChampSkype from '../contact-components/champ/ChampSkype'
 
-const  ModificationContact = ({ navigation, route }) => {
+const ModificationContact = ({ navigation, route }) => {
 
 
     const { ctt_id } = route.params
@@ -39,11 +39,11 @@ const  ModificationContact = ({ navigation, route }) => {
     const [groupe, setGroupe] = useState('')
     const [entreprise, setEntreprise] = useState('')
     const [fonction, setFonction] = useState('')
-    const [telephone, setTelephone] = useState([{ tel_libelle: "", tel_numero: "", tel_code_pays : "33" }])
-    const [mail, setMail] = useState([{ ml_libelle : "", ml_mail : "" }])
+    const [telephone, setTelephone] = useState([{ tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+    const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
     const [date, setDate] = useState('')
     const [note, setNote] = useState('')
-    const [adresse, setAdresse] = useState([{ addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
+    const [adresse, setAdresse] = useState([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
     const [service, setService] = useState('')
     const [siteWeb, setSiteWeb] = useState('')
     const [twitter, setTwitter] = useState('')
@@ -124,52 +124,52 @@ const  ModificationContact = ({ navigation, route }) => {
             try {
 
                 db.transaction((tx) => {
-                    
+
                     try {
 
-                            tx.executeSql(requetes.SupprTelephone, [ctt_id])
-                            tx.executeSql(requetes.SupprMail, [ctt_id])
-                            tx.executeSql(requetes.SupprAdresse, [ctt_id])
-            
-                            tx.executeSql(requetes.MajContact,
-                                [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, twitter, linkedin, facebook, skype, note, etat, ctt_id]
+                        tx.executeSql(requetes.SupprTelephone, [ctt_id])
+                        tx.executeSql(requetes.SupprMail, [ctt_id])
+                        tx.executeSql(requetes.SupprAdresse, [ctt_id])
+
+                        tx.executeSql(requetes.MajContact,
+                            [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, twitter, linkedin, facebook, skype, note, etat, ctt_id]
+                        )
+
+                        telephone.forEach((item) => {
+                            tx.executeSql("INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)",
+                                [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+                                (txObj, resultSet) => {
+                                    console.log('modification téléphone réussi')
+                                },
+                                (txObj, error) => {
+                                    console.log('telephone error ', error)
+                                    throw error
+                                }
                             )
-            
-                            telephone.forEach((item) => {
-                                tx.executeSql("INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)",
-                                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
-                                    (txObj, resultSet) => {
-                                        console.log('modification téléphone réussi')
-                                    },
-                                    (txObj, error) => {
-                                        console.log('telephone error ', error)
-                                        throw error
-                                    }
-                                )
-                            })
-            
-                            mail.forEach((item) => {
-                                tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)",
-                                    [item.ml_mail, item.ml_libelle, ctt_id]
-                                )
-                            })
-            
-                            adresse.forEach((item) => {
-                                tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",
-                                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
-                                )
-                            })
-                    } 
-                    
+                        })
+
+                        mail.forEach((item) => {
+                            tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)",
+                                [item.ml_mail, item.ml_libelle, ctt_id]
+                            )
+                        })
+
+                        adresse.forEach((item) => {
+                            tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                                [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
+                            )
+                        })
+                    }
+
                     catch (error) {
                         console.error('Erreur lors de l\'exécution des requêtes d\'insertion:', error)
                         throw error
                     }
                 })
-                
+
                 redirection(true)
-            } 
-            
+            }
+
             catch (error) {
                 console.error('Une erreur est survenue lors de la transaction:', error)
             }
@@ -177,25 +177,25 @@ const  ModificationContact = ({ navigation, route }) => {
 
     }
 
-    useEffect(() => { 
+    useEffect(() => {
         getInfoContact()
     }, [])
 
-    
+
     const redirection = (showModal) => {
 
         setPhoto('')
         setNom('')
-        setPrenom ('')
+        setPrenom('')
         setPrenomUsage('')
         setGroupe('')
         setEntreprise('')
         setFonction('')
-        setTelephone([{ tel_libelle: "", tel_numero: "", tel_code_pays : "33" }])
-        setMail([{ ml_libelle : "", ml_mail : "" }])
+        setTelephone([{ tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+        setMail([{ ml_libelle: "", ml_mail: "" }])
         setDate('')
         setNote('')
-        setAdresse([{ addr_ligne1: "" , addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: ""}])
+        setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
         setService('')
         setSiteWeb('')
         setTwitter('')
@@ -214,11 +214,11 @@ const  ModificationContact = ({ navigation, route }) => {
 
         <SafeAreaView style={styles.container}>
 
-            <StatusBar  backgroundColor = "#005F9D" barStyle = "light-content"/>  
+            <StatusBar backgroundColor="#005F9D" barStyle="light-content" />
 
             <View style={styles.header}>
 
-                <View style = {{flex : 1, alignItems : 'flex-start'}}>
+                <View style={{ flex: 1, alignItems: 'flex-start' }}>
 
                     <TouchableOpacity onPress={() => redirection(false)}>
                         <Octicons name="x" size={35} color="#FEFFFF" />
@@ -227,11 +227,11 @@ const  ModificationContact = ({ navigation, route }) => {
                 </View>
 
 
-                <View style = {{alignItems : 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                     <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FEFFFF" }}>Modifier un contact</Text>
                 </View>
 
-                <View style = {{flex : 1, alignItems : 'flex-end'}}>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
 
                     <TouchableOpacity onPress={misAJourInfoContact}>
                         <Octicons name="check" size={35} color="#FEFFFF" />
@@ -241,7 +241,7 @@ const  ModificationContact = ({ navigation, route }) => {
 
             </View>
 
-            <EtatContact paramEtat={etat} onChangeEtat={setEtat}/>
+            <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
 
             <ScrollView style={{ flex: 1, backgroundColor: "#FEFFFF" }}>
 
@@ -249,23 +249,23 @@ const  ModificationContact = ({ navigation, route }) => {
 
                     <View style={{ flex: 1, padding: 10 }} />
 
-                    <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto}/>
+                    <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto} />
 
-                    <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom}/>
+                    <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom} />
 
-                    <ChampNom paramNom={nom} onChangeNom={setNom}/>
+                    <ChampNom paramNom={nom} onChangeNom={setNom} />
 
-                    <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage}/>
+                    <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage} />
 
-                    <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe}/>
+                    <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe} />
 
-                    <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise}/>
+                    <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise} />
 
-                    <ChampFonction paramFonction={fonction} onChangeFonction={setFonction}/>
+                    <ChampFonction paramFonction={fonction} onChangeFonction={setFonction} />
 
-                    <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone}/>
+                    <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone} />
 
-                    <ChampEmail paramMail={mail} onChangeMail={setMail}/>
+                    <ChampEmail paramMail={mail} onChangeMail={setMail} />
 
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
@@ -277,29 +277,29 @@ const  ModificationContact = ({ navigation, route }) => {
 
                     {afficherAutreChamp ? (
 
-                                                <>
+                        <>
 
-                                                    <ChampDate paramDate={date} onChangeDate={setDate} />
+                            <ChampDate paramDate={date} onChangeDate={setDate} />
 
-                                                    <ChampNote paramNote={note} onChangeNote={setNote} />
+                            <ChampNote paramNote={note} onChangeNote={setNote} />
 
-                                                    <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
+                            <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
 
-                                                    <ChampService paramServie={service} onChangeService={setService} />
+                            <ChampService paramServie={service} onChangeService={setService} />
 
-                                                    <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
+                            <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
 
-                                                    <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
+                            <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
 
-                                                    <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
+                            <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
 
-                                                    <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
+                            <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
 
-                                                    <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
-                                                    
-                                                </>
+                            <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
 
-                                            ) : null
+                        </>
+
+                    ) : null
                     }
 
                 </View>
@@ -331,6 +331,6 @@ const styles = StyleSheet.create({
     }
 
 })
-     
 
-export default  ModificationContact
+
+export default ModificationContact

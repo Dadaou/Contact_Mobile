@@ -1,19 +1,21 @@
-import { View, TextInput, StyleSheet } from "react-native"
+import { View, StyleSheet } from "react-native"
+import { useState } from "react"
+import { Searchbar } from 'react-native-paper'
 
 const ChampRechercheContact = () => {
 
+    const [searchQuery, setSearchQuery] = useState("")
+
     return (
 
-        <>
-            <View style ={{alignItems : 'center'}}>
+            <Searchbar
+                style = {styles.input}
+                placeholder="Rechercher un contact"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+                elevation={5}
+            />
 
-                <TextInput
-
-                    style={styles.input}
-                    placeholder="Rechercher un contact" />
-            </View>
-
-        </>
     )
 }
 
@@ -22,15 +24,9 @@ const styles = StyleSheet.create({
 
     input: {
         
-        height: 50,
-        width: 350,
         margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 100,
-        borderColor: "#808080",
         backgroundColor : "#FEFFFF",
-        fontSize : 16
+
     },
 
 })

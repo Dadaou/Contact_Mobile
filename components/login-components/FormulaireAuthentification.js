@@ -1,8 +1,11 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { View, TextInput, Text, Button, TouchableOpacity, StyleSheet } from "react-native"
+import { View, TextInput, Text, Button, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from "react-native"
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import SpinnerModal from '../Modal/Spinner'
+import axios from 'axios'
 
 
 const FormulaireAuthentification = () => {
@@ -11,11 +14,13 @@ const FormulaireAuthentification = () => {
     const [motDePasse, setMotDePasse] = useState('')
     const [afficherMotDePasse, setAfficherMotDePasse] = useState(false)
     const [boutonDesactive, setBoutonDesactive] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const [affiherErreurAuth, setAffiherErreurAuth] = useState(false)
+    
 
     const toggleAfficherMotDePasse = () => {
         setAfficherMotDePasse(!afficherMotDePasse)
     }
-
 
     useEffect(() => {
 
@@ -27,6 +32,38 @@ const FormulaireAuthentification = () => {
     }, [identifiant, motDePasse])
 
     const navigation = useNavigation()
+
+    const authentification = useCallback(() => {
+
+        setLoading(true)
+        
+        axios.post('https://api-licences.manao.eu/index.php/v1/authentification', {
+          login: identifiant,
+          mdp: motDePasse
+        })
+
+        .then(async res => {
+
+            if(res.data.data){
+
+                    try {
+                      await AsyncStorage.setItem(
+                        'Token',
+                         res.data.data.token,
+                      )
+
+                    setLoading(false)
+                    } catch (error) {console.log(error)}
+            }
+
+        })
+
+        .catch(() => {
+            setLoading(false)
+            setAffiherErreurAuth(true)
+        })
+
+      }, [identifiant, motDePasse, navigation])
 
     /*const accederAccueil = () => {
         navigation.navigate('Accueil');
@@ -61,18 +98,21 @@ const FormulaireAuthentification = () => {
                             name={afficherMotDePasse ? 'eye-slash' : 'eye'}
                             size={18} />
                     </TouchableOpacity>
-
+            
                 </View>
 
-
-                <TouchableOpacity onPress={() => navigation.navigate('Accueil')} disabled={boutonDesactive} style={boutonDesactive ? styles.butonDesactive : styles.butonActive}>
+                {affiherErreurAuth && <Text style={{textAlign : 'center', color:'red', marginBottom : 10}}>Identifiant et ou mot de passe incorrect</Text>}
+                
+                <TouchableOpacity onPress={authentification} disabled={boutonDesactive} style={boutonDesactive ? styles.butonDesactive : styles.butonActive}>
                     <Text style={boutonDesactive ? styles.textDesactive : styles.textActive}>CONNEXION</Text>
                 </TouchableOpacity>
 
-
+            
                 <TouchableOpacity>
                     <Text style={{ textAlign: 'right', color: '#1685E7', paddingTop: 15 }}>Mot de passe oublié?</Text>
                 </TouchableOpacity>
+
+                <SpinnerModal isVisible={loading}/>
 
             </View>
     );
