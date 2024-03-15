@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { View, StyleSheet,  } from "react-native"
 import ListContact from '../ListContact'
 import BoutonAjoutContact from '../BoutonAjoutContact'
@@ -20,7 +19,7 @@ const TousLesContacts = ({ navigation, infoUtilisateur }) => {
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />
-
+           
         </View>
 
     )
@@ -29,9 +28,15 @@ const TousLesContacts = ({ navigation, infoUtilisateur }) => {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1
+        flex: 1,
+        justifyContent : "center"
     }
 
 })
 
 export default TousLesContacts
+
+/* <TitrePage titre={titre} /> 
+            <HeaderPrincipal infoUtilisateur={infoUtilisateur} />
+            
+            <ChampRechercheContact />*/

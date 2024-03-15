@@ -2,10 +2,7 @@ import ReactNativeModal from "react-native-modal";
 import {
     View,
     StyleSheet,
-    TouchableOpacity,
     Text,
-    TextInput,
-    Button,
     ActivityIndicator
   } from 'react-native'
 

@@ -13,12 +13,12 @@ const convertirEnArray = (chaine) => {
 
 }
 
-const  InformationMail = ({id}) => {
+const  InformationAdresse = ({id}) => {
 
+    const requeteTableAdresse = "SELECT GROUP_CONCAT(DISTINCT adresse.addr_ligne1) AS addr_ligne1, GROUP_CONCAT(DISTINCT adresse.addr_ligne2) AS addr_ligne2, GROUP_CONCAT(DISTINCT adresse.addr_ligne3) AS addr_ligne3, GROUP_CONCAT(DISTINCT adresse.addr_ville) AS addr_ville, GROUP_CONCAT(DISTINCT adresse.addr_pays) AS addr_pays, GROUP_CONCAT(DISTINCT adresse.addr_bp) AS addr_bp, GROUP_CONCAT(DISTINCT adresse.addr_cp) AS addr_cp, GROUP_CONCAT(DISTINCT adresse.addr_libelle) AS addr_libelle FROM adresse WHERE ctt_id = ? GROUP BY ctt_id"
     const navigation = useNavigation()
     const db = SQLite.openDatabase('Contact.db')
-    const requeteTableAdresse = " SELECT GROUP_CONCAT(DISTINCT adresse.addr_ligne1) AS addr_ligne1, GROUP_CONCAT(DISTINCT adresse.addr_ligne2) AS addr_ligne2, GROUP_CONCAT(DISTINCT adresse.addr_ligne3) AS addr_ligne3, GROUP_CONCAT(DISTINCT adresse.addr_ville) AS addr_ville, GROUP_CONCAT(DISTINCT adresse.addr_pays) AS addr_pays, GROUP_CONCAT(DISTINCT adresse.addr_bp) AS addr_bp, GROUP_CONCAT(DISTINCT adresse.addr_cp) AS addr_cp, GROUP_CONCAT(DISTINCT adresse.addr_libelle) AS addr_libelle FROM adresse WHERE ctt_id = ? GROUP BY ctt_id "
-
+    
     const [adresse, setAdresse] = useState([{addr_ligne1 : '', addr_ligne2 : '', addr_ligne3 : '', addr_ville : '', addr_pays : '', addr_bp : '', addr_cp : '', addr_libelle : ''}])
 
     useEffect(() => {
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default InformationMail
+export default InformationAdresse

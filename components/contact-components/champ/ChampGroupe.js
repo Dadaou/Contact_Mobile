@@ -21,7 +21,7 @@ const ChampGroupe = ({paramGroupe, onChangeGroupe}) => {
 
     return (
 
-        <View style = {{flex : 1, paddingTop : 10, paddingRight : 100}}>
+        <View style = {{paddingTop : 5}}>
 
             <SelectDropdown
 
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
 
 
     dropDownStyle: {
-        width: 200,
+        width: 300,
         height: 50,
         borderWidth: 1,
         padding: 10,
-        borderRadius : 7,
+        borderRadius : 5,
         borderColor: "#808080",
         backgroundColor : "#FEFFFF",
         marginBottom : 20

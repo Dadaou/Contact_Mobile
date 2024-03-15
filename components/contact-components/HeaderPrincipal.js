@@ -1,9 +1,7 @@
-import uriLogo from '../../Utils/UriLogo'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { View, Image, Text, TouchableOpacity, StyleSheet, StatusBar } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
-import CustomMenu from '../Modal/CustomMenu'
 
 const HeaderPrincipal = ({ infoUtilisateur }) => {
 
@@ -11,7 +9,7 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
 
     return (
 
-        <SafeAreaView style={styles.header}>
+        <View style={styles.header}>
 
             <StatusBar backgroundColor="#005F9D" />
 
@@ -29,7 +27,7 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
                 </View>
 
                 <View>
-                    <Image source={{ uri: uriLogo.urlLogoContact }} style={styles.logo} />
+                    <Image source={require("../../assets/logo-contacts.png")} style={styles.logo} />
                 </View>
 
                 <View>
@@ -41,7 +39,7 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
             </View>
 
-        </SafeAreaView>
+        </View>
     )
 
     /*return (
@@ -80,6 +78,14 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
 
 const styles = StyleSheet.create({
 
+    
+    header: {
+        flexDirection: "row",
+        padding: 16,
+        alignItems: 'center',
+        backgroundColor: "#005F9D"
+    },
+
     logo: {
         width: 30,
         height: 25,
@@ -91,15 +97,6 @@ const styles = StyleSheet.create({
         height: 32,
         borderRadius: 100
     },
-
-
-    header: {
-        flexDirection: "row",
-        padding: 16,
-        alignItems: 'center',
-        backgroundColor: "#005F9D"
-    }
-
 
 })
 

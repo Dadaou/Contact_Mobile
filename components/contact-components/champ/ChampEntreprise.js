@@ -1,20 +1,7 @@
-import { useState, useEffect } from "react"
 import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from "react-native"
 
 const ChampEntreprise = ({paramEntreprise, onChangeEntreprise}) => {
-
-    const [entreprise, setEntreprise] = useState(paramEntreprise)
-
-    useEffect(() => {
-        setEntreprise(paramEntreprise)
-    }, [paramEntreprise])
-
-
-    const ecouterChangementValeur = (valeur) => {
-        setEntreprise(valeur)
-        onChangeEntreprise(valeur)
-    }
 
     return (
 
@@ -25,8 +12,8 @@ const ChampEntreprise = ({paramEntreprise, onChangeEntreprise}) => {
                 label = "Entreprise"
                 mode='outlined'
                 activeOutlineColor = "#005F9D"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={entreprise} />
+                onChangeText={(text) => onChangeEntreprise(text)}
+                value={paramEntreprise} />
     )
 
 }

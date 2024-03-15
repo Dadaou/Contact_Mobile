@@ -1,40 +1,39 @@
-import uriLogo from '../../Utils/UriLogo.js'
-import { View, Text, Image, StyleSheet, StatusBar, ScrollView } from "react-native"
-import FormulaireAuthentification from "../login-components/FormulaireAuthentification.js"
+import { View, Text, Image, StyleSheet, SafeAreaView } from "react-native"
+import FormulaireAuthentification from "../contact-components/champ/FormulaireAuthentification.js"
 
-
-const Login = () => {
-
-    const logo = [uriLogo.urlLogoAchat, uriLogo.urlLogoContact, uriLogo.urlLogoBulletin, uriLogo.urlTreso, uriLogo.urlTableur, uriLogo.urlTexteur, uriLogo.urlLogoMessagerie, uriLogo.urlLogoAgenda]
+const Login = ({onLogin}) => {
 
     return (
 
-        <ScrollView>
+            <SafeAreaView style={styles.container}>
 
-            <View style={styles.container}>
-
-                <View style={{ marginBottom: 10 }}>
+                <View>
 
                     <View>
-                        <Image source={{ uri: uriLogo.urlLogoManao }} style={styles.logoPrincipalManao} />
+                        <Image source={require("../../assets/manao.png")} style={styles.logoPrincipalManao} />
                         <Text style={styles.descriptionManao}>Plateforme logicielle pour l'organisation et la gestion d'entreprises</Text>
                     </View>
 
                     <View style={{ flexDirection: 'row' }}>
-                        {logo.map((url, index) => (
-                            <Image key={index} source={{ uri: url }} style={styles.logo} />
-                        ))}
+
+                        <Image source={require("../../assets/achat.png")} style={styles.logo} />
+                        <Image source={require("../../assets/logo-contacts.png")} style={styles.logo} />
+                        <Image source={require("../../assets/logo-bulletin.png")} style={styles.logo} />
+                        <Image source={require("../../assets/logo-texteur.png")} style={styles.logo} />
+                        <Image source={require("../../assets/tableur.png")} style={styles.logo} />
+                        <Image source={require("../../assets/logo-treso.png")} style={styles.logo} />
+                        <Image source={require("../../assets/logo-messagerie.png")} style={styles.logo} />
+                        <Image source={require("../../assets/agenda.png")} style={styles.logo} />
+
                     </View>
 
                 </View>
 
-                <FormulaireAuthentification />
+                <FormulaireAuthentification onLogin={onLogin}/>
 
                 <Text style={{ textAlign: 'center' }}>Manao© 2024</Text>
 
-            </View>
-
-        </ScrollView>
+            </SafeAreaView>
 
 
     );
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 70
     },
 
     descriptionManao: {

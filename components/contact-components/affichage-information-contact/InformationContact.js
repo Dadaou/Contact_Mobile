@@ -6,10 +6,10 @@ import * as SQLite from 'expo-sqlite'
 
 const  InformationContact = ({id}) => {
 
+    const requeteTableContact = "SELECT ctt_photo, ctt_prenom, ctt_nom FROM contact WHERE ctt_id = ?"
     const navigation = useNavigation()
     const db = SQLite.openDatabase('Contact.db')
-    const requeteTableContact = " SELECT ctt_photo, ctt_prenom, ctt_nom FROM contact WHERE ctt_id = ? "
-
+   
     const [contact, setContact] = useState([{ctt_photo : "", ctt_prenom : "", ctt_nom : ""}])
 
     useEffect(() => {

@@ -1,19 +1,7 @@
-import { useState, useEffect } from "react"
 import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from "react-native"
 
 const ChampService = ({paramServie, onChangeService}) => {
-
-    const [service, setService] = useState(paramServie)
-
-    useEffect(() => {
-        setService(paramServie)
-    }, [paramServie])
-
-    const ecouterChangementValeur = (valeur) => {
-        setService(valeur)
-        onChangeService(valeur)
-    }
 
     return (
 
@@ -23,8 +11,8 @@ const ChampService = ({paramServie, onChangeService}) => {
                 label = "Service"
                 mode='outlined'
                 activeOutlineColor = "#005F9D"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={service} />
+                onChangeText={(text) => onChangeService(text)}
+                value={paramServie} />
     )
 
 }

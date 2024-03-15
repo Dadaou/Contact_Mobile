@@ -15,9 +15,10 @@ const convertirEnArray = (chaine) => {
 
 const  InformationMail = ({id}) => {
 
+    const requeteTableMail = "SELECT GROUP_CONCAT(DISTINCT mail.ml_mail) AS ml_mail, GROUP_CONCAT(DISTINCT mail.ml_libelle) AS ml_libelle FROM mail WHERE ctt_id = ? GROUP BY ctt_id"
     const navigation = useNavigation()
     const db = SQLite.openDatabase('Contact.db')
-    const requeteTableMail = " SELECT GROUP_CONCAT(DISTINCT mail.ml_mail) AS ml_mail, GROUP_CONCAT(DISTINCT mail.ml_libelle) AS ml_libelle FROM mail WHERE ctt_id = ? GROUP BY ctt_id "
+
 
     const [mail, setMail] = useState([{ml_mail : '', ml_libelle : ''}])
 

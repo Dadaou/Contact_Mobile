@@ -4,13 +4,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"
 
 const ChampDate = ({paramDate, onChangeDate}) => {
 
-    const [date, setDate] = useState(paramDate)
     const [estVisible, setVisible] = useState(false)
-
-    useEffect(() => {
-        setDate(paramDate)
-    }, [paramDate])
-
 
     const afficherCalendrier = () => {
       setVisible(true)
@@ -20,9 +14,8 @@ const ChampDate = ({paramDate, onChangeDate}) => {
       setVisible(false)
     }
   
-    const handleConfirm = (date) => {
-      setDate(date.toLocaleDateString())
-      onChangeDate(date.toLocaleDateString())
+    const handleConfirm = (paramDate) => {
+      onChangeDate(paramDate.toLocaleDateString())
       cacherCalendrier()
     }
 
@@ -34,8 +27,8 @@ const ChampDate = ({paramDate, onChangeDate}) => {
                     <View style = {{ padding : 10}}>
                         <Image source={require('../../../assets/Calendrier.png')} style={{ width: 35, height: 30  }} />
                     </View>
-                    {date == '' ? (<Text style={{fontSize : 16, paddingTop : 13, color : '#808080'}}>Anniversaire</Text>) : 
-                                  (<Text style={{fontSize : 16, paddingTop : 13}}>{date}</Text>  )}
+                    {paramDate == '' ? (<Text style={{fontSize : 16, paddingTop : 13, color : '#808080'}}>Anniversaire</Text>) : 
+                                  (<Text style={{fontSize : 16, paddingTop : 13}}>{paramDate}</Text>  )}
                     
                 </TouchableOpacity>
 

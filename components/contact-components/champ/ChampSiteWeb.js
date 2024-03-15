@@ -1,19 +1,7 @@
-import { useState, useEffect } from "react"
 import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 
 const ChampSiteWeb = ({paramSiteWeb, onChangeSiteWeb}) => {
-
-    const [siteWeb, setSiteWeb] = useState(paramSiteWeb)
-
-    useEffect(() => {
-        setSiteWeb(paramSiteWeb)
-    }, [paramSiteWeb])
-
-    const ecouterChangementValeur = (valeur) => {
-        setSiteWeb(valeur)
-        onChangeSiteWeb(valeur)
-    }
 
     return (
 
@@ -23,8 +11,8 @@ const ChampSiteWeb = ({paramSiteWeb, onChangeSiteWeb}) => {
                 label = "Site web"
                 mode='outlined'
                 activeOutlineColor = "#005F9D"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={siteWeb} />
+                onChangeText={(text) => onChangeSiteWeb(text)}
+                value={paramSiteWeb} />
     )
 
 }

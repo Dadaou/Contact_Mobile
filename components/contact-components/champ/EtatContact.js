@@ -3,19 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
-  const [etat, setEtat] = useState(paramEtat)
-
-  useEffect(() => {
-    setEtat(paramEtat)
-  }, [paramEtat])
-
   const handleActif = () => {
-    setEtat(true)
     onChangeEtat(true)
   }
 
   const handleInactif = () => {
-    setEtat(false)
     onChangeEtat(false)
   }
 
@@ -30,18 +22,18 @@ const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
                 <TouchableOpacity
                     onPress={handleActif}
-                    style={etat ? styles.actif : styles.buton}>
+                    style={paramEtat ? styles.actif : styles.buton}>
 
-                    <Text style={etat ? styles.selectedText : styles.text}>Actif</Text>
+                    <Text style={paramEtat ? styles.selectedText : styles.text}>Actif</Text>
                 
                 </TouchableOpacity>
 
                 <TouchableOpacity
 
                     onPress={handleInactif}
-                    style={!etat ? styles.inactif : styles.buton}>
+                    style={!paramEtat ? styles.inactif : styles.buton}>
                     
-                    <Text style={!etat ? styles.selectedText : styles.text}>Inactif</Text>
+                    <Text style={!paramEtat ? styles.selectedText : styles.text}>Inactif</Text>
 
                 </TouchableOpacity>
 

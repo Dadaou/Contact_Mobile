@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Login from './InterfaceLogin'
@@ -5,20 +6,30 @@ import MenuCoulissant from './InterfaceMenuCoulissant'
 import DetailContact from './InterfaceDetailContact'
 import AjoutContact from './InterfaceAjoutContact'
 import ModificationContact from './InterfaceModificationContact'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const Stack = createNativeStackNavigator()
 
 const AppStack = () => {
 
-    getToken = async () => {
-        try {
-          const token = await AsyncStorage.getItem('Token');
-          if (token !== null) return true
-          else return false
-        } catch (error) {}
-    };
+    const [isLogin, setIsLogin] = useState(false)
 
-    const token = getToken()
+    const handleAuthentication = useCallback(() => {
+        setIsLogin(true)
+    }, [])
+  
+    useEffect(() => {
+  
+        (async () => {
+            try {
+                const token = await AsyncStorage.getItem('_token')
+                //console.log(token)
+                setIsLogin(token !== null && token !== undefined ? true : false)
+            } catch (error) {}
+        })()
+  
+    }, [])
 
     return (
 
@@ -26,7 +37,7 @@ const AppStack = () => {
 
             <Stack.Navigator screenOptions={{ headerShown: false }} >
 
-                {token ? (
+                { isLogin ? (
                     <>
                         <Stack.Screen name="Accueil" component={MenuCoulissant} />
                         <Stack.Screen name="AjoutContact" component={AjoutContact}/>
@@ -34,12 +45,18 @@ const AppStack = () => {
                         <Stack.Screen name="ModificationContact" component={ModificationContact}/>
                     </>
                 ) : (
-                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Login">
+                        {(props) => (
+                            <Login {...props} onLogin={handleAuthentication} />
+                        )}
+                    </Stack.Screen>
                 )}
                 
             </Stack.Navigator>
 
+
         </NavigationContainer>
+        
     )
 }
 

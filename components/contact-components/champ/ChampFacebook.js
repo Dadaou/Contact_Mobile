@@ -4,18 +4,6 @@ import { View, TextInput, StyleSheet, Image } from "react-native"
 const ChampFacebook = ({paramFacebook, onChangeFacebook}) => {
 
 
-    const [facebook, setFacebook] = useState(paramFacebook)
-
-    useEffect(() => {
-        setFacebook(paramFacebook)
-    }, [paramFacebook])
-
-
-    const ecouterChangementValeur = (valeur) => {
-        setFacebook(valeur)
-        onChangeFacebook(valeur)
-    }
-
     return (
 
         <View style = {styles.input}>
@@ -26,8 +14,8 @@ const ChampFacebook = ({paramFacebook, onChangeFacebook}) => {
 
                 style={{fontSize : 16, paddingLeft : 10}}
                 placeholder="Facebook"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={facebook} />
+                onChangeText={(text) =>onChangeFacebook(text)}
+                value={paramFacebook} />
 
         </View>
 

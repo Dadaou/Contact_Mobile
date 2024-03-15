@@ -1,18 +1,6 @@
-import { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet, Image } from "react-native"
 
 const ChampSkype = ({paramSkype, onChangeSkype}) => {
-
-    const [skype, setSkype] = useState(paramSkype)
-
-    useEffect(() => {
-        setSkype(paramSkype)
-    }, [paramSkype])
-
-    const ecouterChangementValeur = (valeur) => {
-        setSkype(valeur)
-        onChangeSkype(valeur)
-    }
 
     return (
 
@@ -23,8 +11,8 @@ const ChampSkype = ({paramSkype, onChangeSkype}) => {
 
                 style={{fontSize : 16, paddingLeft : 10}}
                 placeholder="Skype"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={skype} />
+                onChangeText={(text) => onChangeSkype(text)}
+                value={paramSkype} />
 
         </View>
 

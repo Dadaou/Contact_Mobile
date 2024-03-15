@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react'
 import * as ImagePicker from 'expo-image-picker'
 import { View, StyleSheet,  TouchableOpacity, Image } from "react-native"
+import Capture from '../../Modal/Capture'
+import { useState, useCallback } from 'react'
 
 const ChampPhoto = ({paramPhoto, onChangePhoto}) => {
+
+   const [isVisible, setIsVisible] = useState(false)
   
-    const [photo, setPhoto] = useState(paramPhoto)
-
-    useEffect(() => {
-      setPhoto(paramPhoto)
-    }, [paramPhoto])
-
-
-
-    const pickImage = async () => {
+    const pickImage = useCallback(async () => {
       
+        setIsVisible(false)
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
@@ -21,12 +17,26 @@ const ChampPhoto = ({paramPhoto, onChangePhoto}) => {
           quality: 1
         })
     
-    
         if (!result.canceled) {
-          setPhoto(result.assets[0].uri)
           onChangePhoto(result.assets[0].uri)
         }
-    }
+    }, [])
+
+    const launchCamera = useCallback(async () => {
+
+        setIsVisible(false)
+        let options = {
+          storageOptions: {
+            skipBackup: true,
+            path: 'images',
+          },
+        }
+        
+        let result = await ImagePicker.launchCameraAsync(options);
+        if (!result.canceled) {
+          onChangePhoto(result.assets[0].uri)
+        }
+    }, [])
 
     return (
 
@@ -35,20 +45,21 @@ const ChampPhoto = ({paramPhoto, onChangePhoto}) => {
 
             <View>
 
-                {photo?  
-
+                {paramPhoto ?  
         
-                        <TouchableOpacity onPress={pickImage}>
-                            <Image source={{ uri: photo }} style={{ borderRadius : 100, width: 150, height: 150  }} /> 
+                        <TouchableOpacity onPress={() => setIsVisible(true)}>
+                            <Image source={{ uri: paramPhoto }} style={{ borderRadius : 100, width: 150, height: 150  }} /> 
                         </TouchableOpacity> :
                         
-                        <TouchableOpacity onPress={pickImage} style = {styles.containerImage}>
+                        <TouchableOpacity onPress={() => setIsVisible(true)} style = {styles.containerImage}>
                           <Image source={require('../../../assets/gallery.png')} style={{width: 50, height: 50 }}/>
                         </TouchableOpacity>
      
                 }
 
             </View>
+
+            <Capture isVisible={isVisible} onClose={setIsVisible} launchCamera = {launchCamera} openGalerie = {pickImage}/>
 
         </View>
         
@@ -70,7 +81,6 @@ const styles = StyleSheet.create({
             borderRadius : 100,
             borderColor : "#008E97",
             backgroundColor : "#008E97"
-      
   }
   
   

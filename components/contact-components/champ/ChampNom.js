@@ -1,30 +1,17 @@
-import { useState, useEffect } from "react"
 import { TextInput } from 'react-native-paper'
-import { StyleSheet, View } from "react-native"
+import { StyleSheet } from "react-native"
 
 const ChampNom = ({paramNom, onChangeNom}) => {
 
-    const [nom, setNom] = useState(paramNom)
-
-    useEffect(() => {
-        setNom(paramNom)
-    }, [paramNom])
-
-    const ecouterChangementValeur = (valeur) => {
-        setNom(valeur)
-        onChangeNom(valeur)
-    }
-
     return (
-
 
             <TextInput
                 style={styles.input}
                 label = "Nom"
                 mode='outlined'
                 activeOutlineColor = "#005F9D"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={nom} />
+                onChangeText={(text) => onChangeNom(text)}
+                value={paramNom} />
     )
 
 }

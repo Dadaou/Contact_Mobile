@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
 import { TextInput } from 'react-native-paper'
@@ -8,55 +8,46 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 const ChampEmail = ({paramMail, onChangeMail}) => {
 
     const libelle = ['Professionel', 'Personnel', 'Entreprise']
-    const [listMail, setListMail] = useState(paramMail)
     const [libelleVisible, setLibelleVisible] = useState(true)
-
-    useEffect(() => {
-        setListMail(paramMail)
-    }, [paramMail])
 
     /*useEffect(() => {
 
-        listMail.forEach((item, index) => {
+        paramMail.forEach((item, index) => {
 
           const isChampEmailVide = item.ml_mail === ""
           !isChampEmailVide ? setLibelleVisible(true) : setLibelleVisible(false)
           //console.log(`ml_mail de l'élément ${index} est vide !`)
         })
-    }, [listMail])*/
+    }, [paramMail])*/
 
 
     const changerMail = (mail, index) => {
-      const list = [...listMail]
+      const list = [...paramMail]
       list[index].ml_mail = mail
-      setListMail(list)
       onChangeMail(list)
     }
 
     const changerLibelle = (libelle, index) => {
-        const list = [...listMail]
+        const list = [...paramMail]
         list[index].ml_libelle = libelle
-        setListMail(list)
         onChangeMail(list)
     }
   
     const supprimerChampMail = (index) => {
-      const list = [...listMail]
+      const list = [...paramMail]
       list.splice(index, 1)
-      setListMail(list)
       onChangeMail(list)
     }
   
     const ajouterChampMail = () => {
-      setListMail([...listMail, { ml_libelle : "", ml_mail : "" }])
-      onChangeMail([...listMail, { ml_libelle : "", ml_mail : "" }])
+      onChangeMail([...paramMail, { ml_libelle : "", ml_mail : "" }])
     }
   
     return (
      
         <>
 
-            {listMail.map((item, index) => (
+            {paramMail.map((item, index) => (
 
                 <View key={index}>
 
@@ -71,7 +62,7 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
                             onChangeText={(text) => changerMail(text, index)}
                             value={item.ml_mail} />
 
-                        {listMail.length !== 1 && (
+                        {paramMail.length !== 1 && (
                             <TouchableOpacity onPress={() => supprimerChampMail(index)} >
                                 <Feather name="x-circle" size={24} color="#D70040" />
                             </TouchableOpacity>
@@ -100,7 +91,7 @@ const ChampEmail = ({paramMail, onChangeMail}) => {
                     }
 
   
-                    {listMail.length - 1 === index && listMail.length < 4 && (
+                    {paramMail.length - 1 === index && paramMail.length < 4 && (
 
                         <TouchableOpacity onPress={ajouterChampMail} style={{marginLeft : 13, marginBottom : 15}}>
                             <Feather name="plus-circle" size={30} color="#708090" />
@@ -127,7 +118,7 @@ const styles = StyleSheet.create({
 
     dropDownStyle: {
         
-        width: 200,
+        width: 300,
         height: 50,
         borderWidth: 1,
         padding: 10,

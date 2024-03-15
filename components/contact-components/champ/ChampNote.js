@@ -1,24 +1,9 @@
-import { useState, useEffect } from "react";
 import { TextInput } from 'react-native-paper'
 import {  StyleSheet } from "react-native"
 
 const ChampNote = ({paramNote, onChangeNote}) => {
 
-    const [note, setNote] = useState(paramNote)
-
-    useEffect(() => {
-        setNote(paramNote)
-    }, [paramNote])
-
-
-    const ecouterChangementValeur = (valeur) => {
-        setNote(valeur)
-        onChangeNote(valeur)
-    }
-
     return (
-
-
 
             <TextInput
                 style={styles.input}
@@ -27,8 +12,8 @@ const ChampNote = ({paramNote, onChangeNote}) => {
                 activeOutlineColor = "#005F9D"
                 multiline={true}
                 numberOfLines={8} 
-                onChangeText={(text) => ecouterChangementValeur(text)} 
-                value={note} />           
+                onChangeText={(text) => onChangeNote(text)} 
+                value={paramNote} />           
     )
 
 }

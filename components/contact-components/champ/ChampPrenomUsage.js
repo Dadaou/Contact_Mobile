@@ -1,19 +1,7 @@
-import { useState, useEffect } from "react"
 import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 
 const ChampPrenomUsage = ({paramPrenomUsage, onChangePrenomUsage}) => {
-
-    const [prenomUsage, setPrenomUsage] = useState(paramPrenomUsage)
-
-    useEffect(() => {
-        setPrenomUsage(paramPrenomUsage)
-    }, [paramPrenomUsage])
-
-    const ecouterChangementValeur = (valeur) => {
-        setPrenomUsage(valeur)
-        onChangePrenomUsage(valeur)
-    }
 
     return (
 
@@ -23,8 +11,8 @@ const ChampPrenomUsage = ({paramPrenomUsage, onChangePrenomUsage}) => {
                 label = "Prénom d'usage"
                 mode='outlined'
                 activeOutlineColor = "#005F9D"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={prenomUsage} />
+                onChangeText={(text) => onChangePrenomUsage(text)}
+                value={paramPrenomUsage} />
 
     )
 

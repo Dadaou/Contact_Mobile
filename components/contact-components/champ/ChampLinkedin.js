@@ -3,18 +3,6 @@ import { View, TextInput, StyleSheet, Image } from "react-native"
 
 const ChampLinkedin = ({paramLinkedin, onChangeLinkedin}) => {
 
-
-    const [linkedin, setLinkedin] = useState(paramLinkedin)
-
-    useEffect(() => {
-        setLinkedin(paramLinkedin)
-    }, [paramLinkedin])
-
-    const ecouterChangementValeur = (valeur) => {
-        setLinkedin(valeur)
-        onChangeLinkedin(valeur)
-    }
-
     return (
 
         <View style = {styles.input}>
@@ -25,8 +13,8 @@ const ChampLinkedin = ({paramLinkedin, onChangeLinkedin}) => {
 
                 style={{fontSize : 16, paddingLeft : 10}}
                 placeholder="Linkedin"
-                onChangeText={(text) => ecouterChangementValeur(text)}
-                value={linkedin} />
+                onChangeText={(text) => onChangeLinkedin(text)}
+                value={paramLinkedin} />
 
         </View>
 

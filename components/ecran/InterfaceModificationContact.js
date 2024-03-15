@@ -28,6 +28,9 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 
 const ModificationContact = ({ navigation, route }) => {
 
+    const reqInsertionTelephone = "INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)"
+    const reqInsertionMail = "INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)"
+    const reqInsertionAdresse = "INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)"
 
     const { ctt_id } = route.params
     const db = SQLite.openDatabase('Contact.db')
@@ -60,7 +63,6 @@ const ModificationContact = ({ navigation, route }) => {
 
             tx.executeSql(requetes.GetContact, [ctt_id],
                 (_, resultSet) => {
-                    //console.log(resultSet.rows._array)
                     setPhoto(resultSet.rows._array[0].ctt_photo)
                     setPrenom(resultSet.rows._array[0].ctt_prenom)
                     setNom(resultSet.rows._array[0].ctt_nom)
@@ -136,8 +138,7 @@ const ModificationContact = ({ navigation, route }) => {
                         )
 
                         telephone.forEach((item) => {
-                            tx.executeSql("INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)",
-                                [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+                            tx.executeSql(reqInsertionTelephone, [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
                                 (txObj, resultSet) => {
                                     console.log('modification téléphone réussi')
                                 },
@@ -149,20 +150,18 @@ const ModificationContact = ({ navigation, route }) => {
                         })
 
                         mail.forEach((item) => {
-                            tx.executeSql("INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)",
-                                [item.ml_mail, item.ml_libelle, ctt_id]
-                            )
+                            tx.executeSql(reqInsertionMail, [item.ml_mail, item.ml_libelle, ctt_id])
                         })
 
                         adresse.forEach((item) => {
-                            tx.executeSql("INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                            tx.executeSql(reqInsertionAdresse,
                                 [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
                             )
                         })
                     }
 
                     catch (error) {
-                        console.error('Erreur lors de l\'exécution des requêtes d\'insertion:', error)
+                        console.error("Erreur lors de l'exécution des requêtes d'insertion:", error)
                         throw error
                     }
                 })
@@ -171,7 +170,7 @@ const ModificationContact = ({ navigation, route }) => {
             }
 
             catch (error) {
-                console.error('Une erreur est survenue lors de la transaction:', error)
+                console.error("Une erreur est survenue lors de la transaction:", error)
             }
         }
 
