@@ -1,11 +1,12 @@
 import requetes from '../../Utils/RequeteSql'
+import { store } from '../redux/dataStore'
+import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/dataAction'
 import { useState } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Octicons } from '@expo/vector-icons'
 
-import Separateur from '../contact-components/Separateur'
 import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
 import ChampNom from '../contact-components/champ/ChampNom'
@@ -100,34 +101,76 @@ const AjoutContact = ({ navigation }) => {
                 db.transaction((tx) => {
 
                     tx.executeSql(requetes.InsererContact,
-                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat]
-                        /*,(txObj, resultSet) => {
-                            console.log('insertion contact réussi')
+                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
+                        (txObj, resultSet) => {
+                            resultSet.rowsAffected !== 0 && store.dispatch(addContact({photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat}))
                         },
                         (txObj, error) => {
                             console.log('contact error', error)
                             throw error
-                        }*/
+                        }
                     )
 
                     telephone.forEach((item) => {
-
                         tx.executeSql(requetes.InsererTelephone,
-                            [item.tel_numero, item.tel_code_pays, item.tel_libelle]
+                            [item.tel_numero, item.tel_code_pays, item.tel_libelle],
+
+                            (txObj, resultSet) => {
+                                resultSet.rowsAffected !== 0 && store.dispatch(addTelephone({
+                                    tel_numero: item.tel_numero,
+                                    tel_code_pays: item.tel_code_pays,
+                                    tel_libelle: item.tel_libelle
+                                }))
+                            },
+
+                            (txObj, error) => {
+                                console.log('telephone error', error)
+                                throw error
+                            }
                         )
                     })
 
                     mail.forEach((item) => {
 
                         tx.executeSql(requetes.InsererMail,
-                            [item.ml_mail, item.ml_libelle]
-                        );
-                    });
+                            [item.ml_mail, item.ml_libelle],
+
+                            (txObj, resultSet) => {
+                                resultSet.rowsAffected !== 0 && store.dispatch(addMail({
+                                    ml_mail: item.ml_mail,
+                                    ml_libelle: item.ml_libelle,
+                                }))
+                            },
+                            
+                            (txObj, error) => {
+                                console.log('mail error', error)
+                                throw error
+                            }
+                        )
+                    })
 
                     adresse.forEach((item) => {
-
                         tx.executeSql(requetes.InsererAdresse,
-                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle]
+                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
+                            
+                            (txObj, resultSet) => {
+                                if (resultSet.rowsAffected !== 0) {
+                                    store.dispatch(addAdresse({
+                                        addr_ligne1: item.addr_ligne1,
+                                        addr_ligne2: item.addr_ligne2,
+                                        addr_ligne3: item.addr_ligne3,
+                                        addr_cp: item.addr_cp,
+                                        addr_bp: item.addr_bp,
+                                        addr_pays: item.addr_pays,
+                                        addr_ville: item.addr_ville,
+                                        addr_libelle: item.addr_libelle
+                                    }))
+                                }
+                            },
+                            (txObj, error) => {
+                                console.log('adresse error', error);
+                                throw error;
+                            }
                         )
                     })
 
@@ -139,6 +182,8 @@ const AjoutContact = ({ navigation }) => {
                 console.error('Une erreur est survenue lors de la transaction:', error)
             }
         }
+
+        store.subscribe(() => console.log(store.getState().listTelephone))
 
     }
 
