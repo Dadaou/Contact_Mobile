@@ -1,5 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from "redux"
-import dataReducer from "./reducer/dataReducer"
-import { thunk } from 'redux-thunk'
+import { thunk } from "redux-thunk"
+import addDataReducer from "./reducer/addDataReducer"
+import updateDataReducer from "./reducer/updateDataReducer"
 
-export const store = createStore(dataReducer, applyMiddleware(thunk))
+
+const rootReducer = combineReducers({ addDataReducer, updateDataReducer })
+export const store = createStore(rootReducer, applyMiddleware(thunk))

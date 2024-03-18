@@ -2,7 +2,7 @@ import requetes from '../../Utils/RequeteSql'
 import { dbLocalName } from '../../Utils/constant'
 import { genererID } from '../../Utils/utils'
 import { store } from '../redux/dataStore'
-import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/dataAction'
+import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/addDataAction'
 import { useState } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
@@ -83,7 +83,7 @@ const AjoutContact = ({ navigation }) => {
         navigation.navigate('Accueil', { showModal: showModal })
     }
 
- 
+
     const saveContact = () => {
 
         return new Promise((resolve, reject) => {
@@ -102,12 +102,14 @@ const AjoutContact = ({ navigation }) => {
 
                     (txObj, resultSet) => {
 
-                        const lastIdRowContactInserer = resultSet.insertId
-                        if (resultSet.rowsAffected !== 0 && resultSet.rowsAffected !==  undefined) {
-
-                            resolve(lastIdRowContactInserer)
+                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                            store.dispatch(addContact({
+                                idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
+                                note, service, siteWeb, twitter, linkedin, facebook, skype, etat
+                            }))
+                            resolve(resultSet.insertId)
                         }
-                        
+
                     },
                     (txObj, error) => {
                         console.log('transaction error', error)
@@ -125,7 +127,7 @@ const AjoutContact = ({ navigation }) => {
             db.transaction((tx) => {
 
                 tx.executeSql(
-                    "SELECT ctt_id FROM contact WHERE rowid = ?", 
+                    "SELECT ctt_id FROM contact WHERE rowid = ?",
                     [lastRowId],
                     (txObj, results) => {
                         resolve(results.rows._array[0].ctt_id)
@@ -149,11 +151,14 @@ const AjoutContact = ({ navigation }) => {
                     [item.tel_numero, item.tel_code_pays, item.tel_libelle, idContact],
 
                     (txObj, resultSet) => {
-                        resultSet.rowsAffected !== 0 && store.dispatch(addTelephone({
-                            tel_numero: item.tel_numero,
-                            tel_code_pays: item.tel_code_pays,
-                            tel_libelle: item.tel_libelle
-                        }))
+
+                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) { 
+                            store.dispatch(addTelephone({
+                                tel_numero: item.tel_numero,
+                                tel_code_pays: item.tel_code_pays,
+                                tel_libelle: item.tel_libelle
+                            }))
+                        }
                     },
 
                     (txObj, error) => {
@@ -176,12 +181,15 @@ const AjoutContact = ({ navigation }) => {
                     [item.ml_mail, item.ml_libelle, idContact],
 
                     (txObj, resultSet) => {
-                        resultSet.rowsAffected !== 0 && store.dispatch(addMail({
-                            ml_mail: item.ml_mail,
-                            ml_libelle: item.ml_libelle,
-                        }))
+
+                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                            store.dispatch(addMail({
+                                ml_mail: item.ml_mail,
+                                ml_libelle: item.ml_libelle,
+                            }))
+                        }
                     },
-                    
+
                     (txObj, error) => {
                         console.log('mail error', error)
                         throw error
@@ -199,9 +207,9 @@ const AjoutContact = ({ navigation }) => {
             adresse.forEach((item) => {
                 tx.executeSql(requetes.InsererAdresse,
                     [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact],
-                    
+
                     (txObj, resultSet) => {
-                        if (resultSet.rowsAffected !== 0) {
+                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                             store.dispatch(addAdresse({
                                 addr_ligne1: item.addr_ligne1,
                                 addr_ligne2: item.addr_ligne2,
@@ -225,7 +233,7 @@ const AjoutContact = ({ navigation }) => {
 
     const saveInformation = () => {
 
-  
+
         if (nom == '' || prenom == '') {
 
             Alert.alert(
@@ -241,21 +249,21 @@ const AjoutContact = ({ navigation }) => {
 
             try {
 
-                    saveContact().then((lastId) => {
+                saveContact().then((lastId) => {
 
-                        getLastContactId(lastId)
-                            .then((idLastContact) => {
-                                saveTelephone(idLastContact)
-                                saveMail(idLastContact)
-                                saveAdresse(idLastContact)
-                            })
-                            .catch((error) => {
-                                console.log(error)
-                            })
-                    })
-                
-                    redirection(true)
-               
+                    getLastContactId(lastId)
+                        .then((idLastContact) => {
+                            saveTelephone(idLastContact)
+                            saveMail(idLastContact)
+                            saveAdresse(idLastContact)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                })
+
+                redirection(true)
+
             }
 
             catch (error) {
@@ -264,7 +272,7 @@ const AjoutContact = ({ navigation }) => {
             }
         }
 
-        //store.subscribe(() => console.log(store.getState().listTelephone))
+        store.subscribe(() => console.log(store.getState().listTelephone))
 
     }
 

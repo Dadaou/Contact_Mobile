@@ -10,7 +10,7 @@ import { View, TouchableOpacity,  StyleSheet } from 'react-native'
 
 const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
-
+    //console.log(paramTelephone)
     const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
 
     const changerTelephone = (numeroTelephone, index) => {

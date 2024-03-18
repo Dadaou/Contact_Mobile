@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native"
+import { store } from '../redux/dataStore'
+import { updateContact, updateTelephone, updateMail, updateAdresse } from '../redux/action/updateDataAction'
 import { Octicons } from '@expo/vector-icons'
 
 import Separateur from '../contact-components/Separateur'
@@ -30,10 +32,6 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const ModificationContact = ({ navigation, route }) => {
 
     const { ctt_id } = route.params
-
-    const reqInsertionTelephone = "INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)"
-    const reqInsertionMail = "INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)"
-    const reqInsertionAdresse = "INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)"
 
     const db = SQLite.openDatabase(dbLocalName)
 
@@ -136,13 +134,37 @@ const ModificationContact = ({ navigation, route }) => {
                         tx.executeSql(requetes.SupprAdresse, [ctt_id])
 
                         tx.executeSql(requetes.MajContact,
-                            [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, twitter, linkedin, facebook, skype, note, etat, ctt_id]
+                            [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, 
+                              twitter, linkedin, facebook, skype, note, etat, ctt_id],
+
+                            (txObj, resultSet) => {
+
+                                if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                    store.dispatch(updateContact({
+                                        photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb, 
+                                        twitter, linkedin, facebook, skype, note, etat, ctt_id
+                                    }))
+                                }
+        
+                            },
+                            (txObj, error) => {
+                                console.log('transaction error', error)
+                            }
                         )
 
                         telephone.forEach((item) => {
-                            tx.executeSql(reqInsertionTelephone, [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+                            tx.executeSql(requetes.InsererTelephone, 
+                                [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+
                                 (txObj, resultSet) => {
-                                    console.log('modification téléphone réussi')
+                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) { 
+                                        store.dispatch(updateTelephone({
+                                            ctt_id : ctt_id,
+                                            tel_numero: item.tel_numero,
+                                            tel_code_pays: item.tel_code_pays,
+                                            tel_libelle: item.tel_libelle
+                                        }))
+                                    }
                                 },
                                 (txObj, error) => {
                                     console.log('telephone error ', error)
@@ -152,12 +174,52 @@ const ModificationContact = ({ navigation, route }) => {
                         })
 
                         mail.forEach((item) => {
-                            tx.executeSql(reqInsertionMail, [item.ml_mail, item.ml_libelle, ctt_id])
+                            tx.executeSql(requetes.InsererMail, 
+                                [item.ml_mail, item.ml_libelle, ctt_id],
+
+                                (txObj, resultSet) => {
+                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) { 
+                                        store.dispatch(updateMail({
+                                            ctt_id : ctt_id,
+                                            ml_mail: item.ml_mail,
+                                            ml_libelle: item.ml_libelle
+                                        }))
+                                    }
+                                },
+
+                                (txObj, error) => {
+                                    console.log('mail error ', error)
+                                    throw error
+                                }
+                            )
                         })
 
                         adresse.forEach((item) => {
-                            tx.executeSql(reqInsertionAdresse,
-                                [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id]
+                            tx.executeSql(requetes.InsererAdresse,
+                                [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, 
+                                item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id],
+                                
+                                (txObj, resultSet) => {
+                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) { 
+                                        store.dispatch(updateAdresse({
+                                            ctt_id : ctt_id,
+                                            addr_ligne1: item.addr_ligne1,
+                                            addr_ligne2: item.addr_ligne2,
+                                            addr_ligne3: item.addr_ligne3,
+                                            addr_cp: item.addr_cp,
+                                            addr_bp: item.addr_bp,
+                                            addr_pays: item.addr_pays,
+                                            addr_ville: item.addr_ville,
+                                            addr_libelle: item.addr_libelle
+                                        }))
+                                    }
+                                },
+
+                                (txObj, error) => {
+                                    console.log('adresse error ', error)
+                                    throw error
+                                }
+
                             )
                         })
                     }
@@ -174,6 +236,8 @@ const ModificationContact = ({ navigation, route }) => {
             catch (error) {
                 console.error("Une erreur est survenue lors de la transaction:", error)
             }
+
+            store.subscribe(() => console.log(store.getState().updateDataReducer.listUpdatedTelephone))
         }
 
     }

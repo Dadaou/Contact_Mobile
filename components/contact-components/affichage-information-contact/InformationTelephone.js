@@ -20,8 +20,8 @@ const InformationTelephone = ({ id }) => {
     const navigation = useNavigation()
     const db = SQLite.openDatabase('Contact.db')
 
-    const requeteTableTelephone = " SELECT GROUP_CONCAT(DISTINCT telephone.tel_numero) AS tel_numero, GROUP_CONCAT(DISTINCT telephone.tel_libelle) AS tel_libelle, GROUP_CONCAT(DISTINCT telephone.tel_code_pays) AS tel_code_pays FROM telephone WHERE ctt_id = ? GROUP BY ctt_id"
-
+    //const requeteTableTelephone = " SELECT GROUP_CONCAT(DISTINCT telephone.tel_numero) AS tel_numero, GROUP_CONCAT(DISTINCT telephone.tel_libelle) AS tel_libelle, GROUP_CONCAT(DISTINCT telephone.tel_code_pays) AS tel_code_pays FROM telephone WHERE ctt_id = ? GROUP BY ctt_id"
+    const requeteTableTelephone = " SELECT tel_numero, tel_libelle, tel_code_pays FROM telephone WHERE ctt_id = ? "
     const [telephone, setTelephone] = useState([{ tel_code_pays: "", tel_numero: "", tel_libelle: "" }])
 
 
@@ -33,7 +33,6 @@ const InformationTelephone = ({ id }) => {
 
                 tx.executeSql(requeteTableTelephone, [id],
                     (_, resultSet) => {
-                        //console.log('telephone table : ', resultSet.rows._array)
                         setTelephone(resultSet.rows._array)
                     },
                     (_, error) => console.log(error)
@@ -67,7 +66,7 @@ const InformationTelephone = ({ id }) => {
 
             ) : (
 
-                convertirEnArray(telephone[0].tel_numero).map((numero, index) => (
+                telephone.map((item, index) => (
 
                     <View key={index} style={{ flexDirection: "row", alignItems: "center", marginBottom: 25 }}>
 
@@ -78,13 +77,13 @@ const InformationTelephone = ({ id }) => {
 
                         <CountryFlag
                             isoCode={
-                                `${getIsoCode(convertirEnArray(telephone[0].tel_code_pays)[index]) !== null &&
-                                getIsoCode(convertirEnArray(telephone[0].tel_code_pays)[index]).toLowerCase()}`
+                                `${getIsoCode(item.tel_code_pays) !== null &&
+                                    getIsoCode(item.tel_code_pays).toLowerCase()}`
                             }
                             size={20}
                         />
 
-                        <Text style={{ fontSize: 18, marginLeft: 10 }}>{`+${convertirEnArray(telephone[0].tel_code_pays)[index]}${numero}`}</Text>
+                        <Text style={{ fontSize: 18, marginLeft: 10 }}>{`+${item.tel_code_pays}${item.tel_numero}`}</Text>
 
                     </View>
 
