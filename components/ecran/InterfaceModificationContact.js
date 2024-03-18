@@ -1,4 +1,5 @@
 import requetes from '../../Utils/RequeteSql'
+import { dbLocalName } from '../../Utils/constant'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -28,12 +29,13 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 
 const ModificationContact = ({ navigation, route }) => {
 
+    const { ctt_id } = route.params
+
     const reqInsertionTelephone = "INSERT INTO telephone (tel_numero, tel_code_pays, tel_libelle, ctt_id) VALUES (?,?,?,?)"
     const reqInsertionMail = "INSERT INTO mail (ml_mail, ml_libelle, ctt_id) VALUES (?,?,?)"
     const reqInsertionAdresse = "INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)"
 
-    const { ctt_id } = route.params
-    const db = SQLite.openDatabase('Contact.db')
+    const db = SQLite.openDatabase(dbLocalName)
 
     const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState('')

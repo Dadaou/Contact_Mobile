@@ -1,4 +1,6 @@
 import requetes from '../../Utils/RequeteSql'
+import { dbLocalName } from '../../Utils/constant'
+import { genererID } from '../../Utils/utils'
 import { store } from '../redux/dataStore'
 import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/dataAction'
 import { useState } from 'react'
@@ -6,6 +8,7 @@ import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Octicons } from '@expo/vector-icons'
+import SpinnerModal from '../Modal/Spinner'
 
 import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
@@ -30,8 +33,9 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 
 const AjoutContact = ({ navigation }) => {
 
-    const db = SQLite.openDatabase('Contact.db')
+    const db = SQLite.openDatabase(dbLocalName)
 
+    const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState('')
     const [prenom, setPrenom] = useState('')
@@ -79,10 +83,149 @@ const AjoutContact = ({ navigation }) => {
         navigation.navigate('Accueil', { showModal: showModal })
     }
 
+ 
+    const saveContact = () => {
 
+        return new Promise((resolve, reject) => {
 
-    const enregistrerContact = () => {
+            db.transaction((tx) => {
 
+                const idContact = genererID()
+
+                tx.executeSql(
+
+                    requetes.InsererContact,
+                    [
+                        idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat
+                    ],
+
+                    (txObj, resultSet) => {
+
+                        const lastIdRowContactInserer = resultSet.insertId
+                        if (resultSet.rowsAffected !== 0 && resultSet.rowsAffected !==  undefined) {
+
+                            resolve(lastIdRowContactInserer)
+                        }
+                        
+                    },
+                    (txObj, error) => {
+                        console.log('transaction error', error)
+                        reject(error)
+                    }
+                )
+            })
+        })
+    }
+
+    const getLastContactId = (lastRowId) => {
+
+        return new Promise((resolve, reject) => {
+
+            db.transaction((tx) => {
+
+                tx.executeSql(
+                    "SELECT ctt_id FROM contact WHERE rowid = ?", 
+                    [lastRowId],
+                    (txObj, results) => {
+                        resolve(results.rows._array[0].ctt_id)
+                    },
+                    (txObj, error) => {
+                        console.log('transaction error', error)
+                        reject(error)
+                    }
+                )
+            })
+        })
+
+    }
+
+    const saveTelephone = (idContact) => {
+
+        db.transaction((tx) => {
+
+            telephone.forEach((item) => {
+                tx.executeSql(requetes.InsererTelephone,
+                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, idContact],
+
+                    (txObj, resultSet) => {
+                        resultSet.rowsAffected !== 0 && store.dispatch(addTelephone({
+                            tel_numero: item.tel_numero,
+                            tel_code_pays: item.tel_code_pays,
+                            tel_libelle: item.tel_libelle
+                        }))
+                    },
+
+                    (txObj, error) => {
+                        console.log('telephone error', error)
+                        throw error
+                    }
+                )
+            })
+        })
+
+    }
+
+    const saveMail = (idContact) => {
+
+        db.transaction((tx) => {
+
+            mail.forEach((item) => {
+
+                tx.executeSql(requetes.InsererMail,
+                    [item.ml_mail, item.ml_libelle, idContact],
+
+                    (txObj, resultSet) => {
+                        resultSet.rowsAffected !== 0 && store.dispatch(addMail({
+                            ml_mail: item.ml_mail,
+                            ml_libelle: item.ml_libelle,
+                        }))
+                    },
+                    
+                    (txObj, error) => {
+                        console.log('mail error', error)
+                        throw error
+                    }
+                )
+            })
+
+        })
+    }
+
+    const saveAdresse = (idContact) => {
+
+        db.transaction((tx) => {
+
+            adresse.forEach((item) => {
+                tx.executeSql(requetes.InsererAdresse,
+                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact],
+                    
+                    (txObj, resultSet) => {
+                        if (resultSet.rowsAffected !== 0) {
+                            store.dispatch(addAdresse({
+                                addr_ligne1: item.addr_ligne1,
+                                addr_ligne2: item.addr_ligne2,
+                                addr_ligne3: item.addr_ligne3,
+                                addr_cp: item.addr_cp,
+                                addr_bp: item.addr_bp,
+                                addr_pays: item.addr_pays,
+                                addr_ville: item.addr_ville,
+                                addr_libelle: item.addr_libelle
+                            }))
+                        }
+                    },
+                    (txObj, error) => {
+                        console.log('adresse error', error);
+                        throw error;
+                    }
+                )
+            })
+        })
+    }
+
+    const saveInformation = () => {
+
+  
         if (nom == '' || prenom == '') {
 
             Alert.alert(
@@ -98,92 +241,30 @@ const AjoutContact = ({ navigation }) => {
 
             try {
 
-                db.transaction((tx) => {
+                    saveContact().then((lastId) => {
 
-                    tx.executeSql(requetes.InsererContact,
-                        [photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat],
-                        (txObj, resultSet) => {
-                            resultSet.rowsAffected !== 0 && store.dispatch(addContact({photo, prenom, nom, prenomUsage, entreprise, fonction, date, note, service, siteWeb, twitter, linkedin, facebook, skype, etat}))
-                        },
-                        (txObj, error) => {
-                            console.log('contact error', error)
-                            throw error
-                        }
-                    )
-
-                    telephone.forEach((item) => {
-                        tx.executeSql(requetes.InsererTelephone,
-                            [item.tel_numero, item.tel_code_pays, item.tel_libelle],
-
-                            (txObj, resultSet) => {
-                                resultSet.rowsAffected !== 0 && store.dispatch(addTelephone({
-                                    tel_numero: item.tel_numero,
-                                    tel_code_pays: item.tel_code_pays,
-                                    tel_libelle: item.tel_libelle
-                                }))
-                            },
-
-                            (txObj, error) => {
-                                console.log('telephone error', error)
-                                throw error
-                            }
-                        )
+                        getLastContactId(lastId)
+                            .then((idLastContact) => {
+                                saveTelephone(idLastContact)
+                                saveMail(idLastContact)
+                                saveAdresse(idLastContact)
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
                     })
-
-                    mail.forEach((item) => {
-
-                        tx.executeSql(requetes.InsererMail,
-                            [item.ml_mail, item.ml_libelle],
-
-                            (txObj, resultSet) => {
-                                resultSet.rowsAffected !== 0 && store.dispatch(addMail({
-                                    ml_mail: item.ml_mail,
-                                    ml_libelle: item.ml_libelle,
-                                }))
-                            },
-                            
-                            (txObj, error) => {
-                                console.log('mail error', error)
-                                throw error
-                            }
-                        )
-                    })
-
-                    adresse.forEach((item) => {
-                        tx.executeSql(requetes.InsererAdresse,
-                            [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle],
-                            
-                            (txObj, resultSet) => {
-                                if (resultSet.rowsAffected !== 0) {
-                                    store.dispatch(addAdresse({
-                                        addr_ligne1: item.addr_ligne1,
-                                        addr_ligne2: item.addr_ligne2,
-                                        addr_ligne3: item.addr_ligne3,
-                                        addr_cp: item.addr_cp,
-                                        addr_bp: item.addr_bp,
-                                        addr_pays: item.addr_pays,
-                                        addr_ville: item.addr_ville,
-                                        addr_libelle: item.addr_libelle
-                                    }))
-                                }
-                            },
-                            (txObj, error) => {
-                                console.log('adresse error', error);
-                                throw error;
-                            }
-                        )
-                    })
-
+                
                     redirection(true)
-                })
+               
             }
 
             catch (error) {
-                console.error('Une erreur est survenue lors de la transaction:', error)
+                console.error("Une erreur est survenue lors d'enregistrement:", error)
+                setLoading(false)
             }
         }
 
-        store.subscribe(() => console.log(store.getState().listTelephone))
+        //store.subscribe(() => console.log(store.getState().listTelephone))
 
     }
 
@@ -212,7 +293,7 @@ const AjoutContact = ({ navigation }) => {
 
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
 
-                    <TouchableOpacity onPress={enregistrerContact}>
+                    <TouchableOpacity onPress={saveInformation}>
                         <Octicons name="check" size={35} color="#FEFFFF" />
                     </TouchableOpacity>
 
@@ -281,6 +362,8 @@ const AjoutContact = ({ navigation }) => {
 
                     ) : null
                     }
+
+                    <SpinnerModal isVisible={loading} />
 
                 </View>
 

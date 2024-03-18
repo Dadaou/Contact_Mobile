@@ -1,0 +1,1 @@
+export const dbLocalName = "Contact.db"
