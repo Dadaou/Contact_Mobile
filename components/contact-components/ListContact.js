@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
+import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
+import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 //import requetes from '../../Utils/RequeteSql'
@@ -83,32 +84,54 @@ const ListContact = () => {
     }, [])
 
 
-    useEffect(() => {
+    const getListContact = () => {
 
-        navigation.addListener('focus', () => {
+        return new Promise((resolve, reject) => {
 
             db.transaction((tx) => {
 
                 tx.executeSql(reqToGetListContact, null,
 
                     (_, resultSet) => {
-                        setData(resultSet.rows._array)
+                        resolve(resultSet.rows._array)
                     },
-                    (_, error) => console.log(error)
+                    (_, error) => reject(error)
                 )
 
             })
+        })
+    }
 
+
+    useEffect(() => {
+
+        navigation.addListener('focus', () => {
+
+            getListContact()
+                .then((data) => {
+                    setData(data)
+                })
+                .catch((error) => {
+                    console.warn(error)
+                })
         })
 
     }, [])
 
+
     return (
 
-            <FlatList
-                data={data}
-                renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} telephone={item.tel_numero} mail={item.ml_mail} />}
-                keyExtractor={item => item.ctt_id} />
+            data.length !== 0 ?
+
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} telephone={item.tel_numero} mail={item.ml_mail} />}
+                    keyExtractor={item => item.ctt_id} /> : 
+
+                <View style = {{flex : 1, justifyContent : "center", marginBottom : 100}}>
+                    <Text style = {{textAlign :"center", fontWeight : "bold"}} variant="headlineSmall">Aucun contact enregistré</Text>
+                </View>
+                
     )
 }
 

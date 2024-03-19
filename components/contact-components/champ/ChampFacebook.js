@@ -1,43 +1,31 @@
-import { useState, useEffect } from "react";
-import { View, TextInput, StyleSheet, Image } from "react-native"
+import { StyleSheet } from "react-native"
+import { TextInput } from 'react-native-paper'
 
 const ChampFacebook = ({paramFacebook, onChangeFacebook}) => {
 
 
     return (
 
-        <View style = {styles.input}>
+        <TextInput
 
-            <Image source={require('../../../assets/Facebook.png')} style={{ width: 30, height: 30  }} />
-
-            <TextInput
-
-                style={{fontSize : 16, paddingLeft : 10}}
-                placeholder="Facebook"
-                onChangeText={(text) =>onChangeFacebook(text)}
-                value={paramFacebook} />
-
-        </View>
-
+            style={{ ...styles.input }}
+            label = "Facebook"
+            mode='outlined'
+            activeOutlineColor = "#005F9D"
+            onChangeText={(text) => onChangeFacebook(text)}
+            value={paramFacebook} 
+            left={<TextInput.Icon icon="facebook" color={"#1877F2"} size={35}/>}/>
     )
-
 }
 
 
 const styles = StyleSheet.create({
 
     input: {
-        flex : 1, 
-        flexDirection: "row",  
-        alignItems: 'center',
-        height: 50,
+
         width: 300,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 5,
-        borderColor: "#808080",
         backgroundColor : "#FEFFFF",
+        marginBottom: 20
     }
     
     

@@ -1,24 +1,21 @@
-import { useState, useEffect } from "react";
-import { View, TextInput, StyleSheet, Image } from "react-native"
+import { StyleSheet } from "react-native"
+import { TextInput } from 'react-native-paper'
 
 const ChampLinkedin = ({paramLinkedin, onChangeLinkedin}) => {
 
     return (
 
-        <View style = {styles.input}>
+        <TextInput
 
-            <Image source={require('../../../assets/LinkedIn.png')} style={{ width: 30, height: 30 }} />
-
-            <TextInput
-
-                style={{fontSize : 16, paddingLeft : 10}}
-                placeholder="Linkedin"
-                onChangeText={(text) => onChangeLinkedin(text)}
-                value={paramLinkedin} />
-
-        </View>
-
+            style={{ ...styles.input }}
+            label = "Linkedin"
+            mode='outlined'
+            activeOutlineColor = "#005F9D"
+            onChangeText={(text) => onChangeLinkedin(text)}
+            value={paramLinkedin} 
+            left={<TextInput.Icon icon="linkedin" color={"#0077b5"} size={35}/>}/>
     )
+
 
 }
 
@@ -27,17 +24,9 @@ const styles = StyleSheet.create({
 
     input: {
 
-        flex : 1, 
-        flexDirection: "row",  
-        alignItems: 'center',
-        height: 50,
         width: 300,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 5,
-        borderColor: "#808080",
-        backgroundColor : "#FEFFFF"
+        backgroundColor : "#FEFFFF",
+        marginBottom: 20
     }
     
     

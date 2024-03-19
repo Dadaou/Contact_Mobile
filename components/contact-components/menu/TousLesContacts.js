@@ -15,7 +15,6 @@ const TousLesContacts = ({ navigation, infoUtilisateur }) => {
         <View style={styles.container}>
 
             <HeaderPrincipal infoUtilisateur={infoUtilisateur} />
-            <TitrePage titre={titre} />
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />

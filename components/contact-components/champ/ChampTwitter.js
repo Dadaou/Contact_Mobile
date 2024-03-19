@@ -1,22 +1,19 @@
-import { View, TextInput, StyleSheet, Image } from "react-native"
+import { StyleSheet } from "react-native"
+import { TextInput } from 'react-native-paper'
 
 const ChampTwitter = ({paramTwitter, onChangeTwitter}) => {
 
     return (
 
-        <View style = {styles.input}>
+        <TextInput
 
-            <Image source={require('../../../assets/x.jpg')} style={{ width: 30, height: 30  }} />
-
-            <TextInput
-
-                style={{fontSize : 16, paddingLeft : 10}}
-                placeholder="Twitter"
-                onChangeText={(text) => onChangeTwitter(text)}
-                value={paramTwitter} />
-
-        </View>
-
+            style={{ ...styles.input }}
+            label = "Twitter"
+            mode='outlined'
+            activeOutlineColor = "#005F9D"
+            onChangeText={(text) => onChangeTwitter(text)}
+            value={paramTwitter} 
+            left={<TextInput.Icon icon="twitter" color={"#00AFF0"} size={35}/>}/>
     )
 
 }
@@ -25,17 +22,10 @@ const ChampTwitter = ({paramTwitter, onChangeTwitter}) => {
 const styles = StyleSheet.create({
 
     input: {
-        flex : 1, 
-        flexDirection: "row",  
-        alignItems: 'center',
-        height: 50,
+
         width: 300,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius : 5,
-        borderColor: "#808080",
         backgroundColor : "#FEFFFF",
+        marginBottom: 20
     }
     
     

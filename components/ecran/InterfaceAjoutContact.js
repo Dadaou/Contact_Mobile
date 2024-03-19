@@ -272,7 +272,7 @@ const AjoutContact = ({ navigation }) => {
             }
         }
 
-        store.subscribe(() => console.log(store.getState().listTelephone))
+        //store.subscribe(() => console.log(store.getState().listTelephone))
 
     }
 

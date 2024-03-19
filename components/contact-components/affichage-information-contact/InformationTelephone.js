@@ -70,7 +70,7 @@ const InformationTelephone = ({ id }) => {
 
                     <View key={index} style={{ flexDirection: "row", alignItems: "center", marginBottom: 25 }}>
 
-                        <TouchableOpacity style={{ marginHorizontal: 12 }} onPress={() => { Linking.openURL(`tel:+${convertirEnArray(telephone[0].tel_code_pays)[index]}${numero}`) }}>
+                        <TouchableOpacity style={{ marginHorizontal: 12 }} onPress={() => { Linking.openURL(`tel:+${item.tel_code_pays}${item.tel_numero}`) }}>
                             <FontAwesome name="phone" size={25} color="#000000" />
                         </TouchableOpacity>
 
