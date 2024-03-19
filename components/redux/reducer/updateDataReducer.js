@@ -2,7 +2,7 @@ import { UPDATE_CONTACT, UPDATE_TELEPHONE, UPDATE_MAIL, UPDATE_ADRESSE } from ".
 
 const initialState = { listUpdatedContact: [], listUpdatedTelephone: [], listUpdatedMail: [], listUpdatedAdresse: [] }
 
-updateDataReducer = (state = initialState, action) => {
+const updateDataReducer = (state = initialState, action) => {
 
     switch (action.type) {
 

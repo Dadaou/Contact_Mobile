@@ -2,7 +2,7 @@ import { ADD_CONTACT, ADD_TELEPHONE, ADD_MAIL, ADD_ADRESSE } from "../action/add
 
 const initialState = { listContact: [], listTelephone: [], listMail: [], listAdresse: [] }
 
-addDataReducer = (state = initialState, action) => {
+const addDataReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
