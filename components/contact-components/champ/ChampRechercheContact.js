@@ -1,6 +1,7 @@
-import { View, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import { useState } from "react"
 import { Searchbar } from 'react-native-paper'
+import { blanc } from "../../../Utils/constant"
 
 const ChampRechercheContact = () => {
 
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     input: {
         
         margin: 10,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : "#F2F3F4",
 
     },
 

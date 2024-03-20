@@ -1,5 +1,5 @@
-import { useState} from 'react'
 import CountryPicker from "rn-country-picker"
+import { blanc, bleu } from "../../../Utils/constant"
 import SelectDropdown from 'react-native-select-dropdown'
 import { AsYouType,  isValidPhoneNumber } from 'libphonenumber-js'
 
@@ -76,7 +76,7 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                             style={styles.input}
                             label = "Téléphone"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             keyboardType='numeric'
                             onChangeText={(text) => changerTelephone(text, index)}
                             value={item.tel_numero} 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     input: {
        
         width: 195,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom : 5
     },
 
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 5,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginTop : 10,
         marginBottom : 10
     },

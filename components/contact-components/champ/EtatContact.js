@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { blanc } from "../../../Utils/constant";
 
 const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
   selectedText: {
 
     textAlign: "center",
-    color: "#FEFFFF",
+    color: blanc,
     fontSize: 20,
     fontWeight: "bold"
   },
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 
     width: buttonSize,
     height: 40,
-    backgroundColor: "#FEFFFF",
+    backgroundColor: blanc,
     alignItems: "center",
     justifyContent: "center"
 

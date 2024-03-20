@@ -1,6 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
-import { TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper'
+import { blanc, bleu } from '../../../Utils/constant'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 
@@ -81,7 +82,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Adresse ligne 1"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerAdresseLigneUn(text, index)}
                             value={item.addr_ligne1} />
 
@@ -97,7 +98,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Adresse ligne 2"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerAdresseLigneDeux(text, index)}
                             value={item.addr_ligne2} />
 
@@ -105,7 +106,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Adresse ligne 3"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerAdresseLigneTrois(text, index)}
                             value={item.addr_ligne3} />
 
@@ -113,7 +114,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Code postal"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerCodePostal(text, index)}
                             value={item.addr_cp} />
 
@@ -122,7 +123,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Boite postal"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerBoitePostal(text, index)}
                             value={item.addr_bp} />
 
@@ -130,7 +131,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Pays"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerPays(text, index)}
                             value={item.addr_pays} />
 
@@ -138,7 +139,7 @@ const ChampAdresse = ({paramAdresse, onChangeAdresse}) => {
                             style={styles.input}
                             label = "Ville"
                             mode='outlined'
-                            activeOutlineColor = "#005F9D"
+                            activeOutlineColor = {bleu}
                             onChangeText={(text) => changerVille(text, index)}
                             value={item.addr_ville} />
 
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom : 20
 
     },
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 5,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF",
+        backgroundColor : bleu,
         marginTop : 5,
         marginBottom : 10
     },

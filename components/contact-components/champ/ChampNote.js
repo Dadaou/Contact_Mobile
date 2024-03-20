@@ -1,5 +1,6 @@
 import { TextInput } from 'react-native-paper'
 import {  StyleSheet } from "react-native"
+import { blanc, bleu } from "../../../Utils/constant"
 
 const ChampNote = ({paramNote, onChangeNote}) => {
 
@@ -9,7 +10,7 @@ const ChampNote = ({paramNote, onChangeNote}) => {
                 style={styles.input}
                 label = "Notes"
                 mode='outlined'
-                activeOutlineColor = "#005F9D"
+                activeOutlineColor = {bleu}
                 multiline={true}
                 numberOfLines={8} 
                 onChangeText={(text) => onChangeNote(text)} 
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     input: {
  
         width: 300,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom: 5
     }
     

@@ -1,5 +1,6 @@
 import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
+import { blanc, bleu } from "../../../Utils/constant"
 
 const ChampSiteWeb = ({paramSiteWeb, onChangeSiteWeb}) => {
 
@@ -10,7 +11,7 @@ const ChampSiteWeb = ({paramSiteWeb, onChangeSiteWeb}) => {
                 style={styles.input}
                 label = "Site web"
                 mode='outlined'
-                activeOutlineColor = "#005F9D"
+                activeOutlineColor = {bleu}
                 onChangeText={(text) => onChangeSiteWeb(text)}
                 value={paramSiteWeb} />
     )
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom: 20
     }
     

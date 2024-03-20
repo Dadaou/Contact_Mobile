@@ -1,6 +1,6 @@
-import { AntDesign } from '@expo/vector-icons'
-import { View, StyleSheet, TouchableOpacity } from "react-native"
+import { View, StyleSheet } from "react-native"
 import { useNavigation  } from '@react-navigation/native'
+import { blanc, bleu } from "../../Utils/constant"
 import { FAB } from 'react-native-paper'
 
 const BoutonAjoutContact = () => {
@@ -14,7 +14,7 @@ const BoutonAjoutContact = () => {
                     style={styles.fab}
                     onPress={() => navigation.navigate('AjoutContact')}
                     variant='surface'
-                    color='#FEFFFF'
+                    color= {blanc}
                 />
         </View>
     )
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent  : 'center',
         right : 30,
         bottom : 40,
-        backgroundColor : "#005F9D"
+        backgroundColor : bleu
     },
 
 })

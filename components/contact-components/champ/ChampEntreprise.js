@@ -1,5 +1,6 @@
 import { TextInput } from 'react-native-paper'
-import { View, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
+import { blanc, bleu } from '../../../Utils/constant'
 
 const ChampEntreprise = ({paramEntreprise, onChangeEntreprise}) => {
 
@@ -11,7 +12,7 @@ const ChampEntreprise = ({paramEntreprise, onChangeEntreprise}) => {
                 style={styles.input}
                 label = "Entreprise"
                 mode='outlined'
-                activeOutlineColor = "#005F9D"
+                activeOutlineColor = {bleu}
                 onChangeText={(text) => onChangeEntreprise(text)}
                 value={paramEntreprise} />
     )
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom: 20
     }
 

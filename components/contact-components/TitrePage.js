@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native"
+import { blanc, bleu } from "../../Utils/constant";
 
 const TitrePage = ({titre}) => {
     
@@ -16,14 +17,14 @@ const styles = StyleSheet.create({
 
     container: {
         flex : 0.1, 
-        backgroundColor: '#005F9D'
+        backgroundColor: bleu
         // backgroundColor: '#F4C430' //jaune
     },
 
     titre : {
 
         textAlign : 'center',
-        color : '#FEFFFF',
+        color : blanc,
         fontSize : 20,
         fontWeight : 'bold'
     }

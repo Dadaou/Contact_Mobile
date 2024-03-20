@@ -1,19 +1,47 @@
 import { useState, useEffect } from 'react'
 import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
-import { Text } from 'react-native-paper'
+import { Text, Card } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
+import { dbLocalName } from '../../Utils/constant'
+import { store } from '../redux/dataStore'
+import { updateNombreContact } from '../redux/action/globalDataAction'
 //import requetes from '../../Utils/RequeteSql'
 
-const Item = ({ ctt_id, photo, prenom, nom }) => {
+const Item = ({ ctt_id, photo, prenom, nom,  favori }) => {
 
     
     const navigation = useNavigation()
 
     return (
 
+        <TouchableOpacity 
+            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>
+
+            <Card.Title
+                    title="Card Title"
+                    //subtitle="Card Subtitle"
+                    left={() => photo == '' ? (
+                                        <Image
+                                            source={require('../../assets/user.jpg')}
+                                            style={styles.photoContact}
+                                        />
+                                    ) : (
+                                        <Image source={{ uri: photo }} style={styles.photoContact} />
+                                )
+                    }
+        
+                />
+
+        </TouchableOpacity>
+
+
+    )
+
+    /*return (
+
         <TouchableOpacity style={styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id })}>
+            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>
 
             <View style={{ flex: 0.2 }}>
 
@@ -40,7 +68,7 @@ const Item = ({ ctt_id, photo, prenom, nom }) => {
 
         </TouchableOpacity>
 
-    )
+    )*/
 }
 
 const ListContact = () => {
@@ -51,9 +79,9 @@ const ListContact = () => {
     const reqCreationTableTelephone  = "CREATE TABLE IF NOT EXISTS telephone (tel_id INTEGER PRIMARY KEY AUTOINCREMENT, tel_numero TEXT, tel_code_pays TEXT, tel_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
     const reqCreationTableMail = "CREATE TABLE IF NOT EXISTS mail (ml_id INTEGER PRIMARY KEY AUTOINCREMENT, ml_mail TEXT, ml_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
     const reqCreationTableAdresse  = "CREATE TABLE IF NOT EXISTS adresse (addr_id INTEGER PRIMARY KEY AUTOINCREMENT, addr_ligne1 TEXT, addr_ligne2 TEXT, addr_ligne3 TEXT, addr_ville TEXT, addr_pays TEXT, addr_bp TEXT, addr_cp TEXT, addr_libelle TEXT, ctt_id INTEGER, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
-    const reqToGetListContact = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom FROM contact ORDER BY ctt_prenom ASC"
+    const reqToGetListContact = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact ORDER BY ctt_prenom ASC"
 
-    const db = SQLite.openDatabase('Contact.db')
+    const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -93,7 +121,7 @@ const ListContact = () => {
                 tx.executeSql(reqToGetListContact, null,
 
                     (_, resultSet) => {
-                        resolve(resultSet.rows._array)
+                        resolve(resultSet.rows)
                     },
                     (_, error) => reject(error)
                 )
@@ -109,7 +137,8 @@ const ListContact = () => {
 
             getListContact()
                 .then((data) => {
-                    setData(data)
+                    setData(data._array)
+                    store.dispatch(updateNombreContact(data.length))
                 })
                 .catch((error) => {
                     console.warn(error)
@@ -125,7 +154,7 @@ const ListContact = () => {
 
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} telephone={item.tel_numero} mail={item.ml_mail} />}
+                    renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
                     keyExtractor={item => item.ctt_id} /> : 
 
                 <View style = {{flex : 1, justifyContent : "center", marginBottom : 100}}>

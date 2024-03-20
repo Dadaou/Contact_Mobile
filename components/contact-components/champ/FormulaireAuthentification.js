@@ -6,6 +6,7 @@ import { View, Text, TouchableOpacity, StyleSheet} from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import SpinnerModal from '../../Modal/Spinner'
 import axios from 'axios'
+import { blanc, bleu } from '../../../Utils/constant'
 
 
 const FormulaireAuthentification = ({ onLogin}) => {
@@ -79,7 +80,7 @@ const FormulaireAuthentification = ({ onLogin}) => {
                     style={styles.input}
                     label = "Identifiant"
                     mode='outlined'
-                    activeOutlineColor = "#005F9D"
+                    activeOutlineColor = {bleu}
                     onChangeText={(text) => setIdentifiant(text)}
                     value={identifiant} />
 
@@ -87,7 +88,7 @@ const FormulaireAuthentification = ({ onLogin}) => {
                     style={styles.input}
                     label = "Mot de passe"
                     mode='outlined'
-                    activeOutlineColor = "#005F9D"
+                    activeOutlineColor = {bleu}
                     secureTextEntry={!afficherMotDePasse}
                     onChangeText={(text) => setMotDePasse(text)}
                     value={motDePasse} 
@@ -104,7 +105,7 @@ const FormulaireAuthentification = ({ onLogin}) => {
 
 
             <TouchableOpacity>
-                <Text style={{ textAlign: 'right', color: '#005F9D', paddingTop: 15 }}>Mot de passe oublié?</Text>
+                <Text style={{ textAlign: 'right', color: bleu, paddingTop: 15 }}>Mot de passe oublié?</Text>
             </TouchableOpacity>
 
             <SpinnerModal isVisible={loading} />
@@ -122,14 +123,14 @@ const styles = StyleSheet.create({
     },
 
     input : {
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom : 15
     },
 
 
     butonActive: {
 
-        backgroundColor: '#005F9D',
+        backgroundColor: bleu,
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 12,

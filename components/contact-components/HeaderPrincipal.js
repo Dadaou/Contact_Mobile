@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
-import { SafeAreaView } from "react-native-safe-area-context"
-import { View, Image, Text, TouchableOpacity, StyleSheet, StatusBar } from "react-native"
+import { View, TouchableOpacity, StyleSheet, StatusBar } from "react-native"
+import { Text } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { blanc, bleu } from '../../Utils/constant'
 
-const HeaderPrincipal = ({ infoUtilisateur }) => {
+const HeaderPrincipal = ({ titre }) => {
 
     const navigation = useNavigation()
 
@@ -11,7 +12,7 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
 
         <View style={styles.header}>
 
-            <StatusBar backgroundColor="#005F9D" />
+            <StatusBar backgroundColor={bleu} />
 
             <View style={{ flex: 1, alignItems: 'flex-start', flexDirection: "row" }}>
 
@@ -21,23 +22,18 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
                         <Icon
                             name={'bars'}
                             size={25}
-                            color={'#FEFFFF'} />
+                            color={blanc} />
                     </TouchableOpacity>
 
                 </View>
 
                 <View>
-                    <Image source={require("../../assets/logo-contacts.png")} style={styles.logo} />
-                </View>
-
-                <View>
-                    <Text style={{ color: "#FEFFFF", fontWeight: "bold" }}>Contact</Text>
+                    <Text variant="titleLarge" style={{ color: blanc, fontWeight: "bold"}}>{titre}</Text>
                 </View>
 
             </View>
 
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            </View>
+       
 
         </View>
     )
@@ -46,7 +42,7 @@ const HeaderPrincipal = ({ infoUtilisateur }) => {
 
             <View style={styles.container}>
 
-                <StatusBar backgroundColor = "#005F9D"/> 
+                <StatusBar backgroundColor = bleu/> 
                 <View style={styles.sectionMenu}>
 
                     <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -83,7 +79,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 16,
         alignItems: 'center',
-        backgroundColor: "#005F9D"
+        backgroundColor: bleu
     },
 
     logo: {

@@ -4,9 +4,10 @@ import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
 import TitrePage from "../TitrePage"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
+import { blanc } from "../../../Utils/constant"
 
 
-const TousLesContacts = ({ navigation, infoUtilisateur }) => {
+const TousLesContacts = () => {
 
     const titre = "Tous les contacts"
 
@@ -14,7 +15,7 @@ const TousLesContacts = ({ navigation, infoUtilisateur }) => {
 
         <View style={styles.container}>
 
-            <HeaderPrincipal infoUtilisateur={infoUtilisateur} />
+            <HeaderPrincipal titre={titre} />
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        justifyContent : "center"
+        justifyContent : "center",
+        //backgroundColor : blanc
     }
 
 })

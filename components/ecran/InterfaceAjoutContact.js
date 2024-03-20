@@ -1,5 +1,5 @@
 import requetes from '../../Utils/RequeteSql'
-import { dbLocalName } from '../../Utils/constant'
+import { blanc, dbLocalName, bleu } from '../../Utils/constant'
 import { genererID } from '../../Utils/utils'
 import { store } from '../redux/dataStore'
 import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/addDataAction'
@@ -97,7 +97,7 @@ const AjoutContact = ({ navigation }) => {
                     requetes.InsererContact,
                     [
                         idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0
                     ],
 
                     (txObj, resultSet) => {
@@ -282,27 +282,27 @@ const AjoutContact = ({ navigation }) => {
 
         <SafeAreaView style={styles.container}>
 
-            <StatusBar backgroundColor="#005F9D" />
+            <StatusBar backgroundColor={bleu} />
 
             <View style={styles.header}>
 
                 <View style={{ flex: 1, alignItems: 'flex-start' }}>
 
                     <TouchableOpacity onPress={() => redirection(false)}>
-                        <Octicons name="x" size={35} color="#FEFFFF" />
+                        <Octicons name="x" size={35} color= {blanc} />
                     </TouchableOpacity>
 
                 </View>
 
 
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FEFFFF" }}>Créer un contact</Text>
+                    <Text style={{ fontSize: 25, fontWeight: "bold", color: blanc }}>Créer un contact</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
 
                     <TouchableOpacity onPress={saveInformation}>
-                        <Octicons name="check" size={35} color="#FEFFFF" />
+                        <Octicons name="check" size={35} color={blanc} />
                     </TouchableOpacity>
 
                 </View>
@@ -312,9 +312,9 @@ const AjoutContact = ({ navigation }) => {
 
             <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
 
-            <ScrollView style={{ flex: 1, backgroundColor: "#FEFFFF" }}>
+            <ScrollView style={{ flex: 1, backgroundColor: blanc }}>
 
-                <View style={{ alignItems: "center" /*backgroundColor: "#FEFFFF"*/ }}>
+                <View style={{ alignItems: "center" /*backgroundColor: blanc*/ }}>
 
                     <View style={{ flex: 1, padding: 10 }} />
 
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: "#005F9D"
+        backgroundColor: bleu
     },
 
     header: {

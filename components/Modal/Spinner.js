@@ -1,4 +1,5 @@
-import ReactNativeModal from "react-native-modal";
+import ReactNativeModal from "react-native-modal"
+import { bleu } from "../../Utils/constant";
 import {
     View,
     StyleSheet,
@@ -22,7 +23,7 @@ const SpinnerModal = ({isVisible}) => {
           backdropTransitionOutTiming={500}
         >
           <View  style={styles.content}>
-            <ActivityIndicator size="large" color="#005F9D"/>
+            <ActivityIndicator size="large" color={bleu}/>
             <Text style={styles.contentTitle}>Chargement...</Text>
           </View>
         </ReactNativeModal>

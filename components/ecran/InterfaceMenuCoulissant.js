@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { useEffect, useState } from 'react'
 import { BackHandler, Alert } from 'react-native'
-
-import TousLesContacts from '../contact-components/menu/TousLesContacts'
-import ContactFavori from '../contact-components/menu/ContactFavori'
-import ContactPersonnel from '../contact-components/menu/ContactPersonnel'
+import AppDrawer from './Drawer'
 import Toast from '../Modal/Toast'
-
-const Drawer = createDrawerNavigator()
 
 const MenuCoulissant = ({ navigation, route }) => {
 
   const { showModal, infoUtilisateur } = route.params || {}
-
   const [isModalVisible, setModalVisible] = useState(false)
 
-  //console.log(isModalVisible)
-
   const toggleModal = () => {
-
     setModalVisible(true)
     setTimeout(() => {
       setModalVisible(false)
@@ -68,18 +58,8 @@ const MenuCoulissant = ({ navigation, route }) => {
   return (
 
     <>
-
-      <Drawer.Navigator screenOptions={{ headerShown: false }}>
-
-        <Drawer.Screen name="Tous les contats">
-          {(props) => <TousLesContacts {...props} infoUtilisateur={infoUtilisateur} />}
-        </Drawer.Screen>
-
-
-      </Drawer.Navigator>
-
+      <AppDrawer />
       <Toast title='Contact enregistré' isVisible={isModalVisible} />
-
     </>
 
 

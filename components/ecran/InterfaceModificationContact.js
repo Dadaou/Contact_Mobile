@@ -1,5 +1,5 @@
 import requetes from '../../Utils/RequeteSql'
-import { dbLocalName } from '../../Utils/constant'
+import { blanc, bleu, dbLocalName } from '../../Utils/constant'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -279,27 +279,27 @@ const ModificationContact = ({ navigation, route }) => {
 
         <SafeAreaView style={styles.container}>
 
-            <StatusBar backgroundColor="#005F9D" barStyle="light-content" />
+            <StatusBar backgroundColor= {bleu} barStyle="light-content" />
 
             <View style={styles.header}>
 
                 <View style={{ flex: 1, alignItems: 'flex-start' }}>
 
                     <TouchableOpacity onPress={() => redirection(false)}>
-                        <Octicons name="x" size={35} color="#FEFFFF" />
+                        <Octicons name="x" size={35} color= {blanc} />
                     </TouchableOpacity>
 
                 </View>
 
 
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FEFFFF" }}>Modifier un contact</Text>
+                    <Text style={{ fontSize: 25, fontWeight: "bold", color: blanc }}>Modifier un contact</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
 
                     <TouchableOpacity onPress={misAJourInfoContact}>
-                        <Octicons name="check" size={35} color="#FEFFFF" />
+                        <Octicons name="check" size={35} color={blanc} />
                     </TouchableOpacity>
 
                 </View>
@@ -308,9 +308,9 @@ const ModificationContact = ({ navigation, route }) => {
 
             <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
 
-            <ScrollView style={{ flex: 1, backgroundColor: "#FEFFFF" }}>
+            <ScrollView style={{ flex: 1, backgroundColor: blanc }}>
 
-                <View style={{ alignItems: "center" /*backgroundColor: "#FEFFFF"*/ }}>
+                <View style={{ alignItems: "center" /*backgroundColor: blanc*/ }}>
 
                     <View style={{ flex: 1, padding: 10 }} />
 
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: "#005F9D"
+        backgroundColor: bleu
 
     },
 

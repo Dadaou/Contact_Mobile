@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native"
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
+import { blanc } from "../../../Utils/constant"
 
 const ChampGroupe = ({paramGroupe, onChangeGroupe}) => {
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius : 5,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         marginBottom : 20
     },
 

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react"
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
+import { blanc, bleu } from "../../../Utils/constant"
 
 const ChampDate = ({paramDate, onChangeDate}) => {
 
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
         borderStyle : 'solid',
         borderRadius : 5,
         borderColor: "#808080",
-        backgroundColor : "#FEFFFF",
+        backgroundColor : blanc,
         flexDirection : 'row'
     },
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, StyleSheet, View, Image} from 'react-native' 
-import { Text } from 'react-native-paper';
-import { AntDesign } from '@expo/vector-icons'
+import { Text } from 'react-native-paper'
+import { blanc } from '../../Utils/constant';
 
 const Toast = ({ title, isVisible }) => {
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         top: 100,
         width: 200, 
         height: 40,
-        backgroundColor: 'white',
+        backgroundColor: blanc,
         borderRadius: 30,
         opacity : 0.9,
         padding : 5

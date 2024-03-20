@@ -3,7 +3,8 @@ import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'
+import { bleu } from "../../Utils/constant"
 
 import Toast from "../Modal/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
@@ -22,18 +23,21 @@ import InformationContact from "../contact-components/affichage-information-cont
 
 const DetailContact = ({ route }) => {
 
-    const { ctt_id, showModal } = route.params
+    const { ctt_id, showModal, favori } = route.params
+
+    
 
     const navigation = useNavigation()
 
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
-    const [favori, setFavori] = useState(false)
+    const [isfavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
 
-    const toggleFavori = () => {
-        setFavori(!favori)
-    }
+    console.log("Here ", isfavori)
 
+    const toggleFavori = () => {
+        setIsFavori(!isfavori)
+    }
 
     const toggleModal = () => {
 
@@ -83,7 +87,7 @@ const DetailContact = ({ route }) => {
 
                     <TouchableOpacity onPress={toggleFavori} style={{ marginHorizontal: 25 }}>
                         <Ionicons
-                            name={favori ? 'star' : 'star-outline'}
+                            name={isfavori ? 'star' : 'star-outline'}
                             size={25}
                             color={'#ECCA37'} />
                     </TouchableOpacity>
@@ -93,7 +97,7 @@ const DetailContact = ({ route }) => {
                         <Ionicons
                             name={'pencil'}
                             size={25}
-                            color={'#005F9D'} />
+                            color={bleu} />
 
                     </TouchableOpacity>
 
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         //justifyContent : 'center',
         padding: 16,
-        //backgroundColor : "#005F9D",
+        //backgroundColor : bleu,
         //height : 60
     }
 
