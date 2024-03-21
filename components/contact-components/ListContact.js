@@ -6,6 +6,7 @@ import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../../Utils/constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact } from '../redux/action/globalDataAction'
+import { TouchableRipple } from 'react-native-paper'
 //import requetes from '../../Utils/RequeteSql'
 
 const Item = ({ ctt_id, photo, prenom, nom,  favori }) => {
@@ -13,62 +14,73 @@ const Item = ({ ctt_id, photo, prenom, nom,  favori }) => {
     
     const navigation = useNavigation()
 
-    return (
-
-        <TouchableOpacity 
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>
-
-            <Card.Title
-                    title="Card Title"
-                    //subtitle="Card Subtitle"
-                    left={() => photo == '' ? (
-                                        <Image
-                                            source={require('../../assets/user.jpg')}
-                                            style={styles.photoContact}
-                                        />
-                                    ) : (
-                                        <Image source={{ uri: photo }} style={styles.photoContact} />
-                                )
-                    }
-        
-                />
-
-        </TouchableOpacity>
-
-
-    )
-
     /*return (
 
-        <TouchableOpacity style={styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>
+        <TouchableRipple
+            style = {styles.container}
+            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
+            rippleColor="#00000051"
+        >
+            <Card mode="elevated" style = {{ borderRadius: 1, height : 70}} onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>           
+                
+               
+                    <Card.Title
+                            subtitle={`${prenom} ${nom}`}
+                            subtitleVariant='bodyLarge' 
+                            left={() => photo == '' ? (
+                                                    <Image
+                                                        source={require('../../assets/user.jpg')}
+                                                        style={styles.photoContact}
+                                                    />
+                                                ) : (
+                                                    <Image source={{ uri: photo }} style={styles.photoContact} />
+                                            )
+                            }
+                    
+                    />
+             
+            </Card> 
+
+        </TouchableRipple>
+
+    )*/
+
+    return (
+        <TouchableRipple
+            style = {styles.container}
+            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
+            rippleColor="#00000051"
+        >
+
+           <View style = {{flex : 1, flexDirection : "row"}}>
 
             <View style={{ flex: 0.2 }}>
 
-                {photo == '' ? (
-                    <Image
-                        source={require('../../assets/user.jpg')}
-                        style={styles.photoContact}
-                    />
-                ) : (
-                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                )
-                }
+                    {photo == '' ? (
+                        <Image
+                            source={require('../../assets/user.jpg')}
+                            style={styles.photoContact}
+                        />
+                    ) : (
+                        <Image source={{ uri: photo }} style={styles.photoContact} />
+                    )
+                    }
+
+                    </View>
+
+
+                    <View style={{ flex: 1, padding: 8 }}>
+
+                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                        <Text> {prenom} </Text> {nom}
+                    </Text>
+
+                </View>
 
             </View>
 
-
-            <View style={{ flex: 1, padding: 8 }}>
-
-                <Text style={styles.text}>
-                    <Text> {prenom} </Text> {nom}
-                </Text>
-
-            </View>
-
-        </TouchableOpacity>
-
-    )*/
+        </TouchableRipple>
+    )
 }
 
 const ListContact = () => {

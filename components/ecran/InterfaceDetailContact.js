@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react"
 import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
-import { Ionicons } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons'
-import { bleu } from "../../Utils/constant"
-
+import { Appbar } from "react-native-paper"
 import Toast from "../Modal/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
 import InformationContact from "../contact-components/affichage-information-contact/InformationContact"
+import { dbLocalName } from "../../Utils/constant"
+import * as SQLite from 'expo-sqlite'
+import { store } from "../redux/dataStore"
+import { updateNombreFavori } from "../redux/action/globalDataAction"
 
 /*
     <TouchableOpacity onPress={() => setAfficherAutreInfo(!afficherAutreInfo)} style={{ alignItems: 'center', justifyContent : 'center', paddingRight: 170}}>
@@ -24,20 +24,29 @@ import InformationContact from "../contact-components/affichage-information-cont
 const DetailContact = ({ route }) => {
 
     const { ctt_id, showModal, favori } = route.params
-
-    
-
     const navigation = useNavigation()
+    const db = SQLite.openDatabase(dbLocalName)
+    const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
 
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
-    const [isfavori, setIsFavori] = useState(favori)
+    const [isFavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
 
-    console.log("Here ", isfavori)
+    const IncrementNombreFavori = () => {
+        !isFavori ?
+            store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori + 1)) :
+            store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori - 1))
+
+    }
 
     const toggleFavori = () => {
-        setIsFavori(!isfavori)
+        setIsFavori(!isFavori)
+        IncrementNombreFavori()
+        db.transaction((tx) => {
+            tx.executeSql(reqToUpdateFavori, [!isFavori ? 1 : 0, ctt_id])
+        })
     }
+
 
     const toggleModal = () => {
 
@@ -66,91 +75,39 @@ const DetailContact = ({ route }) => {
 
     return (
 
+        <>
 
-        <SafeAreaView style={styles.container}>
-
-            <StatusBar backgroundColor="#E5E4E2" barStyle="dark-content" />
-            <Toast title='Contact modifié' isVisible={isModalVisible} />
-
-            <View style={styles.header}>
-
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Feather name="arrow-left" size={25} color="black" />
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View style={{ alignItems: 'flex-end', flexDirection: 'row' }}>
-
-                    <TouchableOpacity onPress={toggleFavori} style={{ marginHorizontal: 25 }}>
-                        <Ionicons
-                            name={isfavori ? 'star' : 'star-outline'}
-                            size={25}
-                            color={'#ECCA37'} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })}>
-
-                        <Ionicons
-                            name={'pencil'}
-                            size={25}
-                            color={bleu} />
-
-                    </TouchableOpacity>
-
-                </View>
-
-
-            </View>
+            <StatusBar backgroundColor="#F2F3F4" barStyle="dark-content" />
+          
+            <Appbar.Header style={{backgroundColor : "#F2F3F4"}}>
+                <Appbar.BackAction onPress={() => navigation.goBack()} size={25}/>
+                <Appbar.Content title="" />
+                <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori}/>
+                <Appbar.Action icon="pencil"   onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })}/>
+            </Appbar.Header>
 
             <ScrollView>
 
-                <View style={{ paddingTop: 20 }}>
+                <View >
 
                     <InformationContact id={ctt_id} />
 
-                    <View style={{ padding: 25 }}>
-
+                    <View style={{padding: 5 }}>
                         <InformationTelephone id={ctt_id} />
+                    </View>
 
+                    <View style={{padding: 5 }}>
                         <InformationMail id={ctt_id} />
-
                     </View>
 
                 </View>
 
             </ScrollView>
 
-        </SafeAreaView>
-
+            <Toast title='Contact modifié' isVisible={isModalVisible} />
+        </>
     )
 
 }
-
-const styles = StyleSheet.create({
-
-    container: {
-
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: "#E5E4E2"
-
-    },
-
-    header: {
-
-        flexDirection: "row",
-        alignItems: 'center',
-        //justifyContent : 'center',
-        padding: 16,
-        //backgroundColor : bleu,
-        //height : 60
-    }
-
-})
-
 
 export default DetailContact

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
-import { blanc } from "../../../Utils/constant"
+import { blanc, bleu } from "../../../Utils/constant"
 
 const ChampFacebook = ({paramFacebook, onChangeFacebook}) => {
 

@@ -1,45 +1,50 @@
 import { useState, useEffect } from 'react'
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
+import { View, StyleSheet, FlatList,  Image } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../../Utils/constant'
+import { TouchableRipple } from 'react-native-paper'
 
 const Item = ({ ctt_id, photo, prenom, nom, favori }) => {
-
-    
+ 
     const navigation = useNavigation()
 
     return (
+        <TouchableRipple
+            style = {styles.container}
+            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
+            rippleColor="#00000051"
+        >
 
-        <TouchableOpacity style={styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori : favori })}>
+           <View style = {{flex : 1, flexDirection : "row"}}>
 
             <View style={{ flex: 0.2 }}>
 
-                {photo == '' ? (
-                    <Image
-                        source={require('../../assets/user.jpg')}
-                        style={styles.photoContact}
-                    />
-                ) : (
-                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                )
-                }
+                    {photo == '' ? (
+                        <Image
+                            source={require('../../assets/user.jpg')}
+                            style={styles.photoContact}
+                        />
+                    ) : (
+                        <Image source={{ uri: photo }} style={styles.photoContact} />
+                    )
+                    }
+
+                    </View>
+
+
+                    <View style={{ flex: 1, padding: 8 }}>
+
+                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                        <Text> {prenom} </Text> {nom}
+                    </Text>
+
+                </View>
 
             </View>
 
-
-            <View style={{ flex: 1, padding: 8 }}>
-
-                <Text style={styles.text}>
-                    <Text> {prenom} </Text> {nom}
-                </Text>
-
-            </View>
-
-        </TouchableOpacity>
-
+        </TouchableRipple>
     )
 }
 
@@ -78,7 +83,6 @@ const ListFavori = () => {
             getListContact()
                 .then((data) => {
                     setData(data._array)
-                    //setCount(data.length)
                 })
                 .catch((error) => {
                     console.warn(error)

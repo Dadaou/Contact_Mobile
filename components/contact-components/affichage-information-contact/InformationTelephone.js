@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native"
-import { FontAwesome } from '@expo/vector-icons'
+import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"
 import * as SQLite from 'expo-sqlite'
 import getIsoCode from "../../../Utils/getIsoCode"
+import { Card, IconButton, Text } from "react-native-paper"
+import { dbLocalName } from "../../../Utils/constant"
 
 const convertirEnArray = (chaine) => {
 
@@ -18,35 +19,82 @@ const convertirEnArray = (chaine) => {
 const InformationTelephone = ({ id }) => {
 
     const navigation = useNavigation()
-    const db = SQLite.openDatabase('Contact.db')
-
+    const db = SQLite.openDatabase(dbLocalName)
     //const requeteTableTelephone = " SELECT GROUP_CONCAT(DISTINCT telephone.tel_numero) AS tel_numero, GROUP_CONCAT(DISTINCT telephone.tel_libelle) AS tel_libelle, GROUP_CONCAT(DISTINCT telephone.tel_code_pays) AS tel_code_pays FROM telephone WHERE ctt_id = ? GROUP BY ctt_id"
-    const requeteTableTelephone = " SELECT tel_numero, tel_libelle, tel_code_pays FROM telephone WHERE ctt_id = ? "
+    const requeteTableTelephone = "SELECT tel_numero, tel_libelle, tel_code_pays FROM telephone WHERE ctt_id = ? "
     const [telephone, setTelephone] = useState([{ tel_code_pays: "", tel_numero: "", tel_libelle: "" }])
+
+
+    const getTelephone = () => {
+
+        return new Promise((resolve, reject) => {
+
+            db.transaction((tx) => {
+
+                tx.executeSql(requeteTableTelephone, [id],
+
+                    (_, resultSet) => {
+                        resolve(resultSet.rows)
+                    },
+                    (_, error) => reject(error)
+                )
+
+            })
+        })
+    }
 
 
     useEffect(() => {
 
         navigation.addListener('focus', () => {
 
-            db.transaction((tx) => {
-
-                tx.executeSql(requeteTableTelephone, [id],
-                    (_, resultSet) => {
-                        setTelephone(resultSet.rows._array)
-                    },
-                    (_, error) => console.log(error)
-                )
-
-
+            getTelephone()
+                .then((data) => {
+                    setTelephone(data._array)
+                })
+                .catch((error) => {
+                    console.warn(error)
             })
-
         })
 
     }, [])
 
 
     return (
+        <Card mode="elevated" style={styles.card}>
+            <Card.Content>
+                <Text variant="titleLarge">Téléphone</Text>
+                {telephone[0].tel_numero !== "" ? (
+                    telephone.map((item, index) => (
+                        <Card key={index} mode="contained" style={styles.card}>
+                            <Card.Title
+                                title={
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <CountryFlag
+                                            isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
+                                            size={15}
+                                        />
+                                        <Text style={{ marginLeft: 8, fontSize: 18 }}>{`+${item.tel_code_pays}${item.tel_numero}`}</Text>
+                                    </View>
+                                }
+                                subtitle={item.tel_libelle}
+                                left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => { Linking.openURL(`tel:+${item.tel_code_pays}${item.tel_numero}`) }} />}
+                            />
+                        </Card>
+                    ))
+                ) : (
+                    <Card mode="contained" style={styles.card}>
+                        <Card.Title
+                            subtitle={"Ajouter un numéro de téléphone"}
+                            left={(props) => <IconButton {...props} icon="phone" size={28}  />}
+                        />
+                    </Card>
+                )}
+            </Card.Content>
+        </Card>
+    )
+
+    /*return (
 
         <View style={{ flex: 1 }}>
 
@@ -92,7 +140,7 @@ const InformationTelephone = ({ id }) => {
 
         </View>
 
-    )
+    )*/
 
 }
 
@@ -104,6 +152,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 12
 
+    },
+
+    card : {
+        backgroundColor: "#F2F3F4", 
+        borderRadius: 20,
     }
 })
 

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
-import { View, TouchableOpacity, StyleSheet, StatusBar } from "react-native"
-import { Text } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { useState } from 'react'
+import { StyleSheet, StatusBar } from "react-native"
+import { Appbar } from 'react-native-paper'
 import { blanc, bleu } from '../../Utils/constant'
 
 const HeaderPrincipal = ({ titre }) => {
@@ -9,6 +9,16 @@ const HeaderPrincipal = ({ titre }) => {
     const navigation = useNavigation()
 
     return (
+        <>
+            <StatusBar backgroundColor={bleu} />
+            <Appbar.Header style={{backgroundColor : bleu}}>
+                <Appbar.Action icon="menu" size={30} onPress={() => navigation.openDrawer()} color={blanc}/>
+                <Appbar.Content title={titre} color={blanc}/>
+            </Appbar.Header>  
+        </>
+    )
+
+    /*return (
 
         <View style={styles.header}>
 
@@ -36,7 +46,7 @@ const HeaderPrincipal = ({ titre }) => {
        
 
         </View>
-    )
+    )*/
 
     /*return (
 

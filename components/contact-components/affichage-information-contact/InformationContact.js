@@ -2,13 +2,14 @@ import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, Image } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
+import { dbLocalName } from "../../../Utils/constant"
 
 
 const  InformationContact = ({id}) => {
 
     const requeteTableContact = "SELECT ctt_photo, ctt_prenom, ctt_nom FROM contact WHERE ctt_id = ?"
     const navigation = useNavigation()
-    const db = SQLite.openDatabase('Contact.db')
+    const db = SQLite.openDatabase(dbLocalName)
    
     const [contact, setContact] = useState([{ctt_photo : "", ctt_prenom : "", ctt_nom : ""}])
 
@@ -52,7 +53,7 @@ const  InformationContact = ({id}) => {
                             )
                 }
 
-                <Text style={styles.sectionNom}> 
+                <Text style={styles.sectionNom} numberOfLines={3} ellipsizeMode="tail" > 
                     <Text style={styles.sectionNom}> {contact[0].ctt_prenom} </Text> {contact[0].ctt_nom} 
                 </Text>
 

@@ -2,6 +2,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { View, StyleSheet,  TouchableOpacity, Image } from "react-native"
 import Capture from '../../Modal/Capture'
 import { useState, useCallback } from 'react'
+import { Snackbar } from 'react-native-paper'
 
 const ChampPhoto = ({paramPhoto, onChangePhoto}) => {
 

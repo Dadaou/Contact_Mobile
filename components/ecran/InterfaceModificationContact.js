@@ -6,9 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native"
 import { store } from '../redux/dataStore'
 import { updateContact, updateTelephone, updateMail, updateAdresse } from '../redux/action/updateDataAction'
-import { Octicons } from '@expo/vector-icons'
+import { Appbar } from 'react-native-paper'
 
-import Separateur from '../contact-components/Separateur'
 import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
 import ChampNom from '../contact-components/champ/ChampNom'
@@ -237,7 +236,7 @@ const ModificationContact = ({ navigation, route }) => {
                 console.error("Une erreur est survenue lors de la transaction:", error)
             }
 
-            store.subscribe(() => console.log(store.getState().updateDataReducer.listUpdatedTelephone))
+            //store.subscribe(() => console.log(store.getState().updateDataReducer.listUpdatedTelephone))
         }
 
     }
@@ -276,35 +275,15 @@ const ModificationContact = ({ navigation, route }) => {
 
     return (
 
-
-        <SafeAreaView style={styles.container}>
+        <>
 
             <StatusBar backgroundColor= {bleu} barStyle="light-content" />
 
-            <View style={styles.header}>
-
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-
-                    <TouchableOpacity onPress={() => redirection(false)}>
-                        <Octicons name="x" size={35} color= {blanc} />
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: 25, fontWeight: "bold", color: blanc }}>Modifier un contact</Text>
-                </View>
-
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-
-                    <TouchableOpacity onPress={misAJourInfoContact}>
-                        <Octicons name="check" size={35} color={blanc} />
-                    </TouchableOpacity>
-
-                </View>
-
-            </View>
+            <Appbar.Header style={{backgroundColor : bleu}}>
+                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc}/>
+                <Appbar.Content title="Modifier un contact" color={blanc} titleStyle={{alignSelf: 'center'}}/>
+                <Appbar.Action icon="check" size={30} onPress={misAJourInfoContact} color={blanc}/>
+            </Appbar.Header>
 
             <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
 
@@ -315,23 +294,14 @@ const ModificationContact = ({ navigation, route }) => {
                     <View style={{ flex: 1, padding: 10 }} />
 
                     <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto} />
-
                     <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom} />
-
                     <ChampNom paramNom={nom} onChangeNom={setNom} />
-
                     <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage} />
-
                     <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe} />
-
                     <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise} />
-
                     <ChampFonction paramFonction={fonction} onChangeFonction={setFonction} />
-
                     <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone} />
-
                     <ChampEmail paramMail={mail} onChangeMail={setMail} />
-
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
                         {!afficherAutreChamp ?
@@ -345,23 +315,14 @@ const ModificationContact = ({ navigation, route }) => {
                         <>
 
                             <ChampDate paramDate={date} onChangeDate={setDate} />
-
                             <ChampNote paramNote={note} onChangeNote={setNote} />
-
                             <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
-
                             <ChampService paramServie={service} onChangeService={setService} />
-
                             <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
-
                             <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
-
                             <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
-
                             <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
-
                             <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
-
                         </>
 
                     ) : null
@@ -371,31 +332,9 @@ const ModificationContact = ({ navigation, route }) => {
 
             </ScrollView>
 
-        </SafeAreaView>
+        </>
 
     )
 }
-
-
-const styles = StyleSheet.create({
-
-    container: {
-
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: bleu
-
-    },
-
-    header: {
-
-        flexDirection: "row",
-        padding: 16,
-        alignItems: 'center'
-
-    }
-
-})
-
 
 export default ModificationContact

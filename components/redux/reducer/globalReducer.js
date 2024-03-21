@@ -1,5 +1,5 @@
-import { CHECK_NETWORK_STATUS, UPDATE_NOMBRE_CONTACT } from "../action/globalDataAction"
-const initialState = { networkInfo: {}, nombreContact : ""}
+import { CHECK_NETWORK_STATUS, UPDATE_NOMBRE_CONTACT, UPDATE_NOMBRE_FAVORI } from "../action/globalDataAction"
+const initialState = { networkInfo: {}, nombreContact : 0, nombreFavori : 0}
 
 const globalReducer = (state = initialState, action) => {
 
@@ -14,7 +14,13 @@ const globalReducer = (state = initialState, action) => {
         case UPDATE_NOMBRE_CONTACT:
             return {
                     ...state,
-                    nombreContact: action.payload
+                    nombreContact: parseInt(action.payload)
+            }
+
+        case UPDATE_NOMBRE_FAVORI:
+            return {
+                ...state,
+                nombreFavori: parseInt(action.payload)
             }
 
         default:

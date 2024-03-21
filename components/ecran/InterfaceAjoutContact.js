@@ -1,4 +1,5 @@
 import requetes from '../../Utils/RequeteSql'
+import {Appbar} from 'react-native-paper'
 import { blanc, dbLocalName, bleu } from '../../Utils/constant'
 import { genererID } from '../../Utils/utils'
 import { store } from '../redux/dataStore'
@@ -279,36 +280,15 @@ const AjoutContact = ({ navigation }) => {
 
     return (
 
-
-        <SafeAreaView style={styles.container}>
+        <>
 
             <StatusBar backgroundColor={bleu} />
 
-            <View style={styles.header}>
-
-                <View style={{ flex: 1, alignItems: 'flex-start' }}>
-
-                    <TouchableOpacity onPress={() => redirection(false)}>
-                        <Octicons name="x" size={35} color= {blanc} />
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: 25, fontWeight: "bold", color: blanc }}>Créer un contact</Text>
-                </View>
-
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-
-                    <TouchableOpacity onPress={saveInformation}>
-                        <Octicons name="check" size={35} color={blanc} />
-                    </TouchableOpacity>
-
-                </View>
-
-
-            </View>
+            <Appbar.Header style={{backgroundColor : bleu}}>
+                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc}/>
+                <Appbar.Content title="Créer un contact" color={blanc} titleStyle={{alignSelf: 'center'}}/>
+                <Appbar.Action icon="check" size={30} onPress={saveInformation} color={blanc}/>
+            </Appbar.Header>
 
             <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
 
@@ -377,7 +357,7 @@ const AjoutContact = ({ navigation }) => {
 
             </ScrollView>
 
-        </SafeAreaView>
+        </>
 
     )
 }
