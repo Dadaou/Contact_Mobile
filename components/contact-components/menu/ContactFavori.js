@@ -1,9 +1,7 @@
-import { View, StyleSheet } from "react-native"
 import ChampRechercheContact from "../champ/ChampRechercheContact"
 import HeaderPrincipal from "../HeaderPrincipal"
 import ListFavori from "../ListFavori"
-//import BottomToast from "../../Modal/BottomToast"
-//import ChampRechercheContact from "../champ/ChampRechercheContact"
+import { PaperProvider } from 'react-native-paper'
 
 const ContactFavori = () => {
 
@@ -11,24 +9,16 @@ const ContactFavori = () => {
 
     return (
 
-        <View style={styles.container}>
+        <PaperProvider>
             <HeaderPrincipal titre={titre}/>
             <ChampRechercheContact />
             <ListFavori />
-        </View>
+        </PaperProvider>
 
     )
 
 
 }
 
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent : "center"
-    }
-
-})
 
 export default ContactFavori

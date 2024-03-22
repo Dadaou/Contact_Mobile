@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { View, StyleSheet, FlatList } from "react-native"
+import { View, FlatList } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
@@ -66,28 +66,5 @@ const ListFavori = () => {
                 
     )
 }
-
-const styles = StyleSheet.create({
-
-    container: {
-
-        padding: 10,
-        marginHorizontal: 8,
-        flexDirection: 'row'
-
-    },
-
-    photoContact: {
-
-        width: 40,
-        height: 40,
-        borderRadius: 100
-    },
-
-    text: {
-        fontSize: 18
-    }
-
-});
 
 export default ListFavori

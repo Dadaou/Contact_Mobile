@@ -1,76 +1,114 @@
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { View, Image, StyleSheet, Text } from "react-native"
-import { TouchableRipple, Menu, PaperProvider } from 'react-native-paper'
-const ListView = ({ ctt_id, photo, prenom, nom,  favori }) => {
+import { View, StyleSheet, Image, Text } from 'react-native'
+import { Menu, TouchableRipple } from 'react-native-paper'
+
+const ListView = ({ ctt_id, photo, prenom, nom,  favori  }) => {
 
     const navigation = useNavigation()
 
-    /*return (
+    /*const [visible, setVisible] = useState({})
+    const [coordMenuContaxtuel, setCoordMenuContaxtuel] = useState({ x: 0, y: 0 })
+  
+    const toggleMenu = (name) => () => setVisible({ ...visible, [name]: !visible[name] })
+    const getVisible = (name) => !!visible[name]
+  
+    const handleLongPress = (event) => {
+      const { nativeEvent } = event
+      setCoordMenuContaxtuel({
+        x: nativeEvent.pageX,
+        y: nativeEvent.pageY,
+      })
+      setVisible({ menuContextuel: true });
+    }
 
-        <TouchableRipple
-            style = {styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
-            rippleColor="#00000051"
-        >
-            <Card mode="elevated" style = {{ borderRadius: 1, height : 70}} onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>           
+
+    return (
+        <>
+            <View style={{ flex: 1 }}>
                 
-               
-                    <Card.Title
-                            subtitle={`${prenom} ${nom}`}
-                            subtitleVariant='bodyLarge' 
-                            left={() => photo == '' ? (
-                                                    <Image
-                                                        source={require('../../assets/user.jpg')}
-                                                        style={styles.photoContact}
-                                                    />
-                                                ) : (
-                                                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                                            )
-                            }
-                    
-                    />
-             
-            </Card> 
+                <Menu
+                    visible={getVisible('menuContextuel')}
+                    onDismiss={toggleMenu('menuContextuel')}
+                    anchor={coordMenuContaxtuel}>
 
-        </TouchableRipple>
+                    <Menu.Item onPress={() => { }} title="Item 1" />
+                    <Menu.Item onPress={() => { }} title="Item 2" />
+                    <Menu.Item onPress={() => { }} title="Item 3" disabled />
 
+                </Menu>
+    
+                <TouchableRipple  style = {styles.container} 
+                       onLongPress={handleLongPress}
+                       onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
+                    <View style = {{flex : 1, flexDirection : "row"}}>
+
+                            <View style={{ flex: 0.2 }}>
+
+                                {photo == '' ? (
+                                    <Image
+                                        source={require('../../assets/user.jpg')}
+                                        style={styles.photoContact}
+                                    />
+                                ) : (
+                                    <Image source={{ uri: photo }} style={styles.photoContact} />
+                                )
+                                }
+
+                            </View>
+
+
+                            <View style={{ flex: 1, padding: 8 }}>
+
+                                <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                                    <Text> {prenom} </Text> {nom}
+                                </Text>
+
+                            </View>
+
+                        </View>
+                    </TouchableRipple>
+            </View>
+        </>
     )*/
 
     return (
-        <TouchableRipple
-            style = {styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
-            rippleColor="#00000051"
-        >
+        <>
+            <View style={{ flex: 1 }}>
+                
+                <TouchableRipple  style = {styles.container} 
+                     onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
+                    
+                    <View style = {{flex : 1, flexDirection : "row"}}>
 
-           <View style = {{flex : 1, flexDirection : "row"}}>
+                            <View style={{ flex: 0.2 }}>
 
-            <View style={{ flex: 0.2 }}>
+                                {photo == '' ? (
+                                    <Image
+                                        source={require('../../assets/user.jpg')}
+                                        style={styles.photoContact}
+                                    />
+                                ) : (
+                                    <Image source={{ uri: photo }} style={styles.photoContact} />
+                                )
+                                }
 
-                    {photo == '' ? (
-                        <Image
-                            source={require('../../assets/user.jpg')}
-                            style={styles.photoContact}
-                        />
-                    ) : (
-                        <Image source={{ uri: photo }} style={styles.photoContact} />
-                    )
-                    }
-
-                    </View>
+                            </View>
 
 
-                    <View style={{ flex: 1, padding: 8 }}>
+                            <View style={{ flex: 1, padding: 8 }}>
 
-                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                        <Text> {prenom} </Text> {nom}
-                    </Text>
+                                <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                                    <Text> {prenom} </Text> {nom}
+                                </Text>
 
-                </View>
+                            </View>
 
+                        </View>
+                    </TouchableRipple>
             </View>
+        </>
 
-        </TouchableRipple>
     )
 }
 

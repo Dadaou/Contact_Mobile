@@ -1,9 +1,9 @@
-import { View, StyleSheet,  } from "react-native"
 import ListContact from '../ListContact'
 import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
-
+import { PaperProvider } from 'react-native-paper'
+import BottomToast from '../../Modal/BottomToast'
 
 const TousLesContacts = () => {
 
@@ -11,31 +11,15 @@ const TousLesContacts = () => {
 
     return (
 
-        <View style={styles.container}>
-
-            <HeaderPrincipal titre={titre} />
+        <PaperProvider>
+            <HeaderPrincipal titre={titre}/>
             <ChampRechercheContact />
             <ListContact/>
             <BoutonAjoutContact />
-           
-        </View>
+        </PaperProvider>
 
     )
 }
 
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent : "center",
-        //backgroundColor : blanc
-    }
-
-})
-
 export default TousLesContacts
 
-/* <TitrePage titre={titre} /> 
-            <HeaderPrincipal infoUtilisateur={infoUtilisateur} />
-            
-            <ChampRechercheContact />*/

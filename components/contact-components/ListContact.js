@@ -101,11 +101,6 @@ const ListContact = () => {
                 
     )
 
-    /*return (
-        data.map((item) => (
-            <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>
-        ))
-    )*/
 }
 
 
