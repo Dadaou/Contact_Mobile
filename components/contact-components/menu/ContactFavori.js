@@ -1,8 +1,8 @@
 import { View, StyleSheet } from "react-native"
-import TitrePage from "../TitrePage"
 import ChampRechercheContact from "../champ/ChampRechercheContact"
 import HeaderPrincipal from "../HeaderPrincipal"
 import ListFavori from "../ListFavori"
+//import BottomToast from "../../Modal/BottomToast"
 //import ChampRechercheContact from "../champ/ChampRechercheContact"
 
 const ContactFavori = () => {
@@ -18,6 +18,8 @@ const ContactFavori = () => {
         </View>
 
     )
+
+
 }
 
 const styles = StyleSheet.create({

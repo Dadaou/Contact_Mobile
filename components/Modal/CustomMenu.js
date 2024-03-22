@@ -1,34 +1,62 @@
-import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native'
-import { Button, Menu, Divider, PaperProvider } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import React, { useState } from 'react'
+import {
+  View,
+} from 'react-native'
 
-const CustomMenu = () => {
-  const [visible, setVisible] = useState(false);
+import {
+  List,
+  Menu,
+  TouchableRipple,
+  PaperProvider
+} from 'react-native-paper'
 
-  const openMenu = () => setVisible(true);
+const MenuExample = () => {
+  const [visible, setVisible] = useState({});
+  const [contextualMenuCoord, setContextualMenuCoord] = useState({ x: 0, y: 0 });
 
-  const closeMenu = () => setVisible(false);
+  const toggleMenu = (name) => () => setVisible({ ...visible, [name]: !visible[name] });
+  const getVisible = (name) => !!visible[name];
+
+  const handleLongPress = (event) => {
+    const { nativeEvent } = event;
+    setContextualMenuCoord({
+      x: nativeEvent.pageX,
+      y: nativeEvent.pageY,
+    });
+    setVisible({ menu3: true });
+  };
 
   return (
-    <PaperProvider >
-      <View style = {{position : "absolute", zIndex : 1000}}>
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={<TouchableOpacity onPress={() => openMenu()}>
-          <Icon
-              name={'ellipsis-v'}
-              size={25} 
-              color={'black'}/></TouchableOpacity>}>
-          <Menu.Item onPress={() => {}} title="Item 1" />
-          <Menu.Item onPress={() => {}} title="Item 2" />
-          <Divider />
-          <Menu.Item onPress={() => {}} title="Item 3" />
-        </Menu>
+    <PaperProvider>
+      <View >
+        <View>
+          <Menu
+            visible={getVisible('menu3')}
+            onDismiss={toggleMenu('menu3')}
+            anchor={contextualMenuCoord}
+          >
+            <Menu.Item onPress={() => {}} title="Item 1" />
+            <Menu.Item onPress={() => {}} title="Item 2" />
+            <Menu.Item onPress={() => {}} title="Item 3" disabled />
+          </Menu>
+            <TouchableRipple onPress={() => {}} onLongPress={handleLongPress}>
+              <List.Item
+                title="List item"
+                description="Long press me to open contextual menu"
+              />
+            </TouchableRipple>
+        </View>
       </View>
     </PaperProvider>
   );
 };
 
-export default CustomMenu;
+MenuExample.title = 'Menu';
+
+const styles = {
+  screen: {
+    flex: 1,
+  },
+}
+
+export default MenuExample

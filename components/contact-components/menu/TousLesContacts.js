@@ -2,9 +2,7 @@ import { View, StyleSheet,  } from "react-native"
 import ListContact from '../ListContact'
 import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
-import TitrePage from "../TitrePage"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
-import { blanc } from "../../../Utils/constant"
 
 
 const TousLesContacts = () => {

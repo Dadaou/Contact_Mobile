@@ -1,87 +1,13 @@
 import { useState, useEffect } from 'react'
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native"
+import { View, StyleSheet, FlatList } from "react-native"
 import { Text, Card } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../../Utils/constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact } from '../redux/action/globalDataAction'
-import { TouchableRipple } from 'react-native-paper'
-//import requetes from '../../Utils/RequeteSql'
+import ListView from './ListView'
 
-const Item = ({ ctt_id, photo, prenom, nom,  favori }) => {
-
-    
-    const navigation = useNavigation()
-
-    /*return (
-
-        <TouchableRipple
-            style = {styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
-            rippleColor="#00000051"
-        >
-            <Card mode="elevated" style = {{ borderRadius: 1, height : 70}} onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id,  favori : favori })}>           
-                
-               
-                    <Card.Title
-                            subtitle={`${prenom} ${nom}`}
-                            subtitleVariant='bodyLarge' 
-                            left={() => photo == '' ? (
-                                                    <Image
-                                                        source={require('../../assets/user.jpg')}
-                                                        style={styles.photoContact}
-                                                    />
-                                                ) : (
-                                                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                                            )
-                            }
-                    
-                    />
-             
-            </Card> 
-
-        </TouchableRipple>
-
-    )*/
-
-    return (
-        <TouchableRipple
-            style = {styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
-            rippleColor="#00000051"
-        >
-
-           <View style = {{flex : 1, flexDirection : "row"}}>
-
-            <View style={{ flex: 0.2 }}>
-
-                    {photo == '' ? (
-                        <Image
-                            source={require('../../assets/user.jpg')}
-                            style={styles.photoContact}
-                        />
-                    ) : (
-                        <Image source={{ uri: photo }} style={styles.photoContact} />
-                    )
-                    }
-
-                    </View>
-
-
-                    <View style={{ flex: 1, padding: 8 }}>
-
-                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                        <Text> {prenom} </Text> {nom}
-                    </Text>
-
-                </View>
-
-            </View>
-
-        </TouchableRipple>
-    )
-}
 
 const ListContact = () => {
 
@@ -166,7 +92,7 @@ const ListContact = () => {
 
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
+                    renderItem={({ item }) => <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
                     keyExtractor={item => item.ctt_id} /> : 
 
                 <View style = {{flex : 1, justifyContent : "center", marginBottom : 100}}>
@@ -174,29 +100,13 @@ const ListContact = () => {
                 </View>
                 
     )
+
+    /*return (
+        data.map((item) => (
+            <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>
+        ))
+    )*/
 }
 
-const styles = StyleSheet.create({
-
-    container: {
-
-        padding: 10,
-        marginHorizontal: 8,
-        flexDirection: 'row'
-
-    },
-
-    photoContact: {
-
-        width: 40,
-        height: 40,
-        borderRadius: 100
-    },
-
-    text: {
-        fontSize: 18
-    }
-
-});
 
 export default ListContact

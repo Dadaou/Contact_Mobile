@@ -15,7 +15,7 @@ const  InformationContact = ({id}) => {
 
     useEffect(() => {
 
-        navigation.addListener('focus', () => {
+        const unsubscribe = navigation.addListener('focus', () => {
 
             db.transaction((tx) => {
 
@@ -26,18 +26,17 @@ const  InformationContact = ({id}) => {
                     (_, error) => console.log(error)
                 )
 
-
             })
            
         })
 
-    }, [])
+        return unsubscribe
 
+    }, [])
 
 
     return (
 
-        //style={{ alignItems: 'center', marginVertical: 10, marginBottom: 30 }}
 
         <View style={{ flex: 1,  alignItems: 'center'}}>
 

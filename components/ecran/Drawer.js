@@ -1,7 +1,6 @@
 import { useEffect } from "react"
-import { bleu, blanc } from "../../Utils/constant"
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Text, Badge } from "react-native-paper"
 import CustomDrawer from "../contact-components/CustomDrawer"
 import TousLesContacts from "../contact-components/menu/TousLesContacts"
@@ -13,6 +12,17 @@ import { dbLocalName } from "../../Utils/constant"
 
 
 const Drawer = createDrawerNavigator()
+
+const VueDrawer = ({titre, nombre}) => {
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>{titre}</Text>
+            <Badge size={30}>{nombre}</Badge>
+        </View>
+    )
+
+}
 
 const AppDrawer = () => {
 
@@ -54,18 +64,13 @@ const AppDrawer = () => {
                     drawerInactiveTintColor: '#333',
                     drawerLabelStyle: {
                         fontSize: 17,
-                    }*/}}
-                
-            >
+                    }*/}}>
 
                 <Drawer.Screen name="Tous les contacts" 
                     options={{
                         drawerLabel: () => (
-                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                            <Text style={{fontSize: 16}}>Tous les contacts</Text>
-                            <Badge size={30}>{nombreContact}</Badge>
-                            </View>
-                        ),
+                            <VueDrawer titre={"Tous les contacts"} nombre={nombreContact}/>
+                        )
                     }}
                 >
                     {(props) => <TousLesContacts {...props} /*infoUtilisateur={infoUtilisateur}*/ />}
@@ -74,11 +79,8 @@ const AppDrawer = () => {
                 <Drawer.Screen name="Contact favori" component={ContactFavori} 
                     options={{
                         drawerLabel: () => (
-                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                            <Text style={{fontSize: 16 }}>Contact favori</Text>
-                            <Badge size={30}>{nombreFavori}</Badge>
-                            </View>
-                        ),
+                            <VueDrawer titre={"Contact favori"} nombre={nombreFavori}/>
+                        )
                     }}
                 />
             
@@ -87,5 +89,21 @@ const AppDrawer = () => {
     )
 
 }
+
+const styles = StyleSheet.create({
+
+    container : {
+
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'space-between'
+
+    },
+
+    text : {
+        fontSize : 16
+    }
+
+})
 
 export default AppDrawer

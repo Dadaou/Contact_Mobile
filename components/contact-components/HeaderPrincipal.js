@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { StyleSheet, StatusBar } from "react-native"
 import { Appbar } from 'react-native-paper'
 import { blanc, bleu } from '../../Utils/constant'
+import ListContact from './ListContact'
 
 const HeaderPrincipal = ({ titre }) => {
 
@@ -15,6 +16,8 @@ const HeaderPrincipal = ({ titre }) => {
                 <Appbar.Action icon="menu" size={30} onPress={() => navigation.openDrawer()} color={blanc}/>
                 <Appbar.Content title={titre} color={blanc}/>
             </Appbar.Header>  
+            
+
         </>
     )
 

@@ -1,52 +1,11 @@
 import { useState, useEffect } from 'react'
-import { View, StyleSheet, FlatList,  Image } from "react-native"
+import { View, StyleSheet, FlatList } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../../Utils/constant'
-import { TouchableRipple } from 'react-native-paper'
+import ListView from './ListView'
 
-const Item = ({ ctt_id, photo, prenom, nom, favori }) => {
- 
-    const navigation = useNavigation()
-
-    return (
-        <TouchableRipple
-            style = {styles.container}
-            onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}
-            rippleColor="#00000051"
-        >
-
-           <View style = {{flex : 1, flexDirection : "row"}}>
-
-            <View style={{ flex: 0.2 }}>
-
-                    {photo == '' ? (
-                        <Image
-                            source={require('../../assets/user.jpg')}
-                            style={styles.photoContact}
-                        />
-                    ) : (
-                        <Image source={{ uri: photo }} style={styles.photoContact} />
-                    )
-                    }
-
-                    </View>
-
-
-                    <View style={{ flex: 1, padding: 8 }}>
-
-                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                        <Text> {prenom} </Text> {nom}
-                    </Text>
-
-                </View>
-
-            </View>
-
-        </TouchableRipple>
-    )
-}
 
 const ListFavori = () => {
 
@@ -98,7 +57,7 @@ const ListFavori = () => {
 
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <Item ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
+                    renderItem={({ item }) => <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
                     keyExtractor={item => item.ctt_id} /> : 
 
                 <View style = {{flex : 1, justifyContent : "center", marginBottom : 100}}>
