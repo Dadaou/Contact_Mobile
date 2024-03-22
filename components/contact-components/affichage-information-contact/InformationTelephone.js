@@ -64,8 +64,8 @@ const InformationTelephone = ({ id }) => {
         <Card mode="elevated" style={styles.card}>
             <Card.Content>
                 <Text variant="titleLarge">Téléphone</Text>
-                {telephone[0].tel_numero !== "" ? (
-                    telephone.map((item, index) => (
+                {telephone.map((item, index) => (
+                    item.tel_numero !== "" ? (
                         <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
                                 title={
@@ -81,15 +81,15 @@ const InformationTelephone = ({ id }) => {
                                 left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => { Linking.openURL(`tel:+${item.tel_code_pays}${item.tel_numero}`) }} />}
                             />
                         </Card>
-                    ))
-                ) : (
-                    <Card mode="contained" style={styles.card}>
-                        <Card.Title
-                            subtitle={"Ajouter un numéro de téléphone"}
-                            left={(props) => <IconButton {...props} icon="phone" size={28}  />}
-                        />
-                    </Card>
-                )}
+                    ) : (
+                        <Card key={index} mode="contained" style={styles.card}>
+                            <Card.Title
+                                subtitle={"Ajouter un numéro de téléphone"}
+                                left={(props) => <IconButton {...props} icon="phone" size={28}  />}
+                            />
+                        </Card>
+                    )
+                ))}
             </Card.Content>
         </Card>
     )

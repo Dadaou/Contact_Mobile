@@ -60,32 +60,31 @@ const  InformationMail = ({id}) => {
 
 
     return (
-
         <Card mode="elevated" style={styles.card}>
             <Card.Content>
                 <Text variant="titleLarge">Email</Text>
-                {mail[0].ml_mail !== "" ? (
-                    mail.map((item, index) => (
+                {mail.map((item, index) => (
+                    item.ml_mail !== "" ? (
                         <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
                                 title={item.ml_mail}
-                                titleStyle = {{fontSize: 18}}
+                                titleStyle={{ fontSize: 18 }}
                                 subtitle={item.ml_libelle}
                                 left={(props) => <IconButton {...props} icon="email" size={28} onPress={() => Linking.openURL(`mailto:${item.ml_mail}`)} />}
                             />
                         </Card>
-                    ))) : (
-                        <Card mode="contained" style={styles.card}>
+                    ) : (
+                        <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
                                 subtitle={"Ajouter une adresse e-mail"}
-                                left={(props) => <IconButton {...props} icon="phone" size={28}  />}
+                                left={(props) => <IconButton {...props} icon="email" size={28} />}
                             />
                         </Card>
-                )}
+                    )
+                ))}
             </Card.Content>
         </Card>
     )
-
 
     /*return (
 
