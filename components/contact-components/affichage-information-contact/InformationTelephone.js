@@ -60,6 +60,21 @@ const InformationTelephone = ({ id }) => {
     }, [])
 
 
+    const afficherNumeroTelephone = (tel_code_pays, tel_numero) => {
+
+           tel_numero = tel_numero.trim()
+           if(tel_code_pays === "33") {
+                if(tel_numero.startsWith("0")){
+                     return `+${tel_code_pays} (${tel_numero.slice(0, 1)})${tel_numero.slice(1)}`
+                }
+                else{
+                    return `+${tel_code_pays} (0)${tel_numero}`
+                }
+           }
+           else return `+${tel_code_pays} ${tel_numero}`
+    }
+
+
     return (
         <Card mode="elevated" style={styles.card}>
             <Card.Content>
@@ -74,7 +89,7 @@ const InformationTelephone = ({ id }) => {
                                             isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
                                             size={15}
                                         />
-                                        <Text style={{ marginLeft: 8, fontSize: 18 }}>{`+${item.tel_code_pays}${item.tel_numero}`}</Text>
+                                        <Text style={{ marginLeft: 8, fontSize: 18 }}>{afficherNumeroTelephone(item.tel_code_pays, item.tel_numero)}</Text>
                                     </View>
                                 }
                                 subtitle={item.tel_libelle}
