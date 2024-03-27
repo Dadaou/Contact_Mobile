@@ -6,6 +6,7 @@ import * as SQLite from 'expo-sqlite'
 import getIsoCode from "../../../Utils/getIsoCode"
 import { Card, IconButton, Text } from "react-native-paper"
 import { dbLocalName } from "../../../Utils/constant"
+import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {
 
@@ -59,6 +60,12 @@ const InformationTelephone = ({ id }) => {
 
     }, [])
 
+    const handlePhonePress = (tel_code_pays, tel_numero) => {
+        const numeroComplet = tel_code_pays + tel_numero
+        const telURL = `tel:+${numeroComplet}`
+        Linking.openURL(telURL)
+    }
+
 
     return (
         <Card mode="elevated" style={styles.card}>
@@ -67,19 +74,27 @@ const InformationTelephone = ({ id }) => {
                 {telephone.map((item, index) => (
                     item.tel_numero !== "" ? (
                         <Card key={index} mode="contained" style={styles.card}>
-                            <Card.Title
-                                title={
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <CountryFlag
-                                            isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
-                                            size={15}
-                                        />
-                                        <Text style={{ marginLeft: 8, fontSize: 18 }}>{`+${item.tel_code_pays}${item.tel_numero}`}</Text>
-                                    </View>
-                                }
-                                subtitle={item.tel_libelle}
-                                left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => { Linking.openURL(`tel:+${item.tel_code_pays}${item.tel_numero}`) }} />}
-                            />
+
+                            <TouchableRipple 
+                                    onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)}>
+
+                                <Card.Title
+                                    title={
+                        
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <CountryFlag
+                                                isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
+                                                size={15}
+                                            />
+                                            <Text style={{ marginLeft: 8, fontSize: 18 }}>{`+${item.tel_code_pays}${item.tel_numero}`}</Text>
+                                        </View>
+                                    
+                                    }
+                                    subtitle={item.tel_libelle}
+                                    left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)} />}
+                                />
+                            </TouchableRipple>
+
                         </Card>
                     ) : (
                         <Card key={index} mode="contained" style={styles.card}>
