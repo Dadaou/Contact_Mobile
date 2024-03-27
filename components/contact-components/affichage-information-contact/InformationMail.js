@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { Card, IconButton, Text } from "react-native-paper"
 import { dbLocalName } from "../../../Utils/constant"
+import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {
 
@@ -23,6 +24,10 @@ const  InformationMail = ({id}) => {
 
     const [mail, setMail] = useState([{ml_mail : '', ml_libelle : ''}])
 
+    const handleEmailPress = (email) => {
+        const emailURL = `mailto:${email}`
+        Linking.openURL(emailURL)
+    }
 
     const getMail = () => {
 
@@ -59,20 +64,25 @@ const  InformationMail = ({id}) => {
     }, [])
 
 
+
     return (
         <Card mode="elevated" style={styles.card}>
             <Card.Content>
                 <Text variant="titleLarge">Email</Text>
                 {mail.map((item, index) => (
                     item.ml_mail !== "" ? (
-                        <Card key={index} mode="contained" style={styles.card}>
-                            <Card.Title
-                                title={item.ml_mail}
-                                titleStyle={{ fontSize: 18 }}
-                                subtitle={item.ml_libelle}
-                                left={(props) => <IconButton {...props} icon="email" size={28} onPress={() => Linking.openURL(`mailto:${item.ml_mail}`)} />}
-                            />
-                        </Card>
+
+                            <Card key={index} mode="contained" style={styles.card}>
+                                <TouchableRipple onPress={() => handleEmailPress(item.ml_mail)} >
+                                    <Card.Title
+                                        title={item.ml_mail}
+                                        titleStyle={{ fontSize: 18 }}
+                                        subtitle={item.ml_libelle}
+                                        left={(props) => <IconButton {...props} icon="email" size={28} onPress={() => handleEmailPress(item.ml_mail)} />}
+                                    />
+                                </TouchableRipple>
+                            </Card>
+                        
                     ) : (
                         <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
