@@ -69,16 +69,28 @@ const InformationTelephone = ({ id }) => {
 
     const afficherNumeroTelephone = (tel_code_pays, tel_numero) => {
 
-           tel_numero = tel_numero.trim()  // supprimer espace
+           let telNumOriginale = tel_numero.trim()
+           tel_numero = tel_numero.replace(/ /g, '') 
+           let logueurNumero = tel_numero.length
+
            if(tel_code_pays === "33") {
-                if(tel_numero.startsWith("0")){
-                     return `+${tel_code_pays} (${tel_numero.slice(0, 1)})${tel_numero.slice(1)}`
+
+                if (logueurNumero >= 9 && logueurNumero <= 10) {
+
+                    if(telNumOriginale.startsWith("0")){
+                        return `+${tel_code_pays} (${telNumOriginale.slice(0, 1)})${telNumOriginale.slice(1)}`
+                    }
+                   else{
+                       return `+${tel_code_pays} (0)${telNumOriginale}`
+                    }
                 }
-                else{
-                    return `+${tel_code_pays} (0)${tel_numero}`
+
+                else {
+                    return `+${tel_code_pays} ${tel_numero}`
                 }
+
            }
-           else return `+${tel_code_pays} ${tel_numero}`
+           else return `+${tel_code_pays} ${telNumOriginale}`
     }
 
 
