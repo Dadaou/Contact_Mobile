@@ -69,7 +69,7 @@ const InformationTelephone = ({ id }) => {
 
     const afficherNumeroTelephone = (tel_code_pays, tel_numero) => {
 
-           tel_numero = tel_numero.trim()
+           tel_numero = tel_numero.trim()  // supprimer espace
            if(tel_code_pays === "33") {
                 if(tel_numero.startsWith("0")){
                      return `+${tel_code_pays} (${tel_numero.slice(0, 1)})${tel_numero.slice(1)}`
