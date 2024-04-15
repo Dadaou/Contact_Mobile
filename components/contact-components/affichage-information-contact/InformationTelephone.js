@@ -71,11 +71,11 @@ const InformationTelephone = ({ id }) => {
 
            let telNumOriginale = tel_numero.trim()
            tel_numero = tel_numero.replace(/ /g, '') 
-           let logueurNumero = tel_numero.length
+           let longueurNumero = tel_numero.length
 
            if(tel_code_pays === "33") {
 
-                if (logueurNumero >= 9 && logueurNumero <= 10) {
+                if (longueurNumero >= 9 && longueurNumero <= 10) {
 
                     if(telNumOriginale.startsWith("0")){
                         return `+${tel_code_pays} (${telNumOriginale.slice(0, 1)})${telNumOriginale.slice(1)}`

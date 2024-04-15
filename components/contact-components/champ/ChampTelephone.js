@@ -1,26 +1,26 @@
 import CountryPicker from "rn-country-picker"
 import { blanc, bleu } from "../../../Utils/constant"
 import SelectDropdown from 'react-native-select-dropdown'
-import { AsYouType,  isValidPhoneNumber } from 'libphonenumber-js'
+import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
-import { View, TouchableOpacity,  StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 
-const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
+const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
     //console.log(paramTelephone)
-    const libelle = ['Professionel','Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat' ]
+    const libelle = ['Professionel', 'Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat', 'Autre']
 
     const changerTelephone = (numeroTelephone, index) => {
-      const list = [...paramTelephone]
-      const numeroTelephoneFormate = new AsYouType().input(`+${list[index].tel_code_pays}${numeroTelephone}`)
-      //const phoneNumber = isValidPhoneNumber(`+${list[index].tel_code_pays}${numeroTelephone}`)
-      //console.log(phoneNumber)
-      //console.log(numeroTelephoneFormate.replace(list[index].tel_code_pays, ''))
-      list[index].tel_numero = numeroTelephoneFormate.substring(list[index].tel_code_pays.length + 1)//numeroTelephone
-      onChangeTelephone(list)
+        const list = [...paramTelephone]
+        const numeroTelephoneFormate = new AsYouType().input(`+${list[index].tel_code_pays}${numeroTelephone}`)
+        //const phoneNumber = isValidPhoneNumber(`+${list[index].tel_code_pays}${numeroTelephone}`)
+        //console.log(phoneNumber)
+        //console.log(numeroTelephoneFormate.replace(list[index].tel_code_pays, ''))
+        list[index].tel_numero = numeroTelephoneFormate.substring(list[index].tel_code_pays.length + 1)//numeroTelephone
+        onChangeTelephone(list)
 
     }
 
@@ -32,54 +32,54 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 
     const changerPays = (pays, index) => {
         const list = [...paramTelephone]
-        list[index].tel_code_pays= pays
+        list[index].tel_code_pays = pays
         onChangeTelephone(list)
     }
 
 
     const supprimerChampTelephone = (index) => {
-      const list = [...paramTelephone]
-      list.splice(index, 1)
-      onChangeTelephone(list)
+        const list = [...paramTelephone]
+        list.splice(index, 1)
+        onChangeTelephone(list)
     }
-  
+
     const ajouterChampTelephone = () => {
-      onChangeTelephone([...paramTelephone, { tel_libelle: "", tel_numero: "", tel_code_pays : "33" }])
-    }  
+        onChangeTelephone([...paramTelephone, { tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+    }
 
 
     return (
-     
+
         <>
 
             {paramTelephone.map((item, index) => (
 
                 <View key={index}>
 
-                    <View style = {{flexDirection : "row"}}>
+                    <View style={{ flexDirection: "row" }}>
 
                         <CountryPicker
-                                disable={false}
-                                containerStyle={styles.flag}
-                                animationType={"slide"}
-                                language="fra"
-                                pickerTitle={"Liste des pays"}
-                                searchBarPlaceHolder={"Rechercher un pays"}
-                                hideCountryFlag={false}
-                                hideCountryCode={false}
-                                countryCode={item.tel_code_pays}
-                                selectedValue={(text) => changerPays(text, index)}
-                                
+                            disable={false}
+                            containerStyle={styles.flag}
+                            animationType={"slide"}
+                            language="fra"
+                            pickerTitle={"Liste des pays"}
+                            searchBarPlaceHolder={"Rechercher un pays"}
+                            hideCountryFlag={false}
+                            hideCountryCode={false}
+                            countryCode={item.tel_code_pays}
+                            selectedValue={(text) => changerPays(text, index)}
+
                         />
 
                         <TextInput
                             style={styles.input}
-                            label = "Téléphone"
+                            label="Téléphone"
                             mode='outlined'
-                            activeOutlineColor = {bleu}
+                            activeOutlineColor={bleu}
                             keyboardType='numeric'
                             onChangeText={(text) => changerTelephone(text, index)}
-                            value={item.tel_numero} 
+                            value={item.tel_numero}
                         />
 
                         {paramTelephone.length !== 1 && (
@@ -88,33 +88,33 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
                             </TouchableOpacity>
                         )}
 
-                        
+
                     </View>
 
-                    <View style = {{marginLeft : 5}}>
+                    <View style={{ marginLeft: 5 }}>
 
                         <SelectDropdown
 
-                                data={libelle}
-                                defaultButtonText={'Libellé'}
-                                defaultValue={item.tel_libelle === '' ? '' : item.tel_libelle} 
-                                onSelect={(val) => changerLibelle(val, index)}
-                                buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
-                                rowTextForSelection={(item) => {return item}}
-                                renderDropdownIcon={isOpened => {
-                                    return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
-                                }}
-                                dropdownIconPosition={'right'}
-                                buttonStyle={styles.dropDownStyle}
-                                buttonTextStyle={styles.dropDownTextStyle}
-                                />
+                            data={libelle}
+                            defaultButtonText={'Libellé'}
+                            defaultValue={item.tel_libelle === '' ? '' : item.tel_libelle}
+                            onSelect={(val) => changerLibelle(val, index)}
+                            buttonTextAfterSelection={(selectedItem, index) => { return selectedItem }}
+                            rowTextForSelection={(item) => { return item }}
+                            renderDropdownIcon={isOpened => {
+                                return <Feather name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#808080'} size={18} />;
+                            }}
+                            dropdownIconPosition={'right'}
+                            buttonStyle={styles.dropDownStyle}
+                            buttonTextStyle={styles.dropDownTextStyle}
+                        />
 
                     </View>
 
-   
+
                     {paramTelephone.length - 1 === index && paramTelephone.length < 4 && (
 
-                        <TouchableOpacity onPress={ajouterChampTelephone} style={{marginBottom : 10, marginLeft : 3}}>
+                        <TouchableOpacity onPress={ajouterChampTelephone} style={{ marginBottom: 10, marginLeft: 3 }}>
                             <Feather name="plus-circle" size={30} color="#708090" />
                         </TouchableOpacity>
                     )}
@@ -129,43 +129,43 @@ const ChampTelephone = ({paramTelephone, onChangeTelephone}) => {
 const styles = StyleSheet.create({
 
     input: {
-       
+
         width: 195,
-        backgroundColor : blanc,
-        marginBottom : 5
+        backgroundColor: blanc,
+        marginBottom: 5
     },
 
-	flag: {
-		height: 50,
-		width: 105,
-		borderColor: "#808080",
-		alignItems: "center",
-        padding : 20,
-		marginHorizontal: 3,
-        marginTop : 6,
-		backgroundColor: "white",
-		borderRadius: 5,
-        backgroundColor : "#E5E4E2"
-	},
+    flag: {
+        height: 50,
+        width: 105,
+        borderColor: "#808080",
+        alignItems: "center",
+        padding: 20,
+        marginHorizontal: 3,
+        marginTop: 6,
+        backgroundColor: "white",
+        borderRadius: 5,
+        backgroundColor: "#E5E4E2"
+    },
 
     dropDownStyle: {
         width: 300,
         height: 50,
         borderWidth: 1,
         padding: 10,
-        borderRadius : 5,
+        borderRadius: 5,
         borderColor: "#808080",
-        backgroundColor : blanc,
-        marginTop : 10,
-        marginBottom : 10
+        backgroundColor: blanc,
+        marginTop: 10,
+        marginBottom: 10
     },
 
     dropDownTextStyle: {
-        textAlign: 'left', 
-        fontSize : 16
+        textAlign: 'left',
+        fontSize: 16
     }
 
- });
+});
 
 
 

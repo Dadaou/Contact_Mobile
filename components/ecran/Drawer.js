@@ -30,7 +30,7 @@ const AppDrawer = () => {
     const reqToGetNombreFavori = "SELECT COUNT(*) AS nombre_favori FROM contact WHERE ctt_favoris = ?"
 
     const getListContact = () => {
-
+        
             db.transaction((tx) => {
 
                 tx.executeSql(reqToGetNombreFavori, [1], //1 = true

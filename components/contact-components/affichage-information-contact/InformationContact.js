@@ -5,13 +5,13 @@ import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from "../../../Utils/constant"
 
 
-const  InformationContact = ({id}) => {
+const InformationContact = ({ id }) => {
 
     const requeteTableContact = "SELECT ctt_photo, ctt_prenom, ctt_nom FROM contact WHERE ctt_id = ?"
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
-   
-    const [contact, setContact] = useState([{ctt_photo : "", ctt_prenom : "", ctt_nom : ""}])
+
+    const [contact, setContact] = useState([{ ctt_photo: "", ctt_prenom: "", ctt_nom: "" }])
 
     useEffect(() => {
 
@@ -27,7 +27,7 @@ const  InformationContact = ({id}) => {
                 )
 
             })
-           
+
         })
 
         return unsubscribe
@@ -38,25 +38,25 @@ const  InformationContact = ({id}) => {
     return (
 
 
-        <View style={{ flex: 1,  alignItems: 'center'}}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
 
-                {contact[0].ctt_photo == '' ? (
+            {contact[0].ctt_photo == '' || contact[0].ctt_photo == null ? (
 
-                            <Image
-                                source={require('../../../assets/user.jpg')}
-                                style={styles.photoContact}
-                                />
+                <Image
+                    source={require('../../../assets/user.jpg')}
+                    style={styles.photoContact}
+                />
 
-                            ) : (
-                                <Image source={{ uri: contact[0].ctt_photo }} style={styles.photoContact} />
-                            )
-                }
+            ) : (
+                <Image source={{ uri: contact[0].ctt_photo }} style={styles.photoContact} />
+            )
+            }
 
-                <Text style={styles.sectionNom} numberOfLines={3} ellipsizeMode="tail" > 
-                    <Text style={styles.sectionNom}> {contact[0].ctt_prenom} </Text> {contact[0].ctt_nom} 
-                </Text>
+            <Text style={styles.sectionNom} numberOfLines={3} ellipsizeMode="tail" >
+                <Text style={styles.sectionNom}> {contact[0].ctt_prenom} </Text> {contact[0].ctt_nom}
+            </Text>
 
-            
+
         </View>
 
     )
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         borderRadius: 100
     },
 
-    sectionNom : {
+    sectionNom: {
 
         fontSize: 25,
         fontWeight: 'bold'

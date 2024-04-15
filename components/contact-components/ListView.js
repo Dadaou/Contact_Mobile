@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { Menu, TouchableRipple } from 'react-native-paper'
 
-const ListView = ({ ctt_id, photo, prenom, nom,  favori  }) => {
+const ListView = ({ ctt_id, photo, prenom, nom, favori }) => {
 
     const navigation = useNavigation()
 
@@ -75,37 +75,37 @@ const ListView = ({ ctt_id, photo, prenom, nom,  favori  }) => {
     return (
         <>
             <View style={{ flex: 1 }}>
-                
-                <TouchableRipple  style = {styles.container} 
-                     onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
-                    
-                    <View style = {{flex : 1, flexDirection : "row"}}>
 
-                            <View style={{ flex: 0.2 }}>
+                <TouchableRipple style={styles.container}
+                    onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
 
-                                {photo == '' ? (
-                                    <Image
-                                        source={require('../../assets/user.jpg')}
-                                        style={styles.photoContact}
-                                    />
-                                ) : (
-                                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                                )
-                                }
+                    <View style={{ flex: 1, flexDirection: "row" }}>
 
-                            </View>
+                        <View style={{ flex: 0.2 }}>
 
-
-                            <View style={{ flex: 1, padding: 8 }}>
-
-                                <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                                    <Text> {prenom} </Text> {nom}
-                                </Text>
-
-                            </View>
+                            {photo == null || photo == "" ? (
+                                <Image
+                                    source={require('../../assets/user.jpg')}
+                                    style={styles.photoContact}
+                                />
+                            ) : (
+                                <Image source={{ uri: photo }} style={styles.photoContact} />
+                            )
+                            }
 
                         </View>
-                    </TouchableRipple>
+
+
+                        <View style={{ flex: 1, padding: 8 }}>
+
+                            <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                                <Text> {prenom} </Text> {nom}
+                            </Text>
+
+                        </View>
+
+                    </View>
+                </TouchableRipple>
             </View>
         </>
 
