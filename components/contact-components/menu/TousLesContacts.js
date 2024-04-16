@@ -3,7 +3,7 @@ import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
 import { PaperProvider } from 'react-native-paper'
-import BottomToast from '../../Modal/BottomToast'
+import BottomToast from '../../modal/BottomToast'
 
 const TousLesContacts = () => {
 
@@ -12,9 +12,9 @@ const TousLesContacts = () => {
     return (
 
         <PaperProvider>
-            <HeaderPrincipal titre={titre}/>
+            <HeaderPrincipal titre={titre} />
             <ChampRechercheContact />
-            <ListContact/>
+            <ListContact />
             <BoutonAjoutContact />
         </PaperProvider>
 

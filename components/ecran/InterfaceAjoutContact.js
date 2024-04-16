@@ -1,7 +1,7 @@
-import requetes from '../../Utils/RequeteSql'
-import {Appbar} from 'react-native-paper'
-import { blanc, dbLocalName, bleu } from '../../Utils/constant'
-import { genererID } from '../../Utils/utils'
+import requetes from '../Utils/RequeteSql'
+import { Appbar } from 'react-native-paper'
+import { blanc, bleu, dbLocalName } from '../Utils/constant'
+import { genererID } from '../Utils/utils'
 import { store } from '../redux/dataStore'
 import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/addDataAction'
 import { useState } from 'react'
@@ -9,7 +9,7 @@ import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Octicons } from '@expo/vector-icons'
-import SpinnerModal from '../Modal/Spinner'
+import SpinnerModal from '../modal/Spinner'
 
 import EtatContact from '../contact-components/champ/EtatContact'
 import ChampPhoto from '../contact-components/champ/ChampPhoto'
@@ -153,7 +153,7 @@ const AjoutContact = ({ navigation }) => {
 
                     (txObj, resultSet) => {
 
-                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) { 
+                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                             store.dispatch(addTelephone({
                                 tel_numero: item.tel_numero,
                                 tel_code_pays: item.tel_code_pays,
@@ -284,10 +284,10 @@ const AjoutContact = ({ navigation }) => {
 
             <StatusBar backgroundColor={bleu} />
 
-            <Appbar.Header style={{backgroundColor : bleu}}>
-                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc}/>
-                <Appbar.Content title="Créer un contact" color={blanc} titleStyle={{alignSelf: 'center'}}/>
-                <Appbar.Action icon="check" size={30} onPress={saveInformation} color={blanc}/>
+            <Appbar.Header style={{ backgroundColor: bleu }}>
+                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc} />
+                <Appbar.Content title="Créer un contact" color={blanc} titleStyle={{ alignSelf: 'center' }} />
+                <Appbar.Action icon="check" size={30} onPress={saveInformation} color={blanc} />
             </Appbar.Header>
 
             <EtatContact paramEtat={etat} onChangeEtat={setEtat} />

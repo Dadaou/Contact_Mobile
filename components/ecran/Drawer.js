@@ -8,12 +8,12 @@ import ContactFavori from "../contact-components/menu/ContactFavori"
 import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from "../../Utils/constant"
+import { dbLocalName } from "../Utils/constant"
 
 
 const Drawer = createDrawerNavigator()
 
-const VueDrawer = ({titre, nombre}) => {
+const VueDrawer = ({ titre, nombre }) => {
 
     return (
         <View style={styles.container}>
@@ -30,18 +30,18 @@ const AppDrawer = () => {
     const reqToGetNombreFavori = "SELECT COUNT(*) AS nombre_favori FROM contact WHERE ctt_favoris = ?"
 
     const getListContact = () => {
-        
-            db.transaction((tx) => {
 
-                tx.executeSql(reqToGetNombreFavori, [1], //1 = true
+        db.transaction((tx) => {
 
-                    (_, resultSet) => {
-                        store.dispatch(updateNombreFavori(resultSet.rows._array[0].nombre_favori))
-                    },
-                    (_, error) => console.log(error)
-                )
+            tx.executeSql(reqToGetNombreFavori, [1], //1 = true
 
-            })
+                (_, resultSet) => {
+                    store.dispatch(updateNombreFavori(resultSet.rows._array[0].nombre_favori))
+                },
+                (_, error) => console.log(error)
+            )
+
+        })
     }
 
     useEffect(() => {
@@ -54,11 +54,11 @@ const AppDrawer = () => {
 
     return (
 
-            <Drawer.Navigator 
-                drawerContent={props => <CustomDrawer {...props} />}
-                screenOptions={{ 
-                    headerShown: false,
-                    drawerActiveTintColor: "#000000",
+        <Drawer.Navigator
+            drawerContent={props => <CustomDrawer {...props} />}
+            screenOptions={{
+                headerShown: false,
+                drawerActiveTintColor: "#000000",
                     /*drawerInactiveTintColor : "orange",
                     drawerActiveBackgroundColor : "blue"
                     drawerInactiveTintColor: '#333',
@@ -66,25 +66,25 @@ const AppDrawer = () => {
                         fontSize: 17,
                     }*/}}>
 
-                <Drawer.Screen name="Tous les contacts" 
-                    options={{
-                        drawerLabel: () => (
-                            <VueDrawer titre={"Tous les contacts"} nombre={nombreContact}/>
-                        )
-                    }}
-                >
-                    {(props) => <TousLesContacts {...props} /*infoUtilisateur={infoUtilisateur}*/ />}
-                </Drawer.Screen>
+            <Drawer.Screen name="Tous les contacts"
+                options={{
+                    drawerLabel: () => (
+                        <VueDrawer titre={"Tous les contacts"} nombre={nombreContact} />
+                    )
+                }}
+            >
+                {(props) => <TousLesContacts {...props} /*infoUtilisateur={infoUtilisateur}*/ />}
+            </Drawer.Screen>
 
-                <Drawer.Screen name="Contact favori" component={ContactFavori} 
-                    options={{
-                        drawerLabel: () => (
-                            <VueDrawer titre={"Contact favori"} nombre={nombreFavori}/>
-                        )
-                    }}
-                />
-            
-            </Drawer.Navigator>
+            <Drawer.Screen name="Contact favori" component={ContactFavori}
+                options={{
+                    drawerLabel: () => (
+                        <VueDrawer titre={"Contact favori"} nombre={nombreFavori} />
+                    )
+                }}
+            />
+
+        </Drawer.Navigator>
 
     )
 
@@ -92,16 +92,16 @@ const AppDrawer = () => {
 
 const styles = StyleSheet.create({
 
-    container : {
+    container: {
 
-        flexDirection: 'row', 
-        alignItems: 'center', 
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between'
 
     },
 
-    text : {
-        fontSize : 16
+    text: {
+        fontSize: 16
     }
 
 })

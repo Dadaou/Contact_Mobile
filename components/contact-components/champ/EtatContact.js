@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { blanc } from "../../../Utils/constant";
+import { blanc } from "../../Utils/constant";
 
 const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
@@ -15,32 +15,32 @@ const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
   return (
 
-        <View style={styles.container}>
+    <View style={styles.container}>
 
-            <Text style={styles.text}>Etat :</Text>
+      <Text style={styles.text}>Etat :</Text>
 
-            <View style={{ flexDirection: "row", paddingLeft : 15 }}>
+      <View style={{ flexDirection: "row", paddingLeft: 15 }}>
 
-                <TouchableOpacity
-                    onPress={handleActif}
-                    style={paramEtat ? styles.actif : styles.buton}>
+        <TouchableOpacity
+          onPress={handleActif}
+          style={paramEtat ? styles.actif : styles.buton}>
 
-                    <Text style={paramEtat ? styles.selectedText : styles.text}>Actif</Text>
-                
-                </TouchableOpacity>
+          <Text style={paramEtat ? styles.selectedText : styles.text}>Actif</Text>
 
-                <TouchableOpacity
+        </TouchableOpacity>
 
-                    onPress={handleInactif}
-                    style={!paramEtat ? styles.inactif : styles.buton}>
-                    
-                    <Text style={!paramEtat ? styles.selectedText : styles.text}>Inactif</Text>
+        <TouchableOpacity
 
-                </TouchableOpacity>
+          onPress={handleInactif}
+          style={!paramEtat ? styles.inactif : styles.buton}>
 
-            </View>
+          <Text style={!paramEtat ? styles.selectedText : styles.text}>Inactif</Text>
 
-        </View>
+        </TouchableOpacity>
+
+      </View>
+
+    </View>
   )
 };
 
@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
     padding: 10
   },
 
-  text : { 
+  text: {
 
-    textAlign: "center", 
-    color: "black", 
-    fontSize: 20, 
+    textAlign: "center",
+    color: "black",
+    fontSize: 20,
     fontWeight: "bold"
 
-   },
+  },
 
 
   selectedText: {
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 
     width: buttonSize,
     height: 40,
-    backgroundColor: "#228B22", 
+    backgroundColor: "#228B22",
     alignItems: "center",
     justifyContent: "center"
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 
     width: buttonSize,
     height: 40,
-    backgroundColor: "#D2042D", 
+    backgroundColor: "#D2042D",
     alignItems: "center",
     justifyContent: "center"
 

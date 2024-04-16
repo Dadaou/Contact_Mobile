@@ -1,19 +1,19 @@
 import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
-import { blanc, bleu } from '../../../Utils/constant'
+import { blanc, bleu } from '../../Utils/constant'
 
-const ChampFonction = ({paramFonction, onChangeFonction}) => {
+const ChampFonction = ({ paramFonction, onChangeFonction }) => {
 
     return (
 
-            <TextInput
+        <TextInput
 
-                style={{ ...styles.input, marginBottom: 25 }}
-                label = "Fonction"
-                mode='outlined'
-                activeOutlineColor = {bleu}
-                onChangeText={(text) => onChangeFonction(text)}
-                value={paramFonction} />
+            style={{ ...styles.input, marginBottom: 25 }}
+            label="Fonction"
+            mode='outlined'
+            activeOutlineColor={bleu}
+            onChangeText={(text) => onChangeFonction(text)}
+            value={paramFonction} />
     )
 
 }
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : blanc,
+        backgroundColor: blanc,
         marginBottom: 20
     }
-    
-    
+
+
 })
 
 

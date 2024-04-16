@@ -2,14 +2,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { TextInput, Button } from 'react-native-paper'
-import { View, Text, TouchableOpacity, StyleSheet} from "react-native"
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import SpinnerModal from '../../Modal/Spinner'
+import SpinnerModal from '../../modal/Spinner'
 import axios from 'axios'
-import { blanc, bleu } from '../../../Utils/constant'
+import { blanc, bleu } from '../../Utils/constant'
 
 
-const FormulaireAuthentification = ({ onLogin}) => {
+const FormulaireAuthentification = ({ onLogin }) => {
 
     const [identifiant, setIdentifiant] = useState('')
     const [motDePasse, setMotDePasse] = useState('')
@@ -55,7 +55,7 @@ const FormulaireAuthentification = ({ onLogin}) => {
 
                         setLoading(false)
                         onLogin()
-    
+
                     } catch (error) { console.log(error) }
                 }
 
@@ -78,21 +78,21 @@ const FormulaireAuthentification = ({ onLogin}) => {
 
                 <TextInput
                     style={styles.input}
-                    label = "Identifiant"
+                    label="Identifiant"
                     mode='outlined'
-                    activeOutlineColor = {bleu}
+                    activeOutlineColor={bleu}
                     onChangeText={(text) => setIdentifiant(text)}
                     value={identifiant} />
 
                 <TextInput
                     style={styles.input}
-                    label = "Mot de passe"
+                    label="Mot de passe"
                     mode='outlined'
-                    activeOutlineColor = {bleu}
+                    activeOutlineColor={bleu}
                     secureTextEntry={!afficherMotDePasse}
                     onChangeText={(text) => setMotDePasse(text)}
-                    value={motDePasse} 
-                    right={afficherMotDePasse ? <TextInput.Icon icon="eye-off" onPress={toggleAfficherMotDePasse}/> : <TextInput.Icon icon="eye"  onPress={toggleAfficherMotDePasse}/> }/>
+                    value={motDePasse}
+                    right={afficherMotDePasse ? <TextInput.Icon icon="eye-off" onPress={toggleAfficherMotDePasse} /> : <TextInput.Icon icon="eye" onPress={toggleAfficherMotDePasse} />} />
 
             </View>
 
@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
         width: 300,
     },
 
-    input : {
-        backgroundColor : blanc,
-        marginBottom : 15
+    input: {
+        backgroundColor: blanc,
+        marginBottom: 15
     },
 
 

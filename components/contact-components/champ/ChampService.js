@@ -1,19 +1,19 @@
 import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from "react-native"
-import { blanc, bleu } from "../../../Utils/constant"
+import { blanc, bleu } from "../../Utils/constant"
 
-const ChampService = ({paramServie, onChangeService}) => {
+const ChampService = ({ paramServie, onChangeService }) => {
 
     return (
 
-            <TextInput
+        <TextInput
 
-                style={styles.input}
-                label = "Service"
-                mode='outlined'
-                activeOutlineColor = {bleu}
-                onChangeText={(text) => onChangeService(text)}
-                value={paramServie} />
+            style={styles.input}
+            label="Service"
+            mode='outlined'
+            activeOutlineColor={bleu}
+            onChangeText={(text) => onChangeService(text)}
+            value={paramServie} />
     )
 
 }
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : blanc,
+        backgroundColor: blanc,
         marginBottom: 20
     }
-    
-    
+
+
 })
 
 

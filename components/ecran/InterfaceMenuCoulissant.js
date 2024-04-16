@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BackHandler, Alert } from 'react-native'
 import AppDrawer from './Drawer'
-import Toast from '../Modal/Toast'
+import Toast from '../modal/Toast'
 
 const MenuCoulissant = ({ navigation, route }) => {
 
@@ -16,7 +16,7 @@ const MenuCoulissant = ({ navigation, route }) => {
 
   }
 
-  const backAction = () => {
+  /*const backAction = () => {
 
     Alert.alert("Attention!", "Vous êtes sur le point de quitter l'application, continuer?", [
       {
@@ -26,7 +26,7 @@ const MenuCoulissant = ({ navigation, route }) => {
       { text: 'OUI', onPress: () => BackHandler.exitApp() },
     ])
     return true
-  }
+  }*/
 
   useEffect(() => {
 

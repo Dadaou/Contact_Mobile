@@ -3,7 +3,7 @@ import { View, FlatList } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from '../../Utils/constant'
+import { dbLocalName } from '../Utils/constant'
 import ListView from './ListView'
 
 
@@ -53,17 +53,17 @@ const ListFavori = () => {
 
     return (
 
-            data.length !== 0 ?
+        data.length !== 0 ?
 
-                <FlatList
-                    data={data}
-                    renderItem={({ item }) => <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris}/>}
-                    keyExtractor={item => item.ctt_id} /> : 
+            <FlatList
+                data={data}
+                renderItem={({ item }) => <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris} />}
+                keyExtractor={item => item.ctt_id} /> :
 
-                <View style = {{flex : 1, justifyContent : "center", marginBottom : 100}}>
-                    <Text style = {{textAlign :"center", fontWeight : "bold"}} variant="headlineSmall">Pas de contact favori</Text>
-                </View>
-                
+            <View style={{ flex: 1, justifyContent: "center", marginBottom: 100 }}>
+                <Text style={{ textAlign: "center", fontWeight: "bold" }} variant="headlineSmall">Pas de contact favori</Text>
+            </View>
+
     )
 }
 

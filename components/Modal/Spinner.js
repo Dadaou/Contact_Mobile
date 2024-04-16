@@ -1,53 +1,53 @@
 import ReactNativeModal from "react-native-modal"
-import { bleu } from "../../Utils/constant";
+import { bleu } from "../Utils/constant";
 import {
-    View,
-    StyleSheet,
-    Text,
-    ActivityIndicator
-  } from 'react-native'
+  View,
+  StyleSheet,
+  Text,
+  ActivityIndicator
+} from 'react-native'
 
 
-const SpinnerModal = ({isVisible}) => {
+const SpinnerModal = ({ isVisible }) => {
 
-    return (
-      <View>
-        <ReactNativeModal
-          isVisible={isVisible} 
-          backdropOpacity={0.8}
-          animationIn="zoomInDown"
-          animationOut="zoomOutUp"
-          animationInTiming={500}
-          animationOutTiming={500}
-          backdropTransitionInTiming={500}
-          backdropTransitionOutTiming={500}
-        >
-          <View  style={styles.content}>
-            <ActivityIndicator size="large" color={bleu}/>
-            <Text style={styles.contentTitle}>Chargement...</Text>
-          </View>
-        </ReactNativeModal>
-      </View>
-    );
-  
+  return (
+    <View>
+      <ReactNativeModal
+        isVisible={isVisible}
+        backdropOpacity={0.8}
+        animationIn="zoomInDown"
+        animationOut="zoomOutUp"
+        animationInTiming={500}
+        animationOutTiming={500}
+        backdropTransitionInTiming={500}
+        backdropTransitionOutTiming={500}
+      >
+        <View style={styles.content}>
+          <ActivityIndicator size="large" color={bleu} />
+          <Text style={styles.contentTitle}>Chargement...</Text>
+        </View>
+      </ReactNativeModal>
+    </View>
+  );
+
 }
 
 const styles = StyleSheet.create({
 
-    content: {
-      backgroundColor: 'white',
-      padding: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 3,
-      margin : 70
-    },
-  
-    contentTitle: {
-      fontSize: 15
-    }
-    
-  })
+  content: {
+    backgroundColor: 'white',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3,
+    margin: 70
+  },
+
+  contentTitle: {
+    fontSize: 15
+  }
+
+})
 
 
 export default SpinnerModal

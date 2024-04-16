@@ -1,19 +1,19 @@
 import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
-import { blanc, bleu } from "../../../Utils/constant"
+import { blanc, bleu } from "../../Utils/constant"
 
-const ChampPrenom = ({paramPrenom, onChangePrenom}) => {
+const ChampPrenom = ({ paramPrenom, onChangePrenom }) => {
 
     return (
 
-            <TextInput
+        <TextInput
 
-                style={styles.input}
-                label = "Prénom"
-                mode='outlined'
-                activeOutlineColor = {bleu}
-                onChangeText={(text) => onChangePrenom(text)}
-                value={paramPrenom} />
+            style={styles.input}
+            label="Prénom"
+            mode='outlined'
+            activeOutlineColor={bleu}
+            onChangeText={(text) => onChangePrenom(text)}
+            value={paramPrenom} />
     )
 
 }
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : blanc,
+        backgroundColor: blanc,
         marginBottom: 20,
     }
-    
-    
+
+
 })
 
 

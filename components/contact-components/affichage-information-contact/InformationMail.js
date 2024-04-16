@@ -3,7 +3,7 @@ import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { Card, IconButton, Text } from "react-native-paper"
-import { dbLocalName } from "../../../Utils/constant"
+import { dbLocalName } from "../../Utils/constant"
 import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {
@@ -15,14 +15,14 @@ const convertirEnArray = (chaine) => {
 
 }
 
-const  InformationMail = ({id}) => {
+const InformationMail = ({ id }) => {
 
     const requeteTableMail = "SELECT ml_mail, ml_libelle FROM mail WHERE ctt_id = ? "
     //const requeteTableMail = "SELECT GROUP_CONCAT(DISTINCT mail.ml_mail) AS ml_mail, GROUP_CONCAT(DISTINCT mail.ml_libelle) AS ml_libelle FROM mail WHERE ctt_id = ? GROUP BY ctt_id"
     const navigation = useNavigation()
-    const db = SQLite.openDatabase(dbLocalName )
+    const db = SQLite.openDatabase(dbLocalName)
 
-    const [mail, setMail] = useState([{ml_mail : '', ml_libelle : ''}])
+    const [mail, setMail] = useState([{ ml_mail: '', ml_libelle: '' }])
 
     const handleEmailPress = (email) => {
         const emailURL = `mailto:${email}`
@@ -57,8 +57,8 @@ const  InformationMail = ({id}) => {
                 })
                 .catch((error) => {
                     console.warn(error)
-            })
-           
+                })
+
         })
 
     }, [])
@@ -72,17 +72,17 @@ const  InformationMail = ({id}) => {
                 {mail.map((item, index) => (
                     item.ml_mail !== "" ? (
 
-                            <Card key={index} mode="contained" style={styles.card}>
-                                <TouchableRipple onPress={() => handleEmailPress(item.ml_mail)} >
-                                    <Card.Title
-                                        title={item.ml_mail}
-                                        titleStyle={{ fontSize: 18 }}
-                                        subtitle={item.ml_libelle}
-                                        left={(props) => <IconButton {...props} icon="email" size={28} onPress={() => handleEmailPress(item.ml_mail)} />}
-                                    />
-                                </TouchableRipple>
-                            </Card>
-                        
+                        <Card key={index} mode="contained" style={styles.card}>
+                            <TouchableRipple onPress={() => handleEmailPress(item.ml_mail)} >
+                                <Card.Title
+                                    title={item.ml_mail}
+                                    titleStyle={{ fontSize: 18 }}
+                                    subtitle={item.ml_libelle}
+                                    left={(props) => <IconButton {...props} icon="email" size={28} onPress={() => handleEmailPress(item.ml_mail)} />}
+                                />
+                            </TouchableRipple>
+                        </Card>
+
                     ) : (
                         <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
@@ -139,15 +139,15 @@ const  InformationMail = ({id}) => {
 
 const styles = StyleSheet.create({
 
-    titre : {
+    titre: {
 
-        fontSize: 20,  
+        fontSize: 20,
         marginBottom: 12
 
     },
 
-    card : {
-        backgroundColor: "#F2F3F4", 
+    card: {
+        backgroundColor: "#F2F3F4",
         borderRadius: 20
     }
 })

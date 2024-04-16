@@ -3,9 +3,9 @@ import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"
 import * as SQLite from 'expo-sqlite'
-import getIsoCode from "../../../Utils/getIsoCode"
+import getIsoCode from "../../Utils/getIsoCode"
 import { Card, IconButton, Text } from "react-native-paper"
-import { dbLocalName } from "../../../Utils/constant"
+import { dbLocalName } from "../../Utils/constant"
 import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {
@@ -55,7 +55,7 @@ const InformationTelephone = ({ id }) => {
                 })
                 .catch((error) => {
                     console.warn(error)
-            })
+                })
         })
 
     }, [])
@@ -69,28 +69,28 @@ const InformationTelephone = ({ id }) => {
 
     const afficherNumeroTelephone = (tel_code_pays, tel_numero) => {
 
-           let telNumOriginale = tel_numero.trim()
-           tel_numero = tel_numero.replace(/ /g, '') 
-           let longueurNumero = tel_numero.length
+        let telNumOriginale = tel_numero.trim()
+        tel_numero = tel_numero.replace(/ /g, '')
+        let longueurNumero = tel_numero.length
 
-           if(tel_code_pays === "33") {
+        if (tel_code_pays === "33") {
 
-                if (longueurNumero >= 9 && longueurNumero <= 10) {
+            if (longueurNumero >= 9 && longueurNumero <= 10) {
 
-                    if(telNumOriginale.startsWith("0")){
-                        return `+${tel_code_pays} (${telNumOriginale.slice(0, 1)})${telNumOriginale.slice(1)}`
-                    }
-                   else{
-                       return `+${tel_code_pays} (0)${telNumOriginale}`
-                    }
+                if (telNumOriginale.startsWith("0")) {
+                    return `+${tel_code_pays} (${telNumOriginale.slice(0, 1)})${telNumOriginale.slice(1)}`
                 }
-
                 else {
-                    return `+${tel_code_pays} ${tel_numero}`
+                    return `+${tel_code_pays} (0)${telNumOriginale}`
                 }
+            }
 
-           }
-           else return `+${tel_code_pays} ${telNumOriginale}`
+            else {
+                return `+${tel_code_pays} ${tel_numero}`
+            }
+
+        }
+        else return `+${tel_code_pays} ${telNumOriginale}`
     }
 
 
@@ -102,12 +102,12 @@ const InformationTelephone = ({ id }) => {
                     item.tel_numero !== "" ? (
                         <Card key={index} mode="contained" style={styles.card}>
 
-                            <TouchableRipple 
-                                    onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)}>
+                            <TouchableRipple
+                                onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)}>
 
                                 <Card.Title
                                     title={
-                        
+
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <CountryFlag
                                                 isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
@@ -115,7 +115,7 @@ const InformationTelephone = ({ id }) => {
                                             />
                                             <Text style={{ marginLeft: 8, fontSize: 18 }}>{afficherNumeroTelephone(item.tel_code_pays, item.tel_numero)}</Text>
                                         </View>
-                                    
+
                                     }
                                     subtitle={item.tel_libelle}
                                     left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)} />}
@@ -127,7 +127,7 @@ const InformationTelephone = ({ id }) => {
                         <Card key={index} mode="contained" style={styles.card}>
                             <Card.Title
                                 subtitle={"Ajouter un numéro de téléphone"}
-                                left={(props) => <IconButton {...props} icon="phone" size={28}  />}
+                                left={(props) => <IconButton {...props} icon="phone" size={28} />}
                             />
                         </Card>
                     )
@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
 
     },
 
-    card : {
-        backgroundColor: "#F2F3F4", 
+    card: {
+        backgroundColor: "#F2F3F4",
         borderRadius: 20,
     }
 })

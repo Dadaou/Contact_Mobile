@@ -2,11 +2,11 @@ import { useState, useEffect } from "react"
 import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import { Appbar } from "react-native-paper"
-import Toast from "../Modal/Toast"
+import Toast from "../modal/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
 import InformationContact from "../contact-components/affichage-information-contact/InformationContact"
-import { dbLocalName } from "../../Utils/constant"
+import { dbLocalName } from "../Utils/constant"
 import * as SQLite from 'expo-sqlite'
 import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"
@@ -78,12 +78,12 @@ const DetailContact = ({ route }) => {
         <>
 
             <StatusBar backgroundColor="#F2F3F4" barStyle="dark-content" />
-          
-            <Appbar.Header style={{backgroundColor : "#F2F3F4"}}>
-                <Appbar.BackAction onPress={() => navigation.goBack()} size={25}/>
+
+            <Appbar.Header style={{ backgroundColor: "#F2F3F4" }}>
+                <Appbar.BackAction onPress={() => navigation.goBack()} size={25} />
                 <Appbar.Content title="" />
-                <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori}/>
-                <Appbar.Action icon="pencil"   onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })}/>
+                <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori} />
+                <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })} />
             </Appbar.Header>
 
             <ScrollView>
@@ -92,11 +92,11 @@ const DetailContact = ({ route }) => {
 
                     <InformationContact id={ctt_id} />
 
-                    <View style={{padding: 5 }}>
+                    <View style={{ padding: 5 }}>
                         <InformationTelephone id={ctt_id} />
                     </View>
 
-                    <View style={{padding: 5 }}>
+                    <View style={{ padding: 5 }}>
                         <InformationMail id={ctt_id} />
                     </View>
 

@@ -1,20 +1,20 @@
 import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
-import { blanc, bleu } from "../../../Utils/constant"
+import { blanc, bleu } from "../../Utils/constant"
 
-const ChampTwitter = ({paramTwitter, onChangeTwitter}) => {
+const ChampTwitter = ({ paramTwitter, onChangeTwitter }) => {
 
     return (
 
         <TextInput
 
             style={{ ...styles.input }}
-            label = "Twitter"
+            label="Twitter"
             mode='outlined'
-            activeOutlineColor = {bleu}
+            activeOutlineColor={bleu}
             onChangeText={(text) => onChangeTwitter(text)}
-            value={paramTwitter} 
-            left={<TextInput.Icon icon="twitter" color={"#00AFF0"} size={35}/>}/>
+            value={paramTwitter}
+            left={<TextInput.Icon icon="twitter" color={"#00AFF0"} size={35} />} />
     )
 
 }
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     input: {
 
         width: 300,
-        backgroundColor : blanc,
+        backgroundColor: blanc,
         marginBottom: 20
     }
-    
-    
+
+
 })
 
 

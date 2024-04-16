@@ -1,7 +1,7 @@
 import React from 'react'
-import { Modal, StyleSheet, View, Image} from 'react-native' 
+import { Modal, StyleSheet, View, Image } from 'react-native'
 import { Text } from 'react-native-paper'
-import { blanc } from '../../Utils/constant';
+import { blanc } from '../Utils/constant';
 
 const Toast = ({ title, isVisible }) => {
 
@@ -28,27 +28,27 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
         position: 'absolute',
-        height: '100%', 
+        height: '100%',
         width: '100%',
-        marginTop : 490
+        marginTop: 490
     },
 
     modalView: {
 
         flexDirection: 'row',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center',
         top: 100,
-        width: 200, 
+        width: 200,
         height: 40,
         backgroundColor: blanc,
         borderRadius: 30,
-        opacity : 0.9,
-        padding : 5
+        opacity: 0.9,
+        padding: 5
     },
 
     textStyle: {
-        fontWeight : 'bold',
+        fontWeight: 'bold',
         marginLeft: 8
     },
 

@@ -1,5 +1,5 @@
 import CountryPicker from "rn-country-picker"
-import { blanc, bleu } from "../../../Utils/constant"
+import { blanc, bleu } from "../../Utils/constant"
 import SelectDropdown from 'react-native-select-dropdown'
 import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 

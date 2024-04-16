@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, Image } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from "../../../Utils/constant"
+import { dbLocalName } from "../../Utils/constant"
 
 
 const InformationContact = ({ id }) => {
