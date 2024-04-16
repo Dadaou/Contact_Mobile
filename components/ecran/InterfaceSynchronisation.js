@@ -15,6 +15,10 @@ const Animation = ({ navigation }) => {
     const [msgErreur, setMsgErreur] = useState('')
     //const navigation = useNavigation()
 
+    const redirection = (afficherMsg) => {
+        navigation.navigate('Accueil', { showModal: afficherMsg })
+    }
+
     const enregistrerContactWebSurMobile = (contacts) => {
 
         return new Promise((resolve, reject) => {
@@ -132,7 +136,7 @@ const Animation = ({ navigation }) => {
                     })
 
                 setLoading(false)
-
+                redirection(true)
             })
 
             .catch(error => {
@@ -140,7 +144,9 @@ const Animation = ({ navigation }) => {
                 setLoading(false)
                 setModalVisible(true)
                 setMsgErreur("Une erreur s'est produite lors de la récupération des contacts.")
+                redirection(false)
 
+                console.log(error)
             })
 
     }
@@ -148,7 +154,7 @@ const Animation = ({ navigation }) => {
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-            //recupererInfoContactDepuisWeb()
+            recupererInfoContactDepuisWeb()
         })
         return unsubscribe
     }, [navigation])

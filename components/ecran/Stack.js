@@ -40,13 +40,14 @@ const AppStack = () => {
             <Stack.Navigator screenOptions={{ headerShown: false }} >
 
                 {isLogin ? (
+                    
                     <>
 
-                        <Stack.Screen name="Animation" component={Animation} />
                         <Stack.Screen name="Accueil" component={MenuCoulissant} />
                         <Stack.Screen name="AjoutContact" component={AjoutContact} />
                         <Stack.Screen name="DetailContact" component={DetailContact} />
                         <Stack.Screen name="ModificationContact" component={ModificationContact} />
+                        <Stack.Screen name="Animation" component={Animation} />
 
                     </>
                 ) : (

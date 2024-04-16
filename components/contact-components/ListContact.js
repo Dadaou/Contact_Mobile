@@ -98,7 +98,11 @@ const ListContact = React.memo(() => {
 
 
     useEffect(() => {
-        afficherPremiereAlerteDeSynchronisation()
+
+        const timer = setTimeout(() => {
+            afficherPremiereAlerteDeSynchronisation()
+        }, 1000)
+        return () => clearTimeout(timer)
     }, [])
 
 
