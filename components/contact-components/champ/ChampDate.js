@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
-import { blanc, bleu } from "../../Utils/constant"
+import { blanc, bleu } from "../../utils/Constant"
 
 const ChampDate = ({ paramDate, onChangeDate }) => {
 

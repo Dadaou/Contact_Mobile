@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, StyleSheet, View, Image } from 'react-native'
 import { Text } from 'react-native-paper'
-import { blanc } from '../Utils/constant';
+import { blanc } from '../utils/Constant';
 
 const Toast = ({ title, isVisible }) => {
 

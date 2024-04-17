@@ -1,6 +1,4 @@
 export const dbLocalName = "Contact.db"
-export const blanc = "#FEFFFF" // #E5E4E2
-export const bleu = "#005F9D"
 
 export const infoApp = {
 
@@ -9,3 +7,8 @@ export const infoApp = {
     appUrl: "https://contacts2.manao.eu",
     logId: 17
 }
+
+export const blanc = "#FEFFFF" // #E5E4E2
+export const bleu = "#005F9D"
+
+

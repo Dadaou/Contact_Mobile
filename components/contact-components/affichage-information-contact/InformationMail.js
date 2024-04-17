@@ -3,7 +3,7 @@ import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { Card, IconButton, Text } from "react-native-paper"
-import { dbLocalName } from "../../Utils/constant"
+import { dbLocalName } from "../../utils/Constant"
 import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {

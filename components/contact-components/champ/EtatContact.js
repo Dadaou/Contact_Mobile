@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { blanc } from "../../Utils/constant";
+import { blanc } from "../../utils/Constant";
 
 const EtatContact = ({ paramEtat, onChangeEtat }) => {
 

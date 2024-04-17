@@ -3,9 +3,9 @@ import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"
 import * as SQLite from 'expo-sqlite'
-import getIsoCode from "../../Utils/getIsoCode"
+import { getIsoCode } from "../../utils/utils"
 import { Card, IconButton, Text } from "react-native-paper"
-import { dbLocalName } from "../../Utils/constant"
+import { dbLocalName } from "../../utils/Constant"
 import { TouchableRipple } from "react-native-paper"
 
 const convertirEnArray = (chaine) => {
@@ -60,6 +60,8 @@ const InformationTelephone = ({ id }) => {
 
     }, [])
 
+
+
     const handlePhonePress = (tel_code_pays, tel_numero) => {
         const numeroComplet = tel_code_pays + tel_numero
         const telURL = `tel:+${numeroComplet}`
@@ -109,10 +111,9 @@ const InformationTelephone = ({ id }) => {
                                     title={
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <CountryFlag
-                                                isoCode={(getIsoCode(item.tel_code_pays) !== null && getIsoCode(item.tel_code_pays).toLowerCase()) || ''}
-                                                size={15}
-                                            />
+                                            {getIsoCode(item.tel_code_pays) !== null && (
+                                                <CountryFlag isoCode={getIsoCode(item.tel_code_pays).toLowerCase()} size={15} />
+                                            )}
                                             <Text style={{ marginLeft: 8, fontSize: 18 }}>{afficherNumeroTelephone(item.tel_code_pays, item.tel_numero)}</Text>
                                         </View>
 

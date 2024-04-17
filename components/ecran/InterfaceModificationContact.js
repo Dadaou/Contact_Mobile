@@ -1,5 +1,5 @@
-import requetes from '../Utils/RequeteSql'
-import { blanc, bleu, dbLocalName } from '../Utils/constant'
+import requetes from '../utils/RequeteSql'
+import { dbLocalName, blanc, bleu } from '../utils/Constant'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'

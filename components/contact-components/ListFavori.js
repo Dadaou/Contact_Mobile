@@ -3,7 +3,7 @@ import { View, FlatList } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from '../Utils/constant'
+import { dbLocalName } from '../utils/Constant'
 import ListView from './ListView'
 
 

@@ -3,7 +3,7 @@ import { View, FlatList, Alert } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from '../Utils/constant'
+import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact } from '../redux/action/globalDataAction'
 import ListView from './ListView'
@@ -42,7 +42,7 @@ const ListContact = React.memo(() => {
         })
     }
 
-    const afficherPremiereAlerteDeSynchronisation = async () => {
+    /*const afficherPremiereAlerteDeSynchronisation = async () => {
         try {
             const _alerte = await AsyncStorage.getItem('_alerte')
 
@@ -66,6 +66,26 @@ const ListContact = React.memo(() => {
         } catch (error) {
             throw error
         }
+    }*/
+
+    const afficherPremiereAlerteDeSynchronisation = async () => {
+ 
+
+   
+
+                Alert.alert(
+                    'Information',
+                    'Voulez-vous synchroniser vos contacts ?', [
+                    {
+                        text: 'Non',
+                    },
+                    {
+                        text: 'Oui',
+                        onPress: () => navigation.navigate('Animation')
+                    }
+                ])
+
+        
     }
 
 

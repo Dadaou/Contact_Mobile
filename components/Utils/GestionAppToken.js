@@ -1,5 +1,5 @@
 import axios from "axios"
-import { infoApp } from "./constant"
+import { infoApp } from "./Constant"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const extractAppTokenFromLocalStorage = async () => {

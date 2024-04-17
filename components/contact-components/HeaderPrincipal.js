@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { StyleSheet, StatusBar } from "react-native"
 import { Appbar } from 'react-native-paper'
-import { blanc, bleu } from '../Utils/constant'
+import { blanc, bleu } from '../utils/Constant'
 import ListContact from './ListContact'
 
 const HeaderPrincipal = ({ titre }) => {

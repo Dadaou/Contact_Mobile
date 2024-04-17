@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native"
 import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
-import { blanc } from "../../Utils/constant"
+import { blanc } from "../../utils/Constant"
 
 const ChampGroupe = ({ paramGroupe, onChangeGroupe }) => {
 

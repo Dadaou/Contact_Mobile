@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import { useState } from "react"
 import { Searchbar } from 'react-native-paper'
-import { blanc } from "../../Utils/constant"
+import { blanc } from "../../utils/Constant"
 
 const ChampRechercheContact = () => {
 

@@ -8,7 +8,7 @@ import ContactFavori from "../contact-components/menu/ContactFavori"
 import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from "../Utils/constant"
+import { dbLocalName } from "../utils/Constant"
 
 
 const Drawer = createDrawerNavigator()

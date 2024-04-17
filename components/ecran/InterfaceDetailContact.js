@@ -6,7 +6,7 @@ import Toast from "../modal/Toast"
 import InformationMail from "../contact-components/affichage-information-contact/InformationMail"
 import InformationTelephone from "../contact-components/affichage-information-contact/InformationTelephone"
 import InformationContact from "../contact-components/affichage-information-contact/InformationContact"
-import { dbLocalName } from "../Utils/constant"
+import { dbLocalName } from "../utils/Constant"
 import * as SQLite from 'expo-sqlite'
 import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"

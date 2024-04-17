@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from "react-native"
-import { blanc, bleu } from "../../Utils/constant"
+import { blanc, bleu } from "../../utils/Constant"
 
 const ChampService = ({ paramServie, onChangeService }) => {
 

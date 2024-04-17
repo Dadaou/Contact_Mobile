@@ -3,7 +3,7 @@ import { Feather } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
 import { TextInput } from 'react-native-paper'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { blanc, bleu } from '../../Utils/constant'
+import { blanc, bleu } from '../../utils/Constant'
 
 
 const ChampEmail = ({ paramMail, onChangeMail }) => {

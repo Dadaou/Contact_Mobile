@@ -1,12 +1,12 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput } from 'react-native-paper'
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import SpinnerModal from '../../modal/Spinner'
 import axios from 'axios'
-import { blanc, bleu } from '../../Utils/constant'
+import { bleu, blanc } from '../../utils/Constant'
 
 
 const FormulaireAuthentification = ({ onLogin }) => {

@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native"
 import { useNavigation } from '@react-navigation/native'
-import { blanc, bleu } from "../Utils/constant"
+import { blanc, bleu } from "../utils/Constant"
 import { FAB } from 'react-native-paper'
 
 const BoutonAjoutContact = () => {

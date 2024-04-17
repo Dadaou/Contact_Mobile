@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from "react-native"
 import LottieView from "lottie-react-native"
 import CustomAlert from '../modal/CustomAlert'
-import { extractAppTokenFromLocalStorage, obtenirAppToken } from '../Utils/GestionAppToken'
+import { extractAppTokenFromLocalStorage, obtenirAppToken } from '../utils/GestionAppToken'
 import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from "../Utils/constant"
 import axios from 'axios'
-import requetes from '../Utils/RequeteSql'
+import { dbLocalName } from '../utils/Constant'
+import requetes from '../utils/RequeteSql'
 const Animation = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
@@ -107,55 +107,52 @@ const Animation = ({ navigation }) => {
         }
     }
 
-    const recupererInfoContactDepuisWeb = () => {
+    const recupererInfoContactDepuisWeb = async (appToken, tentativeEssai = 3) => {
 
         setLoading(true)
+        try {
 
-        const appToken = extractAppTokenFromLocalStorage()
+            const response = await axios.post('http://192.168.9.179:8088/index.php/v1/obtenirContactsParUtilisateur', {
+                suffixBase: 220638,
+                utilId: 1700
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + appToken
+                }
+            })
 
-        axios.post('http://192.168.9.179:8088/index.php/v1/obtenirContactsParUtilisateur', {
+            if(response.data) {
 
-            suffixBase: 220638,
-            utilId: 1700
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + appToken
-            }
-        })
-
-            .then(res => {
-
-                enregistrerInfoContactDepuisWeb(res.data.contacts, res.data.telephones, res.data.mails)
-                    .then(() => {
-                        console.log('Les informations sur les contacts ont été enregistrées avec succès.')
-                    })
-                    .catch((error) => {
-
-                        setModalVisible(true)
-                        setMsgErreur("Une erreur est survenue lors de l'enregistrement des informations sur les contacts.")
-                    })
-
+                await enregistrerInfoContactDepuisWeb(response.data.contacts, response.data.telephones, response.data.mails)
                 setLoading(false)
                 redirection(true)
-            })
+                console.log('Les informations sur les contacts ont été enregistrées avec succès.')
+            }
 
-            .catch(error => {
 
+        } catch (error) {
+
+            if (tentativeEssai > 0) {
+                const nouveauAppToken = obtenirAppToken()
+                await recupererInfoContactDepuisWeb(nouveauAppToken, tentativeEssai - 1)
+            } else {
                 setLoading(false)
                 setModalVisible(true)
-                setMsgErreur("Une erreur s'est produite lors de la récupération des contacts.")
+                setMsgErreur("Une erreur s'est produite lors de la récupération des contacts.");
                 redirection(false)
-
-                console.log(error)
-            })
-
-    }
-
+            }
+        }
+    };
+    
     useEffect(() => {
-
-        const unsubscribe = navigation.addListener('focus', () => {
-            recupererInfoContactDepuisWeb()
-        })
+        const unsubscribe = navigation.addListener('focus', async () => {
+            try {
+                const appToken = await extractAppTokenFromLocalStorage()
+                await recupererInfoContactDepuisWeb(appToken)
+            } catch (error) {
+                console.error("Erreur lors de la récupération du token :", error)
+            }
+        });
         return unsubscribe
     }, [navigation])
 

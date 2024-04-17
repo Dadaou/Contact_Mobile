@@ -1,5 +1,5 @@
 import ReactNativeModal from "react-native-modal"
-import { bleu } from "../Utils/constant";
+import { bleu } from "../utils/Constant";
 import {
   View,
   StyleSheet,
