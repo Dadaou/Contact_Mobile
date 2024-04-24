@@ -97,36 +97,34 @@ export const recupererInfoContactDepuisWeb = async (appToken, tentativeEssai = 3
 
     try {
 
-        const response = await axios.post('pp-api-contacts.manao.eu/index.php/v1/obtenirContactsParUtilisateur', {
+        const response = await axios.post('http://pp-api-contacts.manao.eu/index.php/v1/obtenirContactsParUtilisateur', {
             suffixBase: 220664,
-            utilId: 1700
+            utilId: 852
         }, {
             headers: {
                 'Authorization': 'Bearer ' + appToken
             }
         })
 
-        console.log(response.data)
-
-        /*if (response && response.data) {
+        if (response && response.data) {
 
             const { contacts, telephones, mails } = response.data
             await enregistrerInfoContactDepuisWeb(contacts, telephones, mails)
 
         } else {
             console.log('Une erreur s est produite lors de la récupération des contacts....');
-        }*/
+        }
 
     } catch (error) {
 
-       /* if (tentativeEssai > 0) {
+       if (tentativeEssai > 0) {
 
             const nouveauAppToken = obtenirAppToken();
             await recupererInfoContactDepuisWeb(nouveauAppToken, tentativeEssai - 1)
 
         } else {
             console.log("Une erreur s'est produite lors de la récupération des contacts.", error)
-        }*/
+        }
 
         console.log("Error", error)
     }

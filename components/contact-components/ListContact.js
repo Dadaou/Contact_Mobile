@@ -10,6 +10,7 @@ import ListView from './ListView'
 import { recupererInfoContactDepuisWeb } from '../synchronisation/RecupererContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import BottomToast from '../modal/BottomToast'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ListContact = React.memo(() => {
 
@@ -45,6 +46,22 @@ const ListContact = React.memo(() => {
         })
     }
 
+    const fetchContactWeb = async () => {
+
+        try {
+            const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
+    
+            if (premierSynchro === null || premierSynchro !== 'true') {
+                console.log("Ato")
+                const appToken = await extractAppTokenFromLocalStorage()
+                await recupererInfoContactDepuisWeb(appToken)
+                await AsyncStorage.setItem('_premierSynchro', 'true')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
     const fetchListContact = async () => {
 
         try {
@@ -56,33 +73,6 @@ const ListContact = React.memo(() => {
             console.error(error)
         }
     }
-
-    /*useEffect(() => {
- 
-        db.transaction((tx) => {
-
-            tx.executeSql(
-                'DROP TABLE IF EXISTS contact'
-                //reqCreationTableContact
-            )
-
-            tx.executeSql(
-                'DROP TABLE IF EXISTS telephone'
-                //reqCreationTableTelephone 
-            )
-
-            tx.executeSql(
-                'DROP TABLE IF EXISTS mail'
-                //reqCreationTableMail
-            )
-
-            tx.executeSql(
-                'DROP TABLE IF EXISTS adresse'
-                //reqCreationTableAdresse
-            )
-        })
-
-    }, [])*/
 
     useEffect(() => {
 
@@ -111,16 +101,9 @@ const ListContact = React.memo(() => {
 
     }, [])
 
-    /*useEffect(() => {
-        const fetchContactWeb = async() => {
-            setAfficherToast(true)
-            const appToken = await extractAppTokenFromLocalStorage()
-            await recupererInfoContactDepuisWeb(appToken)
-        }
-
+    useEffect(() => {
         fetchContactWeb()
-   
-    }, [])*/
+    }, [])
 
     useEffect(() => {
 
@@ -157,8 +140,6 @@ const ListContact = React.memo(() => {
                     </View>
                 )}
             />
-
-            <BottomToast isVisible={afficherToast}/>
         </>
     )
 
