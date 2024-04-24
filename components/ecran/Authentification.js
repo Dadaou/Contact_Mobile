@@ -10,9 +10,6 @@ const Authentification = () => {
 
     const identificationURI = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile'
     const recuperationInfo = 'http://pp-compte.manao.eu/index.php/WSSession/verifierTicket/'
-    const deconnexion = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile/viderSession/'
-
-    const activeToken = store.getState().globalReducer._token
 
     const getError = useCallback(() => {
     }, [])
@@ -41,7 +38,6 @@ const Authentification = () => {
                 originWhitelist={['*']}
                 onError={getError}
                 source={{ uri: identificationURI }}
-                //source={{ uri: activeToken !== null ? deconnexion + activeToken : identificationURI }}
                 style={{ flex: 1, marginTop: Constants.statusBarHeight }}
                 bounces={false}
                 onLoadStart={({ nativeEvent }) => {

@@ -17,14 +17,17 @@ const CustomDrawer = props => {
 
 
   const seDeconnecter = useCallback(async () => {
+
+    const deconnexionURI = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile/viderSession/'
     
     try {
 
-      await AsyncStorage.removeItem('_token')
-      await AsyncStorage.removeItem('_alerte')
+      const token = await AsyncStorage.getItem('_token')
       store.dispatch(manageUserToken(null))
       store.dispatch(manageLogin(false))
-
+      await fetch(deconnexionURI + token)
+      await AsyncStorage.removeItem('_token')
+      //await AsyncStorage.removeItem('_alerte')
     } catch (error) {
       console.log(error)
     }

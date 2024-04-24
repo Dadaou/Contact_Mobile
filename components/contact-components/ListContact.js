@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Alert } from "react-native"
+import { View, FlatList, RefreshControl} from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
@@ -7,7 +7,9 @@ import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact } from '../redux/action/globalDataAction'
 import ListView from './ListView'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { recupererInfoContactDepuisWeb } from '../synchronisation/RecupererContact'
+import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
+import BottomToast from '../modal/BottomToast'
 
 const ListContact = React.memo(() => {
 
@@ -21,6 +23,9 @@ const ListContact = React.memo(() => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
+    const [refreshing, setRefreshing] = useState(true)
+    const [afficherToast, setAfficherToast] = useState(false)
+
 
     const getListContact = () => {
 
@@ -40,33 +45,44 @@ const ListContact = React.memo(() => {
         })
     }
 
-    const afficherPremiereAlerteDeSynchronisation = async () => {
+    const fetchListContact = async () => {
 
         try {
-            
-            const _alerte = await AsyncStorage.getItem('_alerte')
-
-            if (_alerte === null || _alerte !== 'true') {
-
-                Alert.alert(
-                    'Information',
-                    'Voulez-vous récupérer vos contacts ?', [
-                    {
-                        text: 'Non',
-                    },
-                    {
-                        text: 'Oui',
-                        onPress: () => navigation.navigate('RecupererContact')
-                    }
-                ])
-
-                await AsyncStorage.setItem('_alerte', 'true')
-            }
-
+            const data = await getListContact()
+            setData(data._array)
+            store.dispatch(updateNombreContact(data.length))
+            setRefreshing(false)
         } catch (error) {
-            throw error
+            console.error(error)
         }
     }
+
+    /*useEffect(() => {
+ 
+        db.transaction((tx) => {
+
+            tx.executeSql(
+                'DROP TABLE IF EXISTS contact'
+                //reqCreationTableContact
+            )
+
+            tx.executeSql(
+                'DROP TABLE IF EXISTS telephone'
+                //reqCreationTableTelephone 
+            )
+
+            tx.executeSql(
+                'DROP TABLE IF EXISTS mail'
+                //reqCreationTableMail
+            )
+
+            tx.executeSql(
+                'DROP TABLE IF EXISTS adresse'
+                //reqCreationTableAdresse
+            )
+        })
+
+    }, [])*/
 
     useEffect(() => {
 
@@ -95,50 +111,55 @@ const ListContact = React.memo(() => {
 
     }, [])
 
+    /*useEffect(() => {
+        const fetchContactWeb = async() => {
+            setAfficherToast(true)
+            const appToken = await extractAppTokenFromLocalStorage()
+            await recupererInfoContactDepuisWeb(appToken)
+        }
 
-    useEffect(() => {
-
-        const timer = setTimeout(() => {
-            afficherPremiereAlerteDeSynchronisation()
-        }, 1500)
-        return () => clearTimeout(timer)
-    }, [])
-
+        fetchContactWeb()
+   
+    }, [])*/
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-
-            getListContact()
-                .then((data) => {
-                    setData(data._array)
-                    store.dispatch(updateNombreContact(data.length))
-                })
-                .catch((error) => {
-                    throw error
-                })
+            fetchListContact()
         })
-
         return unsubscribe
-
     }, [navigation])
-
 
     return (
 
-
-        data.length !== 0 ?
-
+        <>
             <FlatList
+                contentContainerStyle={{ flexGrow: 1 }}
                 data={data}
-                renderItem={({ item }) => <ListView ctt_id={item.ctt_id} photo={item.ctt_photo} prenom={item.ctt_prenom} nom={item.ctt_nom} favori={item.ctt_favoris} />}
-                keyExtractor={item => item.ctt_id} /> :
+                keyExtractor={item => item.ctt_id}
+                renderItem={({ item }) => (
+                    <ListView
+                        ctt_id={item.ctt_id}
+                        photo={item.ctt_photo}
+                        prenom={item.ctt_prenom}
+                        nom={item.ctt_nom}
+                        favori={item.ctt_favoris}
+                    />
+                )}
 
-            <View style={{ flex: 1, justifyContent: "center", marginBottom: 100 }}>
-                <Text style={{ textAlign: "center", fontWeight: "bold" }} variant="headlineSmall">Aucun contact enregistré</Text>
-            </View>
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchListContact} />}
 
+                ListEmptyComponent={(
+                    <View style={{ flex: 1, justifyContent: "center", marginBottom: 100 }}>
+                        <Text style={{ textAlign: "center", fontWeight: "bold" }} variant="headlineSmall">
+                            Aucun contact enregistré
+                        </Text>
+                    </View>
+                )}
+            />
 
+            <BottomToast isVisible={afficherToast}/>
+        </>
     )
 
 })

@@ -6,7 +6,6 @@ import MenuCoulissant from './InterfaceMenuCoulissant'
 import DetailContact from './InterfaceDetailContact'
 import AjoutContact from './InterfaceAjoutContact'
 import ModificationContact from './InterfaceModificationContact'
-import RecupererContact from '../synchronisation/RecupererContact'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { store } from '../redux/dataStore'
 import { manageLogin, manageUserToken } from '../redux/action/globalDataAction'
@@ -55,7 +54,6 @@ const AppStack = () => {
                         <Stack.Screen name="AjoutContact" component={AjoutContact} />
                         <Stack.Screen name="DetailContact" component={DetailContact} />
                         <Stack.Screen name="ModificationContact" component={ModificationContact} />
-                        <Stack.Screen name="RecupererContact" component={RecupererContact} />
 
                     </>
                 ) : (
