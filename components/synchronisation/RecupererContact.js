@@ -7,7 +7,8 @@ import * as SQLite from 'expo-sqlite'
 import axios from 'axios'
 import { dbLocalName } from '../utils/Constant'
 import requetes from '../utils/RequeteSql'
-const Animation = ({ navigation }) => {
+
+const RecupererContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const [loading, setLoading] = useState(false)
@@ -107,9 +108,10 @@ const Animation = ({ navigation }) => {
         }
     }
 
-    const recupererInfoContactDepuisWeb = async (appToken, tentativeEssai = 3) => {
+    const recupererInfoContactDepuisWeb = async (appToken, tentativeEssai = 1) => {
 
         setLoading(true)
+
         try {
 
             const response = await axios.post('http://192.168.9.179:8088/index.php/v1/obtenirContactsParUtilisateur', {
@@ -121,7 +123,7 @@ const Animation = ({ navigation }) => {
                 }
             })
 
-            if(response.data) {
+            if (response.data) {
 
                 await enregistrerInfoContactDepuisWeb(response.data.contacts, response.data.telephones, response.data.mails)
                 setLoading(false)
@@ -133,17 +135,18 @@ const Animation = ({ navigation }) => {
         } catch (error) {
 
             if (tentativeEssai > 0) {
+
                 const nouveauAppToken = obtenirAppToken()
                 await recupererInfoContactDepuisWeb(nouveauAppToken, tentativeEssai - 1)
+
             } else {
                 setLoading(false)
                 setModalVisible(true)
-                setMsgErreur("Une erreur s'est produite lors de la récupération des contacts.");
-                redirection(false)
+                setMsgErreur("Une erreur s'est produite lors de la récupération des contacts.")
             }
         }
-    };
-    
+    }
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', async () => {
             try {
@@ -185,4 +188,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Animation
+export default RecupererContact

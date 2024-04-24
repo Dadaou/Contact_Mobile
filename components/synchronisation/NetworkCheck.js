@@ -1,29 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
 import { updateNetworkStatus } from '../redux/action/globalDataAction'
+import envoyerContact from './EnvoyerContact'
 
 const NetworkCheck = () => {
 
-  const [connectionStatus, setConnectionStatus] = useState(false)
-  const [connectionType, setConnectionType] = useState(null)
+  const [connecte, setConnecte] = useState(false)
+  const [internetJoignable, setInternetJoignable] = useState(false)
 
-
-  const handleNetworkChange = (state) => {
+  const handleNetworkChange = useCallback((state) => {
     store.dispatch(updateNetworkStatus(state))
-    //store.subscribe(() => console.log("Eto ", store.getState().globalReducer.networkInfo))
-    //console.log(state)
-    setConnectionStatus(state.isConnected)
-    setConnectionType(state.type)
-  }
+    //store.subscribe(() => console.log("", store.getState().globalReducer.networkInfo))
+    setConnecte(state.isConnected)
+    setInternetJoignable(state.isInternetReachable)
+  }, [])
 
-  
   useEffect(() => {
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange)
     return () => {
       netInfoSubscription && netInfoSubscription()
     }
   }, [])
+
+  useEffect(() => {
+    if(connecte && internetJoignable) {
+      //envoyerContact()
+    }
+  }, [connecte, internetJoignable])
 
 
   /*return (

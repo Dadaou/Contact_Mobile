@@ -98,7 +98,7 @@ const AjoutContact = ({ navigation }) => {
                     requetes.InsererContact,
                     [
                         idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0, 0
                     ],
 
                     (txObj, resultSet) => {

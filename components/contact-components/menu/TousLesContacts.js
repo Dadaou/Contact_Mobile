@@ -3,7 +3,6 @@ import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
 import ChampRechercheContact from '../champ/ChampRechercheContact'
 import { PaperProvider } from 'react-native-paper'
-import BottomToast from '../../modal/BottomToast'
 
 const TousLesContacts = () => {
 

@@ -8,14 +8,12 @@ import { store } from '../redux/dataStore'
 import { updateNombreContact } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import CustomAlert from '../modal/CustomAlert'
-
 
 const ListContact = React.memo(() => {
 
     const navigation = useNavigation()
 
-    const reqCreationTableContact = "CREATE TABLE IF NOT EXISTS contact (ctt_id TEXT PRIMARY KEY, ctt_photo TEXT, ctt_nom TEXT, ctt_prenom TEXT, ctt_prenom_usage TEXT, ctt_entreprise TEXT, ctt_service TEXT, ctt_fonction TEXT, ctt_anniversaire DATE, ctt_siteweb TEXT, ctt_twitter TEXT, ctt_linkedin TEXT, ctt_facebook TEXT, ctt_skype TEXT, ctt_notes TEXT, ctt_corbeille INTEGER, ctt_favoris INTEGER, ctt_etat INTEGER, util_id TEXT)"
+    const reqCreationTableContact = "CREATE TABLE IF NOT EXISTS contact (ctt_id TEXT PRIMARY KEY, ctt_photo TEXT, ctt_nom TEXT, ctt_prenom TEXT, ctt_prenom_usage TEXT, ctt_entreprise TEXT, ctt_service TEXT, ctt_fonction TEXT, ctt_anniversaire DATE, ctt_siteweb TEXT, ctt_twitter TEXT, ctt_linkedin TEXT, ctt_facebook TEXT, ctt_skype TEXT, ctt_notes TEXT, ctt_corbeille INTEGER, ctt_favoris INTEGER, ctt_etat INTEGER, util_id TEXT, synchronise INTEGER)"
     const reqCreationTableTelephone = "CREATE TABLE IF NOT EXISTS telephone (tel_id INTEGER PRIMARY KEY AUTOINCREMENT, tel_numero TEXT, tel_code_pays TEXT, tel_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
     const reqCreationTableMail = "CREATE TABLE IF NOT EXISTS mail (ml_id INTEGER PRIMARY KEY AUTOINCREMENT, ml_mail TEXT, ml_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
     const reqCreationTableAdresse = "CREATE TABLE IF NOT EXISTS adresse (addr_id INTEGER PRIMARY KEY AUTOINCREMENT, addr_ligne1 TEXT, addr_ligne2 TEXT, addr_ligne3 TEXT, addr_ville TEXT, addr_pays TEXT, addr_bp TEXT, addr_cp TEXT, addr_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
@@ -42,21 +40,23 @@ const ListContact = React.memo(() => {
         })
     }
 
-    /*const afficherPremiereAlerteDeSynchronisation = async () => {
+    const afficherPremiereAlerteDeSynchronisation = async () => {
+
         try {
+            
             const _alerte = await AsyncStorage.getItem('_alerte')
 
             if (_alerte === null || _alerte !== 'true') {
 
                 Alert.alert(
                     'Information',
-                    'Voulez-vous synchroniser vos contacts ?', [
+                    'Voulez-vous récupérer vos contacts ?', [
                     {
                         text: 'Non',
                     },
                     {
                         text: 'Oui',
-                        onPress: () => navigation.navigate('Animation')
+                        onPress: () => navigation.navigate('RecupererContact')
                     }
                 ])
 
@@ -66,28 +66,7 @@ const ListContact = React.memo(() => {
         } catch (error) {
             throw error
         }
-    }*/
-
-    const afficherPremiereAlerteDeSynchronisation = async () => {
- 
-
-   
-
-                Alert.alert(
-                    'Information',
-                    'Voulez-vous synchroniser vos contacts ?', [
-                    {
-                        text: 'Non',
-                    },
-                    {
-                        text: 'Oui',
-                        onPress: () => navigation.navigate('Animation')
-                    }
-                ])
-
-        
     }
-
 
     useEffect(() => {
 
@@ -121,7 +100,7 @@ const ListContact = React.memo(() => {
 
         const timer = setTimeout(() => {
             afficherPremiereAlerteDeSynchronisation()
-        }, 1000)
+        }, 1500)
         return () => clearTimeout(timer)
     }, [])
 

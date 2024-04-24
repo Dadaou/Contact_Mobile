@@ -2,31 +2,23 @@ import { useState } from 'react'
 import { View, Button } from 'react-native'
 import { PaperProvider, Snackbar, Portal } from 'react-native-paper'
 
-const BottomToast = () => {
+const BottomToast = ({isVisible}) => {
 
-  const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(false)
+  const [portalSnackbarVisible, setPortalSnackbarVisible] = useState(isVisible)
+
   return (
-    <PaperProvider>
-      <View> 
-        <View>
-          <Button title="Portal Snackbar" onPress={() => setPortalSnackbarVisible(true)} />
-        </View>
-        <View>
-          <Portal>
-            <Snackbar
-              visible={portalSnackbarVisible}
-              onDismiss={() => setPortalSnackbarVisible(false)}
-              duration={2000}
-              /*action={{
-                label: 'close'
-              }}*/
-            >
-              This is a Snackbar.
-            </Snackbar>
-          </Portal>
-        </View>
-      </View>
-    </PaperProvider>
+
+          <Snackbar
+                visible={portalSnackbarVisible}
+                onDismiss={() => setPortalSnackbarVisible(false)}
+                duration={2000}
+                /*action={{
+                  label: 'close'
+                }}*/
+              >
+              Récupération de vos contacts en cours...
+          </Snackbar>
+  
   )
 }
 

@@ -25,7 +25,7 @@ export const obtenirAppToken = async () => {
             await AsyncStorage.setItem('_appToken', res.data.token)
             return res.data.token
         } else {
-            throw new Error("Token non reçu")
+            console.log("Token non reçu")
         }
     } catch (error) {
         console.log("Erreur lors de l'obtention du token", error)

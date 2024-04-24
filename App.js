@@ -1,5 +1,5 @@
 import AppStack from './components/ecran/Stack'
-import NetworkCheck from './components/contact-components/NetworkCheck'
+import NetworkCheck from './components/synchronisation/NetworkCheck'
 
 const App = () => {
 
@@ -9,6 +9,7 @@ const App = () => {
    
       <AppStack />
       <NetworkCheck />
+ 
 
     </>
 
