@@ -40,9 +40,6 @@
             "usesCleartextTraffic": true
           }
         }
-      ],
-      [
-        "expo-notifications"
       ]
     ]
   }

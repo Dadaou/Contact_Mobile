@@ -43,7 +43,8 @@
     "react-native-webview": "13.2.2",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
-    "rn-country-picker": "^1.0.1"
+    "rn-country-picker": "^1.0.1",
+    "expo-build-properties": "~0.8.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
