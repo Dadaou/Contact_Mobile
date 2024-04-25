@@ -7,9 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import SpinnerModal from '../../modal/Spinner'
 import axios from 'axios'
 import { bleu, blanc } from '../../utils/Constant'
+import { store } from '../../redux/dataStore'
+import { manageUserToken, manageLogin } from '../../redux/action/globalDataAction'
 
 
-const FormulaireAuthentification = ({ onLogin }) => {
+const FormulaireAuthentification = () => {
 
     const [identifiant, setIdentifiant] = useState('')
     const [motDePasse, setMotDePasse] = useState('')
@@ -53,8 +55,9 @@ const FormulaireAuthentification = ({ onLogin }) => {
                             res.data.data.token,
                         )
 
+                        store.dispatch(manageUserToken(res.data.data.token))
+                        store.dispatch(manageLogin(true))
                         setLoading(false)
-                        onLogin()
 
                     } catch (error) { console.log(error) }
                 }

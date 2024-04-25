@@ -52,7 +52,7 @@ const ListContact = React.memo(() => {
             const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
     
             if (premierSynchro === null || premierSynchro !== 'true') {
-                console.log("Ato")
+                
                 const appToken = await extractAppTokenFromLocalStorage()
                 await recupererInfoContactDepuisWeb(appToken)
                 await AsyncStorage.setItem('_premierSynchro', 'true')

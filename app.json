@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Mobile_Contact",
-    "slug": "Mobile_Contact",
+    "name": "manao contact",
+    "slug": "manao contact",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo-contacts.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo-contacts.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.onjamanao.Mobile_Contact"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "53457fb8-0127-4212-9bac-c22d5303ab03"
+      }
     }
   }
 }
