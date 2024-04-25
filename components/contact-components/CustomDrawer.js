@@ -59,7 +59,7 @@ const CustomDrawer = props => {
       <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
         <TouchableRipple onPress={seDeconnecter} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <MaterialCommunityIcons name="logout" size={24} color="#000000" />
+            <MaterialCommunityIcons name="logout" size={24} color="#000000" style= {{marginLeft : 8}}/>
             <Text
               style={{
                 fontSize: 16,

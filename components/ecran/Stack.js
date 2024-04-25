@@ -9,7 +9,6 @@ import ModificationContact from './InterfaceModificationContact'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { store } from '../redux/dataStore'
 import { manageLogin, manageUserToken } from '../redux/action/globalDataAction'
-import Login from './IntLogin'
 
 
 const Stack = createNativeStackNavigator()
@@ -58,8 +57,7 @@ const AppStack = () => {
 
                     </>
                 ) : (
-
-                    <Stack.Screen name="Login" component={Login}/>
+                    <Stack.Screen name="Authentification" component={Authentification}/>
                 )}
 
             </Stack.Navigator>
@@ -70,5 +68,3 @@ const AppStack = () => {
 }
 
 export default AppStack
-
-/*<Stack.Screen name="Authentification" component={Authentification}/>*/

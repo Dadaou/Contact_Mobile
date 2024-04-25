@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo-contacts.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.onjamanao.Mobile_Contact"

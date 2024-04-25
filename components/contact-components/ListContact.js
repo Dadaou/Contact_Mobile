@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, RefreshControl} from "react-native"
+import { View, FlatList, RefreshControl } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
@@ -9,10 +9,10 @@ import { updateNombreContact } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import { recupererInfoContactDepuisWeb } from '../synchronisation/RecupererContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
-import BottomToast from '../modal/BottomToast'
+//import BottomToast from '../modal/BottomToast'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const ListContact = React.memo(() => {
+const ListContact = () => {
 
     const navigation = useNavigation()
 
@@ -25,7 +25,7 @@ const ListContact = React.memo(() => {
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
     const [refreshing, setRefreshing] = useState(true)
-    const [afficherToast, setAfficherToast] = useState(false)
+    //const [afficherToast, setAfficherToast] = useState(true)
 
 
     const getListContact = () => {
@@ -48,14 +48,15 @@ const ListContact = React.memo(() => {
 
     const fetchContactWeb = async () => {
 
-        try {
+       try {
             const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
     
             if (premierSynchro === null || premierSynchro !== 'true') {
-                
+
                 const appToken = await extractAppTokenFromLocalStorage()
                 await recupererInfoContactDepuisWeb(appToken)
                 await AsyncStorage.setItem('_premierSynchro', 'true')
+ 
             }
         } catch (error) {
             console.log(error)
@@ -143,6 +144,6 @@ const ListContact = React.memo(() => {
         </>
     )
 
-})
+}
 
 export default ListContact

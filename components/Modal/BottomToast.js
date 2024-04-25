@@ -8,16 +8,20 @@ const BottomToast = ({isVisible}) => {
 
   return (
 
+ 
+
           <Snackbar
+          wrapperStyle={{ bottom: 5 }} 
                 visible={portalSnackbarVisible}
                 onDismiss={() => setPortalSnackbarVisible(false)}
-                duration={2000}
+                duration={4000}
                 /*action={{
                   label: 'close'
                 }}*/
               >
               Récupération de vos contacts en cours...
           </Snackbar>
+
   
   )
 }

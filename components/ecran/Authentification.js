@@ -11,7 +11,7 @@ const Authentification = () => {
     const identificationURI = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile'
     const recuperationInfo = 'http://pp-compte.manao.eu/index.php/WSSession/verifierTicket/'
 
-    const getError = useCallback(() => {
+    const getError = useCallback((error) => {
     }, [])
 
     const saveToken = useCallback(async (token) => {
@@ -34,7 +34,7 @@ const Authentification = () => {
         <>
 
             <WebView
-                userAgent="ios"
+                //userAgent="ios"
                 originWhitelist={['*']}
                 onError={getError}
                 source={{ uri: identificationURI }}
