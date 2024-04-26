@@ -11,10 +11,10 @@ import { TouchableRipple } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
 import { store } from '../redux/dataStore'
 import { manageLogin, manageUserToken } from '../redux/action/globalDataAction'
+import axios from 'axios'
 
 
 const CustomDrawer = props => {
-
 
   const seDeconnecter = useCallback(async () => {
 
@@ -25,11 +25,11 @@ const CustomDrawer = props => {
       const token = await AsyncStorage.getItem('_token')
       store.dispatch(manageUserToken(null))
       store.dispatch(manageLogin(false))
-      await fetch(deconnexionURI + token)
+      //await axios.get(deconnexionURI + token)
       await AsyncStorage.removeItem('_token')
-      //await AsyncStorage.removeItem('_alerte')
+
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }, [])
 

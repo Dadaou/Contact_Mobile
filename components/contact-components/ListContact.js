@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View, FlatList, RefreshControl } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
-import { updateNombreContact } from '../redux/action/globalDataAction'
+import { updateNombreContact, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import { recupererInfoContactDepuisWeb } from '../synchronisation/RecupererContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
-//import BottomToast from '../modal/BottomToast'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ListContact = () => {
@@ -25,8 +24,9 @@ const ListContact = () => {
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
     const [refreshing, setRefreshing] = useState(true)
-    //const [afficherToast, setAfficherToast] = useState(true)
 
+    const connecte = store.getState().globalReducer.networkInfo.isConnected
+    const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
 
     const getListContact = () => {
 
@@ -46,24 +46,30 @@ const ListContact = () => {
         })
     }
 
-    const fetchContactWeb = async () => {
+    const fetchContact = useCallback(async () => {
 
-       try {
+        try {
+
             const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
-    
+
             if (premierSynchro === null || premierSynchro !== 'true') {
 
+                store.dispatch(manageApparitionNotification(true))
+                store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours..."))
                 const appToken = await extractAppTokenFromLocalStorage()
                 await recupererInfoContactDepuisWeb(appToken)
                 await AsyncStorage.setItem('_premierSynchro', 'true')
- 
+                store.dispatch(manageApparitionNotification(false))
             }
+
+            fetchListContact()
+
         } catch (error) {
             console.log(error)
         }
-    }
-    
-    const fetchListContact = async () => {
+    }, [])
+
+    const fetchListContact = useCallback(async () => {
 
         try {
             const data = await getListContact()
@@ -73,7 +79,7 @@ const ListContact = () => {
         } catch (error) {
             console.error(error)
         }
-    }
+    }, [])
 
     useEffect(() => {
 
@@ -99,17 +105,13 @@ const ListContact = () => {
                 reqCreationTableAdresse
             )
         })
-
     }, [])
 
-    useEffect(() => {
-        fetchContactWeb()
-    }, [])
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-            fetchListContact()
+            fetchContact()
         })
         return unsubscribe
     }, [navigation])
@@ -141,6 +143,7 @@ const ListContact = () => {
                     </View>
                 )}
             />
+
         </>
     )
 

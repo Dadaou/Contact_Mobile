@@ -18,9 +18,12 @@ const AppStack = () => {
 
     const [isLogin, setIsLogin] = useState(false)
 
-    store.subscribe(() => {
+
+    const unsubscribe = store.subscribe(() => {
         setIsLogin(store.getState().globalReducer.isLogin)
     })
+
+    //unsubscribe()
 
     useEffect(() => {
 

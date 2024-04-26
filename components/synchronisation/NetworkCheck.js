@@ -24,7 +24,7 @@ const NetworkCheck = () => {
   }, [])
 
   useEffect(() => {
-    if(connecte && internetJoignable) {
+    if (connecte && internetJoignable) {
       //envoyerContact()
     }
   }, [connecte, internetJoignable])

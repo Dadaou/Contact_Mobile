@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        right: 30,
-        bottom: 40,
+        right: 25,
+        bottom: 25,
         backgroundColor: bleu
     },
 
