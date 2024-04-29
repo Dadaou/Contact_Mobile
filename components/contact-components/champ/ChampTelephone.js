@@ -1,7 +1,7 @@
-import CountryPicker from "rn-country-picker"
+import { useRef } from "react"
+import PhoneInput from "react-native-phone-input"
 import { blanc, bleu } from "../../utils/Constant"
 import SelectDropdown from 'react-native-select-dropdown'
-import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
@@ -10,29 +10,22 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
+    const phoneRef = useRef(null)
+
     //console.log(paramTelephone)
     const libelle = ['Professionel', 'Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat', 'Autre']
 
     const changerTelephone = (numeroTelephone, index) => {
-        const list = [...paramTelephone]
-        const numeroTelephoneFormate = new AsYouType().input(`+${list[index].tel_code_pays}${numeroTelephone}`)
-        //const phoneNumber = isValidPhoneNumber(`+${list[index].tel_code_pays}${numeroTelephone}`)
-        //console.log(phoneNumber)
-        //console.log(numeroTelephoneFormate.replace(list[index].tel_code_pays, ''))
-        list[index].tel_numero = numeroTelephoneFormate.substring(list[index].tel_code_pays.length + 1)//numeroTelephone
-        onChangeTelephone(list)
 
+        const list = [...paramTelephone]
+        list[index].tel_numero = numeroTelephone
+        console.log(list)
+        onChangeTelephone(list)
     }
 
     const changerLibelle = (libelle, index) => {
         const list = [...paramTelephone]
         list[index].tel_libelle = libelle
-        onChangeTelephone(list)
-    }
-
-    const changerPays = (pays, index) => {
-        const list = [...paramTelephone]
-        list[index].tel_code_pays = pays
         onChangeTelephone(list)
     }
 
@@ -58,29 +51,29 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
                     <View style={{ flexDirection: "row" }}>
 
-                        <CountryPicker
-                            disable={false}
-                            containerStyle={styles.flag}
-                            animationType={"slide"}
-                            language="fra"
-                            pickerTitle={"Liste des pays"}
-                            searchBarPlaceHolder={"Rechercher un pays"}
-                            hideCountryFlag={false}
-                            hideCountryCode={false}
-                            countryCode={item.tel_code_pays}
-                            selectedValue={(text) => changerPays(text, index)}
+                        <View style={{ flex: 1, alignItems: "center" }}>
 
-                        />
+                            <PhoneInput
+                                autoFormat={true}
+                                initialCountry='fr'
+                                cancelText='Retour'
+                                confirmText='Confirmer'
+                                allowZeroAfterCountryCode={true}
+                                ref={phoneRef}
+                                onChangePhoneNumber={(text) => changerTelephone(text, index)}
+                                initialValue={item.tel_numero}
+                                textComponent={TextInput}
+                                flagStyle={{ borderWidth: 1, marginTop: 6 }}
+                                textProps={{
+                                    label: "Téléphone",
+                                    mode: 'outlined',
+                                    activeOutlineColor: "#005F9D",
+                                    style: { height: 50, backgroundColor: "white", fontSize: 17 },
+                                    contentStyle: { paddingTop: 11 }
+                                }}
+                            />
 
-                        <TextInput
-                            style={styles.input}
-                            label="Téléphone"
-                            mode='outlined'
-                            activeOutlineColor={bleu}
-                            keyboardType='numeric'
-                            onChangeText={(text) => changerTelephone(text, index)}
-                            value={item.tel_numero}
-                        />
+                        </View>
 
                         {paramTelephone.length !== 1 && (
                             <TouchableOpacity onPress={() => supprimerChampTelephone(index)}>
@@ -91,7 +84,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
                     </View>
 
-                    <View style={{ marginLeft: 5 }}>
+                    <View style={{ marginLeft: 5, marginTop: 8 }}>
 
                         <SelectDropdown
 
@@ -127,13 +120,6 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 }
 
 const styles = StyleSheet.create({
-
-    input: {
-
-        width: 195,
-        backgroundColor: blanc,
-        marginBottom: 5
-    },
 
     flag: {
         height: 50,
