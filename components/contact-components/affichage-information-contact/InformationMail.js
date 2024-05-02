@@ -6,16 +6,8 @@ import { Card, IconButton, Text } from "react-native-paper"
 import { dbLocalName } from "../../utils/Constant"
 import { TouchableRipple } from "react-native-paper"
 
-const convertirEnArray = (chaine) => {
 
-    if (chaine !== "") {
-        const chaineArray = chaine.split(',')
-        return chaineArray
-    } else return []
-
-}
-
-const InformationMail = ({ id }) => {
+const InformationMail = ({ idContact }) => {
 
     const requeteTableMail = "SELECT ml_mail, ml_libelle FROM mail WHERE ctt_id = ? "
     //const requeteTableMail = "SELECT GROUP_CONCAT(DISTINCT mail.ml_mail) AS ml_mail, GROUP_CONCAT(DISTINCT mail.ml_libelle) AS ml_libelle FROM mail WHERE ctt_id = ? GROUP BY ctt_id"
@@ -35,7 +27,7 @@ const InformationMail = ({ id }) => {
 
             db.transaction((tx) => {
 
-                tx.executeSql(requeteTableMail, [id],
+                tx.executeSql(requeteTableMail, [idContact],
 
                     (_, resultSet) => {
                         resolve(resultSet.rows)

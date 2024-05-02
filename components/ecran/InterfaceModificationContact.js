@@ -41,7 +41,7 @@ const ModificationContact = ({ navigation, route }) => {
     const [groupe, setGroupe] = useState('')
     const [entreprise, setEntreprise] = useState('')
     const [fonction, setFonction] = useState('')
-    const [telephone, setTelephone] = useState([{ tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+    const [telephone, setTelephone] = useState([])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
     const [date, setDate] = useState('')
     const [note, setNote] = useState('')
@@ -84,6 +84,7 @@ const ModificationContact = ({ navigation, route }) => {
 
             tx.executeSql(requetes.GetTelephone, [ctt_id],
                 (_, resultSet) => {
+    
                     setTelephone(resultSet.rows._array)
                 },
                 (_, error) => console.log(error)
@@ -153,14 +154,13 @@ const ModificationContact = ({ navigation, route }) => {
 
                         telephone.forEach((item) => {
                             tx.executeSql(requetes.InsererTelephone,
-                                [item.tel_numero, item.tel_code_pays, item.tel_libelle, ctt_id],
+                                [item.tel_numero, item.tel_libelle, ctt_id],
 
                                 (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                                         store.dispatch(updateTelephone({
                                             ctt_id: ctt_id,
                                             tel_numero: item.tel_numero,
-                                            tel_code_pays: item.tel_code_pays,
                                             tel_libelle: item.tel_libelle
                                         }))
                                     }
@@ -255,7 +255,7 @@ const ModificationContact = ({ navigation, route }) => {
         setGroupe('')
         setEntreprise('')
         setFonction('')
-        setTelephone([{ tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+        setTelephone([])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setDate('')
         setNote('')

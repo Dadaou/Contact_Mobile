@@ -1,7 +1,8 @@
-import { useRef } from "react"
-import PhoneInput from "react-native-phone-input"
+import React, { useState, useRef } from "react"
 import { blanc, bleu } from "../../utils/Constant"
 import SelectDropdown from 'react-native-select-dropdown'
+import PhoneInput from "react-native-phone-input"
+import { CountryPicker } from "react-native-country-codes-picker"
 
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
@@ -10,10 +11,16 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
-    const phoneRef = useRef(null)
 
-    //console.log(paramTelephone)
+    let phoneRef = useRef()
+    const [show, setShow] = useState(false)
+
     const libelle = ['Professionel', 'Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat', 'Autre']
+    //phoneRef.current = paramTelephone.map((ref, index) => phoneRef.current[index] = React.createRef())
+
+    const selectCountry = (pays) => {
+        phoneRef.current.selectCountry(pays)
+    }
 
     const changerTelephone = (numeroTelephone, index) => {
 
@@ -33,11 +40,12 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
     const supprimerChampTelephone = (index) => {
         const list = [...paramTelephone]
         list.splice(index, 1)
+        //phoneRef.current[index].splice(index, 1)
         onChangeTelephone(list)
     }
 
     const ajouterChampTelephone = () => {
-        onChangeTelephone([...paramTelephone, { tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+        onChangeTelephone([...paramTelephone, { tel_libelle: "", tel_numero: "" }])
     }
 
 
@@ -54,12 +62,12 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                         <View style={{ flex: 1, alignItems: "center" }}>
 
                             <PhoneInput
+                                key={index}
                                 autoFormat={true}
                                 initialCountry='fr'
-                                cancelText='Retour'
-                                confirmText='Confirmer'
                                 allowZeroAfterCountryCode={true}
-                                ref={phoneRef}
+                                //onPressFlag={() => setShow(true)}
+                                //ref={phoneRef}
                                 onChangePhoneNumber={(text) => changerTelephone(text, index)}
                                 initialValue={item.tel_numero}
                                 textComponent={TextInput}
@@ -67,9 +75,38 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 textProps={{
                                     label: "Téléphone",
                                     mode: 'outlined',
-                                    activeOutlineColor: "#005F9D",
-                                    style: { height: 50, backgroundColor: "white", fontSize: 17 },
+                                    activeOutlineColor: bleu,
+                                    style: { height: 50, backgroundColor: blanc, fontSize: 17 },
                                     contentStyle: { paddingTop: 11 }
+                                }}
+                            />
+
+
+                            <CountryPicker
+
+                                onRequestClose={() => setShow(false)}
+                                show={show}
+                                pickerButtonOnPress={(item) => {
+                                    selectCountry(item.code.toLowerCase())
+                                    setShow(false)
+                                }}
+
+                                lang="fr"
+                                inputPlaceholder="Rechercher un pays"
+                                searchMessage="Aucun pays trouvé"
+                                style={{
+
+                                    modal: {
+                                        height: 300
+                                    },
+                                    textInput: {
+                                        height: 50,
+                                        borderRadius: 10,
+                                    },
+
+                                    countryButtonStyles: {
+                                        height: 50
+                                    }
                                 }}
                             />
 
@@ -154,6 +191,4 @@ const styles = StyleSheet.create({
 });
 
 
-
 export default ChampTelephone
-

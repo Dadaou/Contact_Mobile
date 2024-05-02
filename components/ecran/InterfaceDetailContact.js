@@ -90,14 +90,14 @@ const DetailContact = ({ route }) => {
 
                 <View >
 
-                    <InformationContact id={ctt_id} />
+                    <InformationContact idContact={ctt_id} />
 
                     <View style={{ padding: 5 }}>
-                        <InformationTelephone id={ctt_id} />
+                        <InformationTelephone idContact={ctt_id} />
                     </View>
 
                     <View style={{ padding: 5 }}>
-                        <InformationMail id={ctt_id} />
+                        <InformationMail idContact={ctt_id} />
                     </View>
 
                 </View>

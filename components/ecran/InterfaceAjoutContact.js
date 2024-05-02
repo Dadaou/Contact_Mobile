@@ -7,8 +7,6 @@ import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/a
 import { useState } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Octicons } from '@expo/vector-icons'
 import SpinnerModal from '../modal/Spinner'
 
 import EtatContact from '../contact-components/champ/EtatContact'
@@ -44,7 +42,7 @@ const AjoutContact = ({ navigation }) => {
     const [groupe, setGroupe] = useState('')
     const [entreprise, setEntreprise] = useState('')
     const [fonction, setFonction] = useState('')
-    const [telephone, setTelephone] = useState([{ tel_code_pays: "33", tel_libelle: "", tel_numero: "" }])
+    const [telephone, setTelephone] = useState([{ tel_libelle: "", tel_numero: "" }])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
     const [date, setDate] = useState('')
     const [note, setNote] = useState('')
@@ -68,7 +66,7 @@ const AjoutContact = ({ navigation }) => {
         setGroupe('')
         setEntreprise('')
         setFonction('')
-        setTelephone([{ tel_libelle: "", tel_numero: "", tel_code_pays: "33" }])
+        setTelephone([{ tel_libelle: "", tel_numero: "" }])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setDate('')
         setNote('')
@@ -148,15 +146,15 @@ const AjoutContact = ({ navigation }) => {
         db.transaction((tx) => {
 
             telephone.forEach((item) => {
+
                 tx.executeSql(requetes.InsererTelephone,
-                    [item.tel_numero, item.tel_code_pays, item.tel_libelle, idContact],
+                    [item.tel_numero, item.tel_libelle, idContact],
 
                     (txObj, resultSet) => {
 
                         if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                             store.dispatch(addTelephone({
                                 tel_numero: item.tel_numero,
-                                tel_code_pays: item.tel_code_pays,
                                 tel_libelle: item.tel_libelle
                             }))
                         }

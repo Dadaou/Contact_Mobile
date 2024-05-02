@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"
@@ -7,23 +7,16 @@ import { getIsoCode } from "../../utils/utils"
 import { Card, IconButton, Text } from "react-native-paper"
 import { dbLocalName } from "../../utils/Constant"
 import { TouchableRipple } from "react-native-paper"
+import { parsePhoneNumber } from "awesome-phonenumber"
 
-const convertirEnArray = (chaine) => {
 
-    if (chaine !== "") {
-        const chaineArray = chaine.split(',')
-        return chaineArray
-    } else return []
-
-}
-
-const InformationTelephone = ({ id }) => {
+const InformationTelephone = ({ idContact }) => {
 
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     //const requeteTableTelephone = " SELECT GROUP_CONCAT(DISTINCT telephone.tel_numero) AS tel_numero, GROUP_CONCAT(DISTINCT telephone.tel_libelle) AS tel_libelle, GROUP_CONCAT(DISTINCT telephone.tel_code_pays) AS tel_code_pays FROM telephone WHERE ctt_id = ? GROUP BY ctt_id"
-    const requeteTableTelephone = "SELECT tel_numero, tel_libelle, tel_code_pays FROM telephone WHERE ctt_id = ? "
-    const [telephone, setTelephone] = useState([{ tel_code_pays: "", tel_numero: "", tel_libelle: "" }])
+    const requeteTableTelephone = "SELECT tel_numero, tel_libelle FROM telephone WHERE ctt_id = ? "
+    const [telephone, setTelephone] = useState([{ tel_numero: "", tel_libelle: "" }])
 
 
     const getTelephone = () => {
@@ -32,9 +25,10 @@ const InformationTelephone = ({ id }) => {
 
             db.transaction((tx) => {
 
-                tx.executeSql(requeteTableTelephone, [id],
+                tx.executeSql(requeteTableTelephone, [idContact],
 
                     (_, resultSet) => {
+
                         resolve(resultSet.rows)
                     },
                     (_, error) => reject(error)
@@ -62,37 +56,44 @@ const InformationTelephone = ({ id }) => {
 
 
 
-    const handlePhonePress = (tel_code_pays, tel_numero) => {
-        const numeroComplet = tel_code_pays + tel_numero
-        const telURL = `tel:+${numeroComplet}`
+    const handlePhonePress = (tel_numero) => {
+        const numeroTelephone = parsePhoneNumber(tel_numero)
+        const telURL = numeroTelephone.number.rfc3966
         Linking.openURL(telURL)
     }
 
+    const verifierSiNumeroEstValide = (tel_numero) => tel_numero.startsWith("+") ? tel_numero : `+${tel_numero}`
 
-    const afficherNumeroTelephone = (tel_code_pays, tel_numero) => {
 
-        let telNumOriginale = tel_numero.trim()
-        tel_numero = tel_numero.replace(/ /g, '')
-        let longueurNumero = tel_numero.length
+    const afficherNumeroTelephone = (tel_numero) => {
 
-        if (tel_code_pays === "33") {
+        let numeroTelephone = verifierSiNumeroEstValide(tel_numero)
+        const parseNumeroTelephone = parsePhoneNumber(numeroTelephone)
+        const isoCode = getIsoCode(parseNumeroTelephone.regionCode)
 
-            if (longueurNumero >= 9 && longueurNumero <= 10) {
+        if (parseNumeroTelephone.countryCode === 33) {
 
-                if (telNumOriginale.startsWith("0")) {
-                    return `+${tel_code_pays} (${telNumOriginale.slice(0, 1)})${telNumOriginale.slice(1)}`
-                }
-                else {
-                    return `+${tel_code_pays} (0)${telNumOriginale}`
-                }
-            }
+            let numeroTelephoneCourt = parseNumeroTelephone.number.international
 
-            else {
-                return `+${tel_code_pays} ${tel_numero}`
-            }
+            let partie1 = numeroTelephoneCourt.substr(0, 4)
+            let partie2 = numeroTelephoneCourt.substr(4)
 
+            numeroTelephone = `${partie1}(0)${partie2}`
         }
-        else return `+${tel_code_pays} ${telNumOriginale}`
+
+        else numeroTelephone = parseNumeroTelephone.number.international
+
+        return (
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <CountryFlag
+                    isoCode={isoCode}
+                    size={15}
+                />
+                <Text style={{ marginLeft: 8, fontSize: 18 }}>{numeroTelephone}</Text>
+            </View>
+        )
+
     }
 
 
@@ -105,19 +106,10 @@ const InformationTelephone = ({ id }) => {
                         <Card key={index} mode="contained" style={styles.card}>
 
                             <TouchableRipple
-                                onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)}>
+                                onPress={() => handlePhonePress(item.tel_numero)}>
 
                                 <Card.Title
-                                    title={
-
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            {getIsoCode(item.tel_code_pays) !== null && (
-                                                <CountryFlag isoCode={getIsoCode(item.tel_code_pays).toLowerCase()} size={15} />
-                                            )}
-                                            <Text style={{ marginLeft: 8, fontSize: 18 }}>{afficherNumeroTelephone(item.tel_code_pays, item.tel_numero)}</Text>
-                                        </View>
-
-                                    }
+                                    title={afficherNumeroTelephone(item.tel_numero)}
                                     subtitle={item.tel_libelle}
                                     left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)} />}
                                 />

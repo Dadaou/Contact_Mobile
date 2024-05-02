@@ -5,7 +5,7 @@ import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from "../../utils/Constant"
 
 
-const InformationContact = ({ id }) => {
+const InformationContact = ({ idContact }) => {
 
     const requeteTableContact = "SELECT ctt_photo, ctt_prenom, ctt_nom FROM contact WHERE ctt_id = ?"
     const navigation = useNavigation()
@@ -19,7 +19,7 @@ const InformationContact = ({ id }) => {
 
             db.transaction((tx) => {
 
-                tx.executeSql(requeteTableContact, [id],
+                tx.executeSql(requeteTableContact, [idContact],
                     (_, resultSet) => {
                         setContact(resultSet.rows._array)
                     },
