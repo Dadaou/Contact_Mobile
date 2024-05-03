@@ -33,6 +33,7 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const AjoutContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
+    const util_id = 1700
 
     const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState('')
@@ -89,21 +90,19 @@ const AjoutContact = ({ navigation }) => {
 
             db.transaction((tx) => {
 
-                const idContact = genererID()
-
                 tx.executeSql(
 
                     requetes.InsererContact,
                     [
-                        idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0, 0
+                        photo, prenom, nom, prenomUsage, entreprise, fonction, date,
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0, util_id, 0
                     ],
 
                     (txObj, resultSet) => {
 
                         if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                             store.dispatch(addContact({
-                                idContact, photo, prenom, nom, prenomUsage, entreprise, fonction, date,
+                                photo, prenom, nom, prenomUsage, entreprise, fonction, date,
                                 note, service, siteWeb, twitter, linkedin, facebook, skype, etat
                             }))
                             resolve(resultSet.insertId)
@@ -119,7 +118,7 @@ const AjoutContact = ({ navigation }) => {
         })
     }
 
-    const getLastContactId = (lastRowId) => {
+    /*const getLastContactId = (lastRowId) => {
 
         return new Promise((resolve, reject) => {
 
@@ -129,6 +128,7 @@ const AjoutContact = ({ navigation }) => {
                     "SELECT ctt_id FROM contact WHERE rowid = ?",
                     [lastRowId],
                     (txObj, results) => {
+                        console.log({ insertId2: results.rows._array[0].ctt_id })
                         resolve(results.rows._array[0].ctt_id)
                     },
                     (txObj, error) => {
@@ -139,7 +139,7 @@ const AjoutContact = ({ navigation }) => {
             })
         })
 
-    }
+    }*/
 
     const saveTelephone = (idContact) => {
 
@@ -148,7 +148,7 @@ const AjoutContact = ({ navigation }) => {
             telephone.forEach((item) => {
 
                 tx.executeSql(requetes.InsererTelephone,
-                    [item.tel_numero, item.tel_libelle, idContact],
+                    [item.tel_numero, item.tel_libelle, idContact, util_id],
 
                     (txObj, resultSet) => {
 
@@ -177,7 +177,7 @@ const AjoutContact = ({ navigation }) => {
             mail.forEach((item) => {
 
                 tx.executeSql(requetes.InsererMail,
-                    [item.ml_mail, item.ml_libelle, idContact],
+                    [item.ml_mail, item.ml_libelle, idContact, util_id],
 
                     (txObj, resultSet) => {
 
@@ -248,17 +248,11 @@ const AjoutContact = ({ navigation }) => {
 
             try {
 
-                saveContact().then((lastId) => {
+                saveContact().then((idContact) => {
 
-                    getLastContactId(lastId)
-                        .then((idLastContact) => {
-                            saveTelephone(idLastContact)
-                            saveMail(idLastContact)
-                            saveAdresse(idLastContact)
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
+                    saveTelephone(idContact)
+                    saveMail(idContact)
+                    saveAdresse(idContact)
                 })
 
                 redirection(true)

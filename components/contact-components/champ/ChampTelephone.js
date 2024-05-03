@@ -40,8 +40,10 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
     const supprimerChampTelephone = (index) => {
         const list = [...paramTelephone]
         list.splice(index, 1)
-        //phoneRef.current[index].splice(index, 1)
-        onChangeTelephone(list)
+        onChangeTelephone([])
+        setTimeout(() => {
+            onChangeTelephone(list)
+        }, 1)
     }
 
     const ajouterChampTelephone = () => {
@@ -66,8 +68,8 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 autoFormat={true}
                                 initialCountry='fr'
                                 allowZeroAfterCountryCode={true}
-                                //onPressFlag={() => setShow(true)}
-                                //ref={phoneRef}
+                                onPressFlag={() => setShow(true)}
+                                ref={phoneRef}
                                 onChangePhoneNumber={(text) => changerTelephone(text, index)}
                                 initialValue={item.tel_numero}
                                 textComponent={TextInput}
@@ -75,6 +77,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 textProps={{
                                     label: "Téléphone",
                                     mode: 'outlined',
+
                                     activeOutlineColor: bleu,
                                     style: { height: 50, backgroundColor: blanc, fontSize: 17 },
                                     contentStyle: { paddingTop: 11 }
