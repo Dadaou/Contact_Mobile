@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { blanc, bleu } from "../../utils/Constant"
 import SelectDropdown from 'react-native-select-dropdown'
 import PhoneInput from "react-native-phone-input"
@@ -12,21 +12,24 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
 
-    let phoneRef = useRef()
-    const [show, setShow] = useState(false)
-
     const libelle = ['Professionel', 'Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat', 'Autre']
-    //phoneRef.current = paramTelephone.map((ref, index) => phoneRef.current[index] = React.createRef())
+    let phoneRef = useRef([])
+    const [afficherCountryPicker, setAfficherCountryPicker] = useState([])
 
-    const selectCountry = (pays) => {
-        phoneRef.current.selectCountry(pays)
+    phoneRef.current = paramTelephone.map((ref, index) => phoneRef.current[index] = React.createRef())
+
+
+    const selectCountry = (pays, index) => {
+        phoneRef.current[index].current.selectCountry(pays);
+    }
+
+    const onRequestClosePicker = (index) => {
+        setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index ? false : item))
     }
 
     const changerTelephone = (numeroTelephone, index) => {
-
         const list = [...paramTelephone]
         list[index].tel_numero = numeroTelephone
-        console.log(list)
         onChangeTelephone(list)
     }
 
@@ -36,19 +39,34 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
         onChangeTelephone(list)
     }
 
-
     const supprimerChampTelephone = (index) => {
+
+        const updatedPhoneRef = [...phoneRef.current]
+        updatedPhoneRef.splice(index, 1)
+        phoneRef.current = updatedPhoneRef
+
+        const updatedShow = [...afficherCountryPicker]
+        updatedShow.splice(index, 1)
+        setAfficherCountryPicker(updatedShow)
+
         const list = [...paramTelephone]
         list.splice(index, 1)
-        onChangeTelephone([])
+        onChangeTelephone(list)
+        /*onChangeTelephone([])
         setTimeout(() => {
             onChangeTelephone(list)
-        }, 1)
+        }, 1)*/
+
     }
 
     const ajouterChampTelephone = () => {
-        onChangeTelephone([...paramTelephone, { tel_libelle: "", tel_numero: "" }])
+        onChangeTelephone([...paramTelephone, { tel_numero: "" }])
+        setAfficherCountryPicker([...afficherCountryPicker, false])
     }
+
+    useEffect(() => {
+        setAfficherCountryPicker(paramTelephone.map(() => false))
+    }, [paramTelephone])
 
 
     return (
@@ -64,12 +82,12 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                         <View style={{ flex: 1, alignItems: "center" }}>
 
                             <PhoneInput
-                                key={index}
+
                                 autoFormat={true}
                                 initialCountry='fr'
                                 allowZeroAfterCountryCode={true}
-                                onPressFlag={() => setShow(true)}
-                                ref={phoneRef}
+                                onPressFlag={() => setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index))}
+                                ref={phoneRef.current[index]}
                                 onChangePhoneNumber={(text) => changerTelephone(text, index)}
                                 initialValue={item.tel_numero}
                                 textComponent={TextInput}
@@ -77,40 +95,23 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 textProps={{
                                     label: "Téléphone",
                                     mode: 'outlined',
-
-                                    activeOutlineColor: bleu,
-                                    style: { height: 50, backgroundColor: blanc, fontSize: 17 },
+                                    activeOutlineColor: "#0066b2",
+                                    style: { height: 50, backgroundColor: "white", fontSize: 17 },
                                     contentStyle: { paddingTop: 11 }
                                 }}
                             />
 
-
                             <CountryPicker
-
-                                onRequestClose={() => setShow(false)}
-                                show={show}
+                                onRequestClose={() => onRequestClosePicker(index)}
+                                show={afficherCountryPicker[index]}
                                 pickerButtonOnPress={(item) => {
-                                    selectCountry(item.code.toLowerCase())
-                                    setShow(false)
+                                    selectCountry(item.code.toLowerCase(), index)
+                                    onRequestClosePicker(index)
                                 }}
-
                                 lang="fr"
                                 inputPlaceholder="Rechercher un pays"
                                 searchMessage="Aucun pays trouvé"
-                                style={{
-
-                                    modal: {
-                                        height: 300
-                                    },
-                                    textInput: {
-                                        height: 50,
-                                        borderRadius: 10,
-                                    },
-
-                                    countryButtonStyles: {
-                                        height: 50
-                                    }
-                                }}
+                                style={styles.countryPicker}
                             />
 
                         </View>
@@ -161,17 +162,17 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
 const styles = StyleSheet.create({
 
-    flag: {
-        height: 50,
-        width: 105,
-        borderColor: "#808080",
-        alignItems: "center",
-        padding: 20,
-        marginHorizontal: 3,
-        marginTop: 6,
-        backgroundColor: "white",
-        borderRadius: 5,
-        backgroundColor: "#E5E4E2"
+    countryPicker: {
+        modal: {
+            height: 300
+        },
+        textInput: {
+            height: 50,
+            borderRadius: 10,
+        },
+        countryButtonStyles: {
+            height: 50
+        }
     },
 
     dropDownStyle: {

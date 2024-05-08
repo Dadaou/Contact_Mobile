@@ -1,12 +1,14 @@
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
-import { extractAppTokenFromLocalStorage, obtenirAppToken } from '../utils/GestionAppToken'
+import { obtenirAppToken } from '../utils/GestionAppToken'
+import { uri } from '../utils/Constant'
+import { convertirChaineEnArray } from '../utils/utils'
 import axios from 'axios'
 
-const envoyerContact = async () => {
+export const envoyerContactAjouterAWeb = async (appToken, tentativeEssai = 3) => {
 
     const db = SQLite.openDatabase(dbLocalName)
-    const requete = "SELECT contact.*, GROUP_CONCAT(DISTINCT mail.ml_mail) AS ml_mail, GROUP_CONCAT(DISTINCT telephone.tel_numero) AS tel_numero FROM contact LEFT JOIN mail ON mail.ctt_id = contact.ctt_id LEFT JOIN telephone ON telephone.ctt_id = contact.ctt_id WHERE contact.synchronise = ? GROUP BY contact.ctt_id"
+    const requete = "SELECT (contact.ctt_id) AS ctt_id_mobile, contact.ctt_id_web, contact.ctt_photo, contact.ctt_nom, contact.ctt_prenom, contact.ctt_prenom_usage, contact.ctt_entreprise, contact.ctt_service, contact.ctt_fonction, contact.ctt_anniversaire, contact.ctt_siteweb, contact.ctt_twitter, contact.ctt_linkedin, contact.ctt_facebook, contact.ctt_skype, contact.ctt_notes, contact.ctt_corbeille, contact.ctt_favoris, contact.ctt_etat, contact.util_id, GROUP_CONCAT(DISTINCT mail.ml_mail) AS mail, GROUP_CONCAT(DISTINCT telephone.tel_numero) AS telephone FROM contact LEFT JOIN mail ON mail.ctt_id = contact.ctt_id LEFT JOIN telephone ON telephone.ctt_id = contact.ctt_id WHERE contact.est_insererdansweb = ? GROUP BY contact.ctt_id"
 
     db.transaction((tx) => {
 
@@ -14,21 +16,48 @@ const envoyerContact = async () => {
 
             async (txObj, results) => {
 
-                const dataToSend = results.rows._array
+                const data = results.rows._array
+                const dataAEnvoyer = convertirChaineEnArray(data)
 
-                try {
+                if (dataAEnvoyer.length !== 0) {
 
-                    const response = await axios.post('http://192.168.9.179:8088/index.php/v1/addMultiple', {
-                        suffixBase : 220664,
-                        data : JSON.stringify(dataToSend)
-                    })
+                    try {
 
-                    if (response.data) {
-                        console.log(response.data)
+                        const response = await axios.post(uri.envoiContactMobileAWeb, {
+                            suffixBase: 220638,
+                            data: JSON.stringify(dataAEnvoyer)
+                        }, {
+                            headers: {
+                                'Authorization': 'Bearer ' + appToken
+                            }
+                        })
+
+                        if (response.data && response.data.code === 1) {
+
+                            const idContactAMarquerCommeEnvoyerAWeb = response.data.data_id
+                            const requetePourMajContact = "UPDATE contact SET ctt_id_web = ?, est_insererdansweb = ? WHERE ctt_id = ?"
+                            const est_inserersdansweb = 1
+
+                            db.transaction((tx) => {
+                                idContactAMarquerCommeEnvoyerAWeb.forEach((item) => {
+                                    tx.executeSql(requetePourMajContact, [item.ctt_id, est_inserersdansweb, item.ctt_id_mobile])
+                                })
+                            })
+                            console.log("Envoi ajout done")
+                        }
+
+                    } catch (error) {
+
+                        if (tentativeEssai > 0) {
+
+                            const nouveauAppToken = obtenirAppToken()
+                            await envoyerContactAjouterAWeb(nouveauAppToken, tentativeEssai - 1)
+
+                        } else {
+                            console.log("Une erreur s'est produite lors de l'envoi des contacts nouvellement ajoutés vers contact web.", error)
+                        }
                     }
 
-                } catch (error) {
-                    console.log(error)
                 }
             },
             (txObj, error) => {
@@ -36,6 +65,68 @@ const envoyerContact = async () => {
             }
         )
     })
-};
+}
 
-export default envoyerContact
+
+export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = 3) => {
+
+    const db = SQLite.openDatabase(dbLocalName)
+    const requete = "SELECT (contact.ctt_id) AS ctt_id_mobile, contact.ctt_id_web, contact.ctt_photo, contact.ctt_nom, contact.ctt_prenom, contact.ctt_prenom_usage, contact.ctt_entreprise, contact.ctt_service, contact.ctt_fonction, contact.ctt_anniversaire, contact.ctt_siteweb, contact.ctt_twitter, contact.ctt_linkedin, contact.ctt_facebook, contact.ctt_skype, contact.ctt_notes, contact.ctt_corbeille, contact.ctt_favoris, contact.ctt_etat, contact.util_id, GROUP_CONCAT(DISTINCT mail.ml_mail) AS mail, GROUP_CONCAT(DISTINCT telephone.tel_numero) AS telephone FROM contact LEFT JOIN mail ON mail.ctt_id = contact.ctt_id LEFT JOIN telephone ON telephone.ctt_id = contact.ctt_id WHERE contact.est_maj = ? GROUP BY contact.ctt_id"
+
+    db.transaction((tx) => {
+
+        tx.executeSql(requete, [1],
+
+            async (txObj, results) => {
+
+                const data = results.rows._array
+                const dataAEnvoyer = convertirChaineEnArray(data)
+
+                if (dataAEnvoyer.length !== 0) {
+
+                    try {
+
+                        const response = await axios.post(uri.envoiModificationMobileAWeb, {
+                            suffixBase: 220638,
+                            data: JSON.stringify(dataAEnvoyer)
+                        }, {
+                            headers: {
+                                'Authorization': 'Bearer ' + appToken
+                            }
+                        })
+
+                        if (response.data && response.data.code === 1) {
+
+                            const idContactAReinitialiser = response.data.idContactMobileMaj
+                            const requetePourReinitialiserContact = "UPDATE contact SET est_maj = ? WHERE ctt_id = ?"
+                            const est_maj = 0
+
+                            db.transaction((tx) => {
+                                idContactAReinitialiser.forEach((item) => {
+                                    tx.executeSql(requetePourReinitialiserContact, [est_maj, item])
+                                })
+                            })
+
+                            console.log("Envoi modif done")
+                        }
+
+                    } catch (error) {
+
+                        if (tentativeEssai > 0) {
+
+                            const nouveauAppToken = obtenirAppToken()
+                            await envoyerContactModifierAWeb(nouveauAppToken, tentativeEssai - 1)
+
+                        } else {
+                            console.log("Une erreur s'est produite lors de l'envoi des contacts modifiés vers contact web.", error)
+                        }
+                    }
+
+                }
+            },
+            (txObj, error) => {
+                console.log('transaction error', error)
+            }
+        )
+    })
+}

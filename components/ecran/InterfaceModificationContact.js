@@ -33,6 +33,7 @@ const ModificationContact = ({ navigation, route }) => {
     const { ctt_id } = route.params
 
     const db = SQLite.openDatabase(dbLocalName)
+    const estMaj = 1
 
     const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState('')
@@ -84,7 +85,7 @@ const ModificationContact = ({ navigation, route }) => {
 
             tx.executeSql(requetes.GetTelephone, [ctt_id],
                 (_, resultSet) => {
-    
+
                     setTelephone(resultSet.rows._array)
                 },
                 (_, error) => console.log(error)
@@ -135,14 +136,14 @@ const ModificationContact = ({ navigation, route }) => {
 
                         tx.executeSql(requetes.MajContact,
                             [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb,
-                                twitter, linkedin, facebook, skype, note, etat, ctt_id],
+                                twitter, linkedin, facebook, skype, note, etat, estMaj, ctt_id],
 
                             (txObj, resultSet) => {
 
                                 if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                                     store.dispatch(updateContact({
                                         photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb,
-                                        twitter, linkedin, facebook, skype, note, etat, ctt_id
+                                        twitter, linkedin, facebook, skype, note, etat, estMaj, ctt_id
                                     }))
                                 }
 

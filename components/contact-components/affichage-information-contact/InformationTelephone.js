@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { View, StyleSheet, Linking } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import CountryFlag from "react-native-country-flag"

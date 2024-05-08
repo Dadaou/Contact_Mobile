@@ -4,39 +4,33 @@ import { StatusBar, View, Text, useWindowDimensions, StyleSheet } from 'react-na
 import { WebView } from "react-native-webview"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { store } from '../redux/dataStore'
-import { manageLogin, manageUserToken } from '../redux/action/globalDataAction'
+import { manageLogin, manageUserToken, manageUserInfo } from '../redux/action/globalDataAction'
+import { uri } from '../utils/Constant'
 import axios from 'axios'
 
 const Authentification = () => {
 
-    const identificationURI = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile'
-    const recuperationInfoURI = 'http://pp-compte.manao.eu/index.php/WSSession/verifierTicket/'
-
-    const {height, width} = useWindowDimensions()
+    const { height, width } = useWindowDimensions()
 
     const getError = useCallback((error) => {
     }, [])
 
     const saveToken = useCallback(async (token) => {
 
-        if (token) {
-
-            try {
-
-                await AsyncStorage.setItem('_token', token)
-                store.dispatch(manageUserToken(token))
-                store.dispatch(manageLogin(true))
-
-            } catch (error) { console.log(error) }
-        }
+        await AsyncStorage.setItem('_tokenUtilisateur', token)
+        store.dispatch(manageUserToken(token))
+        store.dispatch(manageLogin(true))
 
     }, [])
 
     const recupererInfoUtilisateur = useCallback(async (token) => {
         try {
-            const infoUtilisateur = await axios.get(recuperationInfoURI + token)
+            const infoUtilisateur = await axios.get(uri.recuperationInfoUtilisateur + token)
+
             if (infoUtilisateur && infoUtilisateur.data) {
                 await AsyncStorage.setItem('_infoUtilisateur', JSON.stringify(infoUtilisateur.data.data.utilisateur))
+                store.dispatch(manageUserInfo(infoUtilisateur.data.data.utilisateur))
+                saveToken(token)
             }
         }
         catch (error) {
@@ -54,12 +48,12 @@ const Authentification = () => {
             <WebView
                 //userAgent="ios"
                 renderError={() =>
-                    <View style={{...styles.renderError, height : height, width : width}}> 
+                    <View style={{ ...styles.renderError, height: height, width: width }}>
                     </View>
                 }
                 originWhitelist={['*']}
                 onError={getError}
-                source={{ uri: identificationURI }}
+                source={{ uri: uri.identification }}
                 bounces={false}
                 onLoadStart={({ nativeEvent }) => {
 
@@ -69,7 +63,6 @@ const Authentification = () => {
 
                         const tokenIndex = nativeEvent.url.indexOf('auth/')
                         let token = nativeEvent.url.substring(tokenIndex + 5)
-                        saveToken(token)
                         recupererInfoUtilisateur(token)
                         return
 
@@ -83,14 +76,14 @@ const Authentification = () => {
 
 const styles = StyleSheet.create({
 
-    renderError : {
+    renderError: {
 
-        flex : 1, 
-        top : 0,
-        backgroundColor : "#fff", 
-        position : "absolute", 
-        justifyContent : "center", 
-        alignItems : "center"
+        flex: 1,
+        top: 0,
+        backgroundColor: "#fff",
+        position: "absolute",
+        justifyContent: "center",
+        alignItems: "center"
     }
 
 })

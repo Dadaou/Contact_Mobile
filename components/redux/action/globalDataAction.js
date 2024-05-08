@@ -1,10 +1,11 @@
 export const CHECK_NETWORK_STATUS = "CHECK_NETWORK_STATUS"
-export const  UPDATE_NOMBRE_CONTACT = " UPDATE_NOMBRE_CONTACT"
-export const  UPDATE_NOMBRE_FAVORI = "UPDATE_NOMBRE_FAVORI"
-export const  MANAGE_LOGIN = "MANAGE_LOGIN"
-export const  MANAGE_USER_TOKEN = "MANAGE_USER_TOKEN"
-export const  MANAGE_NOTIFICATION_MESSAGE = "MANAGE_NOTIFICATION_MESSAGE"
-export const  MANAGE_APPARITION_NOTIFICATION = "MANAGE_APPARITION_NOTIFICATION"
+export const UPDATE_NOMBRE_CONTACT = " UPDATE_NOMBRE_CONTACT"
+export const UPDATE_NOMBRE_FAVORI = "UPDATE_NOMBRE_FAVORI"
+export const MANAGE_LOGIN = "MANAGE_LOGIN"
+export const MANAGE_USER_TOKEN = "MANAGE_USER_TOKEN"
+export const MANAGE_USER_INFO = "MANAGE_USER_INFO"
+export const MANAGE_NOTIFICATION_MESSAGE = "MANAGE_NOTIFICATION_MESSAGE"
+export const MANAGE_APPARITION_NOTIFICATION = "MANAGE_APPARITION_NOTIFICATION"
 
 export const updateNetworkStatus = data => dispatch => {
 
@@ -48,6 +49,14 @@ export const manageUserToken = token => dispatch => {
         payload: token,
     })
 
+}
+
+export const manageUserInfo = data => dispatch => {
+
+    dispatch({
+        type: MANAGE_USER_INFO,
+        payload: data,
+    })
 }
 
 export const manageApparitionNotification = etat => dispatch => {

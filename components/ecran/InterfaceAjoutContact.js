@@ -33,7 +33,11 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const AjoutContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
-    const util_id = 1700
+    const utilId = 1700
+    const estFavori = 0
+    const idContactWeb = null
+    const estInsererDansWeb = 0
+    const estMaj = 0
 
     const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState('')
@@ -95,7 +99,7 @@ const AjoutContact = ({ navigation }) => {
                     requetes.InsererContact,
                     [
                         photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, 0, util_id, 0
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, estFavori, utilId, idContactWeb, estInsererDansWeb, estMaj
                     ],
 
                     (txObj, resultSet) => {
@@ -148,7 +152,7 @@ const AjoutContact = ({ navigation }) => {
             telephone.forEach((item) => {
 
                 tx.executeSql(requetes.InsererTelephone,
-                    [item.tel_numero, item.tel_libelle, idContact, util_id],
+                    [item.tel_numero, item.tel_libelle, idContact, utilId],
 
                     (txObj, resultSet) => {
 
@@ -177,7 +181,7 @@ const AjoutContact = ({ navigation }) => {
             mail.forEach((item) => {
 
                 tx.executeSql(requetes.InsererMail,
-                    [item.ml_mail, item.ml_libelle, idContact, util_id],
+                    [item.ml_mail, item.ml_libelle, idContact, utilId],
 
                     (txObj, resultSet) => {
 

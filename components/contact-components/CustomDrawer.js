@@ -11,6 +11,7 @@ import { TouchableRipple } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
 import { store } from '../redux/dataStore'
 import { manageLogin, manageUserToken } from '../redux/action/globalDataAction'
+import { uri } from '../utils/Constant'
 import axios from 'axios'
 
 
@@ -18,15 +19,13 @@ const CustomDrawer = props => {
 
   const seDeconnecter = useCallback(async () => {
 
-    const deconnexionURI = 'http://pp-compte.manao.eu/index.php/AuthentificationMobile/viderSession/'
-    
     try {
 
-      const token = await AsyncStorage.getItem('_token')
+      //const token = await AsyncStorage.getItem('_tokenUtilisateur')
       store.dispatch(manageUserToken(null))
       store.dispatch(manageLogin(false))
-      //await axios.get(deconnexionURI + token)
-      await AsyncStorage.removeItem('_token')
+      //await axios.get(uri.deconnexion + token)
+      await AsyncStorage.removeItem('_tokenUtilisateur')
 
     } catch (error) {
       throw error
@@ -59,7 +58,7 @@ const CustomDrawer = props => {
       <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
         <TouchableRipple onPress={seDeconnecter} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <MaterialCommunityIcons name="logout" size={24} color="#000000" style= {{marginLeft : 8}}/>
+            <MaterialCommunityIcons name="logout" size={24} color="#000000" style={{ marginLeft: 8 }} />
             <Text
               style={{
                 fontSize: 16,

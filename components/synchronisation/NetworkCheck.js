@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
 import { updateNetworkStatus } from '../redux/action/globalDataAction'
-import envoyerContact from './EnvoyerContact'
+import { envoyerContactAjouterAWeb, envoyerContactModifierAWeb } from './EnvoyerContact';
 
 const NetworkCheck = () => {
 
@@ -11,7 +11,6 @@ const NetworkCheck = () => {
 
   const handleNetworkChange = useCallback((state) => {
     store.dispatch(updateNetworkStatus(state))
-    //store.subscribe(() => console.log("", store.getState().globalReducer.networkInfo))
     setConnecte(state.isConnected)
     setInternetJoignable(state.isInternetReachable)
   }, [])
@@ -24,11 +23,22 @@ const NetworkCheck = () => {
   }, [])
 
   useEffect(() => {
+
     if (connecte && internetJoignable) {
-      //envoyerContact()
+
+      const syncInterval = setInterval(() => {
+
+        console.log("Synchronisation encours...")
+        envoyerContactAjouterAWeb()
+        envoyerContactModifierAWeb()
+
+      }, 10000 /*15 * 60 * 1000*/)
+
+      return () => {
+        clearInterval(syncInterval)
+      }
     }
   }, [connecte, internetJoignable])
-
 
   /*return (
     <>

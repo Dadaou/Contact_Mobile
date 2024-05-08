@@ -7,26 +7,25 @@ import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
 import ListView from './ListView'
-import { recupererInfoContactDepuisWeb } from '../synchronisation/RecupererContact'
+import { recupererContactPersoDepuisWeb } from '../synchronisation/RecupererContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const ListContact = () => {
 
     const navigation = useNavigation()
-
-    const reqCreationTableContact = "CREATE TABLE IF NOT EXISTS contact (ctt_id INTEGER PRIMARY KEY AUTOINCREMENT, ctt_photo TEXT, ctt_nom TEXT, ctt_prenom TEXT, ctt_prenom_usage TEXT, ctt_entreprise TEXT, ctt_service TEXT, ctt_fonction TEXT, ctt_anniversaire DATE, ctt_siteweb TEXT, ctt_twitter TEXT, ctt_linkedin TEXT, ctt_facebook TEXT, ctt_skype TEXT, ctt_notes TEXT, ctt_corbeille INTEGER, ctt_favoris INTEGER, ctt_etat INTEGER, util_id TEXT, synchronise INTEGER)"
-    const reqCreationTableTelephone = "CREATE TABLE IF NOT EXISTS telephone (tel_id INTEGER PRIMARY KEY AUTOINCREMENT, tel_numero TEXT, tel_code_pays TEXT, tel_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
-    const reqCreationTableMail = "CREATE TABLE IF NOT EXISTS mail (ml_id INTEGER PRIMARY KEY AUTOINCREMENT, ml_mail TEXT, ml_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
-    const reqCreationTableAdresse = "CREATE TABLE IF NOT EXISTS adresse (addr_id INTEGER PRIMARY KEY AUTOINCREMENT, addr_ligne1 TEXT, addr_ligne2 TEXT, addr_ligne3 TEXT, addr_ville TEXT, addr_pays TEXT, addr_bp TEXT, addr_cp TEXT, addr_libelle TEXT, ctt_id INTEGER, util_id TEXT, FOREIGN KEY (ctt_id) REFERENCES contact(ctt_id))"
-    const reqToGetListContact = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact ORDER BY ctt_prenom ASC"
+    const requete = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact ORDER BY ctt_prenom ASC"
 
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
     const [refreshing, setRefreshing] = useState(true)
 
-    const connecte = store.getState().globalReducer.networkInfo.isConnected
-    const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
+    /*
+        const connecte = store.getState().globalReducer.networkInfo.isConnected
+        const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
+        console.log("Eto", store.getState().globalReducer._infoUtilisateur)
+    */
 
     const getListContact = () => {
 
@@ -34,7 +33,7 @@ const ListContact = () => {
 
             db.transaction((tx) => {
 
-                tx.executeSql(reqToGetListContact, null,
+                tx.executeSql(requete, null,
 
                     (_, resultSet) => {
                         resolve(resultSet.rows)
@@ -46,28 +45,6 @@ const ListContact = () => {
         })
     }
 
-    const fetchContact = useCallback(async () => {
-
-        try {
-
-            const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
-
-            if (premierSynchro === null || premierSynchro !== 'true') {
-
-                store.dispatch(manageApparitionNotification(true))
-                store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours..."))
-                const appToken = await extractAppTokenFromLocalStorage()
-                await recupererInfoContactDepuisWeb(appToken)
-                await AsyncStorage.setItem('_premierSynchro', 'true')
-                store.dispatch(manageApparitionNotification(false))
-            }
-
-            fetchListContact()
-
-        } catch (error) {
-            console.log(error)
-        }
-    }, [])
 
     const fetchListContact = useCallback(async () => {
 
@@ -81,38 +58,29 @@ const ListContact = () => {
         }
     }, [])
 
-    useEffect(() => {
+    const fetchContact = useCallback(async () => {
 
-        db.transaction((tx) => {
+        const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS contact'
-                reqCreationTableContact
-            )
+        if (premierSynchro === null || premierSynchro !== 'true') {
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS telephone'
-                reqCreationTableTelephone
-            )
+            store.dispatch(manageApparitionNotification(true))
+            store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours..."))
+            const appToken = await extractAppTokenFromLocalStorage()
+            await recupererContactPersoDepuisWeb(appToken)
+            store.dispatch(manageApparitionNotification(false))
+        }
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS mail'
-                reqCreationTableMail
-            )
+        fetchListContact()
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS adresse'
-                reqCreationTableAdresse
-            )
-        })
     }, [])
-
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
             fetchContact()
         })
+
         return unsubscribe
     }, [navigation])
 

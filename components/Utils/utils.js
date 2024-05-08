@@ -19,11 +19,17 @@ export const getIsoCode = (isoCode) => {
 }
 
 
-export const convertirEnArray = (chaine) => {
+export const convertirChaineEnArray = (data) => {
 
-    if (chaine !== "") {
-        const chaineArray = chaine.split(',')
-        return chaineArray
-    } else return []
+    return data.map(item => {
 
+        const telephones = item.telephone === null || item.telephone === "" ? [""] : item.telephone.split(",")
+        const mails = item.mail === null || item.mail === "" ? [""] : item.mail.split(",")
+
+        return {
+            ...item,
+            telephone: telephones,
+            mail: mails,
+        }
+    })
 }
