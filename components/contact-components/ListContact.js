@@ -7,8 +7,7 @@ import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
 import ListView from './ListView'
-import { recupererContactPersoDepuisWeb } from '../synchronisation/RecupererContact'
-import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
+import { recupererContactDepuisWeb, recupererContactMajDepuisWeb } from '../synchronisation/RecupererContact'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
@@ -19,6 +18,8 @@ const ListContact = () => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
+    const [connecte, setConnecte] = useState(false)
+    const [internetJoignable, setInternetJoignable] = useState(false)
     const [refreshing, setRefreshing] = useState(true)
 
     /*
@@ -26,6 +27,11 @@ const ListContact = () => {
         const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
         console.log("Eto", store.getState().globalReducer._infoUtilisateur)
     */
+
+    const unsubscribe = store.subscribe(() => {
+        setConnecte(store.getState().globalReducer.networkInfo.isConnected)
+        setInternetJoignable(store.getState().globalReducer.networkInfo.isInternetReachable)
+    })
 
     const getListContact = () => {
 
@@ -58,7 +64,8 @@ const ListContact = () => {
         }
     }, [])
 
-    const fetchContact = useCallback(async () => {
+
+    const fetchContactWeb = useCallback(async () => {
 
         const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
 
@@ -66,11 +73,10 @@ const ListContact = () => {
 
             store.dispatch(manageApparitionNotification(true))
             store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours..."))
-            const appToken = await extractAppTokenFromLocalStorage()
-            await recupererContactPersoDepuisWeb(appToken)
+            await recupererContactDepuisWeb()
             store.dispatch(manageApparitionNotification(false))
         }
-
+        //recupererContactMajDepuisWeb()
         fetchListContact()
 
     }, [])
@@ -78,7 +84,7 @@ const ListContact = () => {
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', () => {
-            fetchContact()
+            fetchContactWeb()
         })
 
         return unsubscribe
@@ -101,7 +107,7 @@ const ListContact = () => {
                     />
                 )}
 
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchListContact} />}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchContactWeb} />}
 
                 ListEmptyComponent={(
                     <View style={{ flex: 1, justifyContent: "center", marginBottom: 100 }}>

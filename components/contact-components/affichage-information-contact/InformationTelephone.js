@@ -58,17 +58,27 @@ const InformationTelephone = ({ idContact }) => {
 
     const handlePhonePress = (tel_numero) => {
         const numeroTelephone = parsePhoneNumber(tel_numero)
-        const telURL = numeroTelephone.number.rfc3966
+        const telURL = numeroTelephone.regionCode === null ? `tel:${tel_numero}` : numeroTelephone.number.rfc3966
         Linking.openURL(telURL)
     }
 
     const verifierSiNumeroEstValide = (tel_numero) => tel_numero.startsWith("+") ? tel_numero : `+${tel_numero}`
 
-
     const afficherNumeroTelephone = (tel_numero) => {
 
         let numeroTelephone = verifierSiNumeroEstValide(tel_numero)
         const parseNumeroTelephone = parsePhoneNumber(numeroTelephone)
+
+        if (parseNumeroTelephone.regionCode === null) {
+
+            return (
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 18 }}>{numeroTelephone.replace("+", "")}</Text>
+                </View>
+            )
+        }
+
         const isoCode = getIsoCode(parseNumeroTelephone.regionCode)
 
         if (parseNumeroTelephone.countryCode === 33) {

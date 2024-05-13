@@ -35,12 +35,12 @@ export const envoyerContactAjouterAWeb = async (appToken, tentativeEssai = 3) =>
                         if (response.data && response.data.code === 1) {
 
                             const idContactAMarquerCommeEnvoyerAWeb = response.data.data_id
-                            const requetePourMajContact = "UPDATE contact SET ctt_id_web = ?, est_insererdansweb = ? WHERE ctt_id = ?"
+                            const requetePourMajFlag = "UPDATE contact SET ctt_id_web = ?, est_insererdansweb = ? WHERE ctt_id = ?"
                             const est_inserersdansweb = 1
 
                             db.transaction((tx) => {
                                 idContactAMarquerCommeEnvoyerAWeb.forEach((item) => {
-                                    tx.executeSql(requetePourMajContact, [item.ctt_id, est_inserersdansweb, item.ctt_id_mobile])
+                                    tx.executeSql(requetePourMajFlag, [item.ctt_id, est_inserersdansweb, item.ctt_id_mobile])
                                 })
                             })
                             console.log("Envoi ajout done")
@@ -98,12 +98,12 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = 3) =
                         if (response.data && response.data.code === 1) {
 
                             const idContactAReinitialiser = response.data.idContactMobileMaj
-                            const requetePourReinitialiserContact = "UPDATE contact SET est_maj = ? WHERE ctt_id = ?"
+                            const requetePourReinitialiserFlag = "UPDATE contact SET est_maj = ? WHERE ctt_id = ?"
                             const est_maj = 0
 
                             db.transaction((tx) => {
                                 idContactAReinitialiser.forEach((item) => {
-                                    tx.executeSql(requetePourReinitialiserContact, [est_maj, item])
+                                    tx.executeSql(requetePourReinitialiserFlag, [est_maj, item])
                                 })
                             })
 

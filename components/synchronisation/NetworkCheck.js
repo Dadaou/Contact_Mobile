@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
-import { updateNetworkStatus } from '../redux/action/globalDataAction'
-import { envoyerContactAjouterAWeb, envoyerContactModifierAWeb } from './EnvoyerContact';
+import { updateNetworkStatus, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
+import { envoyerContactAjouterAWeb, envoyerContactModifierAWeb } from './EnvoyerContact'
+import { getDate } from '../utils/utils'
 
 const NetworkCheck = () => {
 
@@ -14,6 +15,14 @@ const NetworkCheck = () => {
     setConnecte(state.isConnected)
     setInternetJoignable(state.isInternetReachable)
   }, [])
+
+  const lancerSynchronisation = () => {
+
+    console.log(`Synchronisation du ${getDate()} en cours...`)
+    envoyerContactAjouterAWeb()
+    envoyerContactModifierAWeb()
+
+  }
 
   useEffect(() => {
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange)
@@ -27,12 +36,8 @@ const NetworkCheck = () => {
     if (connecte && internetJoignable) {
 
       const syncInterval = setInterval(() => {
-
-        console.log("Synchronisation encours...")
-        envoyerContactAjouterAWeb()
-        envoyerContactModifierAWeb()
-
-      }, 10000 /*15 * 60 * 1000*/)
+        lancerSynchronisation()
+      }, 15 * 60 * 1000)
 
       return () => {
         clearInterval(syncInterval)

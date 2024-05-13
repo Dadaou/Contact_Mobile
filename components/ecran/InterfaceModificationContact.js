@@ -3,7 +3,7 @@ import { dbLocalName, blanc, bleu } from '../utils/Constant'
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar } from "react-native"
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, Alert } from "react-native"
 import { store } from '../redux/dataStore'
 import { updateContact, updateTelephone, updateMail, updateAdresse } from '../redux/action/updateDataAction'
 import { Appbar } from 'react-native-paper'
@@ -31,6 +31,7 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const ModificationContact = ({ navigation, route }) => {
 
     const { ctt_id } = route.params
+    const utilId = 1700
 
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
@@ -54,6 +55,7 @@ const ModificationContact = ({ navigation, route }) => {
     const [facebook, setFacebook] = useState('')
     const [skype, setSkype] = useState('')
     const [etat, setEtat] = useState(true)
+    const [sourceId, setSourceId] = useState(1)
 
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
@@ -79,6 +81,7 @@ const ModificationContact = ({ navigation, route }) => {
                     setFacebook(resultSet.rows._array[0].ctt_facebook)
                     setSkype(resultSet.rows._array[0].ctt_skype)
                     setEtat(resultSet.rows._array[0].ctt_etat)
+                    setSourceId(resultSet.rows._array[0].src_id)
                 },
                 (_, error) => console.log(error)
             )
@@ -140,7 +143,8 @@ const ModificationContact = ({ navigation, route }) => {
 
                             (txObj, resultSet) => {
 
-                                if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                if (resultSet.rowsAffected !== 0) {
+
                                     store.dispatch(updateContact({
                                         photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb,
                                         twitter, linkedin, facebook, skype, note, etat, estMaj, ctt_id
@@ -155,7 +159,7 @@ const ModificationContact = ({ navigation, route }) => {
 
                         telephone.forEach((item) => {
                             tx.executeSql(requetes.InsererTelephone,
-                                [item.tel_numero, item.tel_libelle, ctt_id],
+                                [item.tel_numero, item.tel_libelle, ctt_id, utilId],
 
                                 (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
@@ -175,7 +179,7 @@ const ModificationContact = ({ navigation, route }) => {
 
                         mail.forEach((item) => {
                             tx.executeSql(requetes.InsererMail,
-                                [item.ml_mail, item.ml_libelle, ctt_id],
+                                [item.ml_mail, item.ml_libelle, ctt_id, utilId],
 
                                 (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {

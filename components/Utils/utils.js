@@ -33,3 +33,20 @@ export const convertirChaineEnArray = (data) => {
         }
     })
 }
+
+
+export const getDate = () => {
+
+    let date = new Date()
+    let jour = date.getDate()
+    let mois = date.getMonth() + 1
+    let année = date.getFullYear()
+    let heure = date.getHours()
+    let minute = date.getMinutes()
+    let seconde = date.getSeconds()
+
+    let dateEtHeure = année + '-' + mois + '-' + jour + ' ' + heure + ':' + minute + ':' + seconde
+
+    return dateEtHeure
+
+}

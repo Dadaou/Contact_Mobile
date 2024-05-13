@@ -38,6 +38,7 @@ const AjoutContact = ({ navigation }) => {
     const idContactWeb = null
     const estInsererDansWeb = 0
     const estMaj = 0
+    const sourceId = 1
 
     const [loading, setLoading] = useState(false)
     const [photo, setPhoto] = useState('')
@@ -99,7 +100,7 @@ const AjoutContact = ({ navigation }) => {
                     requetes.InsererContact,
                     [
                         photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, estFavori, utilId, idContactWeb, estInsererDansWeb, estMaj
+                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, estFavori, utilId, idContactWeb, sourceId, estInsererDansWeb, estMaj
                     ],
 
                     (txObj, resultSet) => {
