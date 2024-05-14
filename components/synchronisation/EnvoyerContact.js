@@ -5,7 +5,7 @@ import { uri } from '../utils/Constant'
 import { convertirChaineEnArray } from '../utils/utils'
 import axios from 'axios'
 
-export const envoyerContactAjouterAWeb = async (appToken, tentativeEssai = 3) => {
+export const envoyerNouveauContactAWeb = async (appToken, tentativeEssai = 3) => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const requete = "SELECT (contact.ctt_id) AS ctt_id_mobile, contact.ctt_id_web, contact.ctt_photo, contact.ctt_nom, contact.ctt_prenom, contact.ctt_prenom_usage, contact.ctt_entreprise, contact.ctt_service, contact.ctt_fonction, contact.ctt_anniversaire, contact.ctt_siteweb, contact.ctt_twitter, contact.ctt_linkedin, contact.ctt_facebook, contact.ctt_skype, contact.ctt_notes, contact.ctt_corbeille, contact.ctt_favoris, contact.ctt_etat, contact.util_id, GROUP_CONCAT(DISTINCT mail.ml_mail) AS mail, GROUP_CONCAT(DISTINCT telephone.tel_numero) AS telephone FROM contact LEFT JOIN mail ON mail.ctt_id = contact.ctt_id LEFT JOIN telephone ON telephone.ctt_id = contact.ctt_id WHERE contact.est_insererdansweb = ? GROUP BY contact.ctt_id"
@@ -51,7 +51,7 @@ export const envoyerContactAjouterAWeb = async (appToken, tentativeEssai = 3) =>
                         if (tentativeEssai > 0) {
 
                             const nouveauAppToken = obtenirAppToken()
-                            await envoyerContactAjouterAWeb(nouveauAppToken, tentativeEssai - 1)
+                            await envoyerNouveauContactAWeb(nouveauAppToken, tentativeEssai - 1)
 
                         } else {
                             console.log("Une erreur s'est produite lors de l'envoi des contacts nouvellement ajoutés vers contact web.", error)

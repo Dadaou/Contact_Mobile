@@ -2,13 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
 import { updateNetworkStatus, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
-import { envoyerContactAjouterAWeb, envoyerContactModifierAWeb } from './EnvoyerContact'
+import { envoyerNouveauContactAWeb, envoyerContactModifierAWeb } from './EnvoyerContact'
+import { recupererContactMajDepuisWeb, recupererContactDepuisWeb } from './RecupererContact'
 import { getDate } from '../utils/utils'
 
 const NetworkCheck = () => {
 
   const [connecte, setConnecte] = useState(false)
   const [internetJoignable, setInternetJoignable] = useState(false)
+  const [isLogin, setIsLogin] = useState(false)
+
+  const unsubscribe = store.subscribe(() => {
+    setIsLogin(store.getState().globalReducer.isLogin)
+  })
 
   const handleNetworkChange = useCallback((state) => {
     store.dispatch(updateNetworkStatus(state))
@@ -16,13 +22,15 @@ const NetworkCheck = () => {
     setInternetJoignable(state.isInternetReachable)
   }, [])
 
-  const lancerSynchronisation = () => {
+  const lancerSynchronisation = useCallback(() => {
 
     console.log(`Synchronisation du ${getDate()} en cours...`)
-    envoyerContactAjouterAWeb()
+    envoyerNouveauContactAWeb()
     envoyerContactModifierAWeb()
+    recupererContactDepuisWeb()
+    recupererContactMajDepuisWeb()
 
-  }
+  }, [])
 
   useEffect(() => {
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange)
@@ -33,17 +41,17 @@ const NetworkCheck = () => {
 
   useEffect(() => {
 
-    if (connecte && internetJoignable) {
+    if (isLogin && connecte && internetJoignable) {
 
       const syncInterval = setInterval(() => {
         lancerSynchronisation()
-      }, 15 * 60 * 1000)
+      }, 5000/*5 * 60 * 1000*/)
 
       return () => {
         clearInterval(syncInterval)
       }
     }
-  }, [connecte, internetJoignable])
+  }, [isLogin, connecte, internetJoignable])
 
   /*return (
     <>

@@ -7,7 +7,6 @@ import { uri } from '../utils/Constant'
 import { getDate } from '../utils/utils'
 import requetes from '../utils/RequeteSql'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { store } from '../redux/dataStore'
 
 const db = SQLite.openDatabase(dbLocalName)
 
@@ -15,6 +14,7 @@ const suffixBase = 220638
 const utilId = 1700
 const maxTentatives = 3
 const date = getDate()
+
 
 
 const enregistrerNumeroTelephoneWebSurMobile = (telephones, idContact, utilId, idContactEnWeb) => {
@@ -41,6 +41,7 @@ const enregistrerContactWebSurMobile = (contacts) => {
 
     const estInsererSurWeb = 1
     const estMaj = 0
+    const requete = "SELECT ctt_id FROM contact WHERE ctt_id_web = ?"
 
     return new Promise((resolve, reject) => {
 
@@ -48,15 +49,30 @@ const enregistrerContactWebSurMobile = (contacts) => {
 
             contacts.forEach((item) => {
 
-                tx.executeSql(requetes.InsererContact,
-                    [item.ctt_photo, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
-                    item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
-                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
+                tx.executeSql(requete, [item.ctt_id],
+
                     (txObj, resultSet) => {
-                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                            enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
-                            enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
-                            resolve()
+
+                        //console.log({ result: resultSet.rows._array })
+
+                        if (resultSet.rows._array.length === 0) {
+
+                            tx.executeSql(requetes.InsererContact,
+                                [item.ctt_photo, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
+                                item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
+                                (txObj, resultSet) => {
+                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                        enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
+                                        enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
+                                        resolve()
+                                    }
+                                },
+
+                                (txObj, error) => {
+                                    reject(error)
+                                }
+                            )
                         }
                     },
 
@@ -64,6 +80,7 @@ const enregistrerContactWebSurMobile = (contacts) => {
                         reject(error)
                     }
                 )
+
             })
         })
 

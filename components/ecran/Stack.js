@@ -14,7 +14,6 @@ import { manageLogin, manageUserToken, manageUserInfo } from '../redux/action/gl
 import requetes from '../utils/RequeteSql'
 
 
-
 const Stack = createNativeStackNavigator()
 
 const AppStack = () => {
@@ -29,29 +28,33 @@ const AppStack = () => {
 
     useEffect(() => {
 
-        db.transaction((tx) => {
+        if (isLogin) {
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS contact'
-                requetes.CreerTableContact
-            )
+            db.transaction((tx) => {
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS telephone'
-                requetes.CreerTableTelephone
-            )
+                tx.executeSql(
+                    //'DROP TABLE IF EXISTS contact'
+                    requetes.CreerTableContact
+                )
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS mail'
-                requetes.CreerTableMail
-            )
+                tx.executeSql(
+                    //'DROP TABLE IF EXISTS telephone'
+                    requetes.CreerTableTelephone
+                )
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS adresse'
-                requetes.CreerTableAdresse
-            )
-        })
-    }, [])
+                tx.executeSql(
+                    //'DROP TABLE IF EXISTS mail'
+                    requetes.CreerTableMail
+                )
+
+                tx.executeSql(
+                    //'DROP TABLE IF EXISTS adresse'
+                    requetes.CreerTableAdresse
+                )
+            })
+
+        }
+    }, [isLogin])
 
     useEffect(() => {
 

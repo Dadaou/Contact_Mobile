@@ -18,8 +18,6 @@ const ListContact = () => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
-    const [connecte, setConnecte] = useState(false)
-    const [internetJoignable, setInternetJoignable] = useState(false)
     const [refreshing, setRefreshing] = useState(true)
 
     /*
@@ -27,11 +25,6 @@ const ListContact = () => {
         const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
         console.log("Eto", store.getState().globalReducer._infoUtilisateur)
     */
-
-    const unsubscribe = store.subscribe(() => {
-        setConnecte(store.getState().globalReducer.networkInfo.isConnected)
-        setInternetJoignable(store.getState().globalReducer.networkInfo.isInternetReachable)
-    })
 
     const getListContact = () => {
 
@@ -96,6 +89,7 @@ const ListContact = () => {
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
                 data={data}
+                maxToRenderPerBatch={20}
                 keyExtractor={item => item.ctt_id}
                 renderItem={({ item }) => (
                     <ListView

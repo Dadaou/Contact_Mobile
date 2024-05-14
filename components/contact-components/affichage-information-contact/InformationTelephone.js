@@ -106,7 +106,6 @@ const InformationTelephone = ({ idContact }) => {
 
     }
 
-
     return (
         <Card mode="elevated" style={styles.card}>
             <Card.Content>
@@ -121,7 +120,7 @@ const InformationTelephone = ({ idContact }) => {
                                 <Card.Title
                                     title={afficherNumeroTelephone(item.tel_numero)}
                                     subtitle={item.tel_libelle}
-                                    left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => handlePhonePress(item.tel_code_pays, item.tel_numero)} />}
+                                    left={(props) => <IconButton {...props} icon="phone" size={28} onPress={() => handlePhonePress(item.tel_numero)} />}
                                 />
                             </TouchableRipple>
 
