@@ -1,14 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { View, StyleSheet } from 'react-native'
 import { Text, Badge } from "react-native-paper"
 import CustomDrawer from "../contact-components/CustomDrawer"
 import TousLesContacts from "../contact-components/menu/TousLesContacts"
 import ContactFavori from "../contact-components/menu/ContactFavori"
+import ContactPersonnel from "../contact-components/menu/ContactPersonnel"
 import { store } from "../redux/dataStore"
-import { updateNombreFavori } from "../redux/action/globalDataAction"
-import * as SQLite from 'expo-sqlite'
-import { dbLocalName } from "../utils/Constant"
 
 
 const Drawer = createDrawerNavigator()
@@ -26,31 +24,15 @@ const VueDrawer = ({ titre, nombre }) => {
 
 const AppDrawer = () => {
 
-    const db = SQLite.openDatabase(dbLocalName)
-    const reqToGetNombreFavori = "SELECT COUNT(*) AS nombre_favori FROM contact WHERE ctt_favoris = ?"
+    const [nombreContact, setNombreContact] = useState(0)
+    const [nombreContactPersonnel, setNombreContactPersonnel] = useState(0)
+    const [nombreFavori, setNombreFavori] = useState(0)
 
-    const getListContact = () => {
-
-        db.transaction((tx) => {
-
-            tx.executeSql(reqToGetNombreFavori, [1], //1 = true
-
-                (_, resultSet) => {
-                    store.dispatch(updateNombreFavori(resultSet.rows._array[0].nombre_favori))
-                },
-                (_, error) => console.log(error)
-            )
-
-        })
-    }
-
-    useEffect(() => {
-        getListContact()
-    }, [])
-
-
-    let nombreContact = store.getState().globalReducer.nombreContact
-    let nombreFavori = store.getState().globalReducer.nombreFavori
+    store.subscribe(() => {
+        setNombreContact(store.getState().globalReducer.nombreContact)
+        setNombreContactPersonnel(store.getState().globalReducer.nombreContactPersonnel)
+        setNombreFavori(store.getState().globalReducer.nombreFavori)
+    })
 
     return (
 
@@ -76,10 +58,20 @@ const AppDrawer = () => {
                 {(props) => <TousLesContacts {...props} /*infoUtilisateur={infoUtilisateur}*/ />}
             </Drawer.Screen>
 
+            <Drawer.Screen name="Contacts Personnels"
+                options={{
+                    drawerLabel: () => (
+                        <VueDrawer titre={"Contacts Personnels"} nombre={nombreContactPersonnel} />
+                    )
+                }}
+            >
+                {(props) => <ContactPersonnel {...props} /*infoUtilisateur={infoUtilisateur}*/ />}
+            </Drawer.Screen>
+
             <Drawer.Screen name="Contact favori" component={ContactFavori}
                 options={{
                     drawerLabel: () => (
-                        <VueDrawer titre={"Contact favori"} nombre={nombreFavori} />
+                        <VueDrawer titre={"Contacts favoris"} nombre={nombreFavori} />
                     )
                 }}
             />

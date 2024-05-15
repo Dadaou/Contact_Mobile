@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { memo } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { Menu, TouchableRipple } from 'react-native-paper'
 
-const ListView = ({ ctt_id, photo, prenom, nom, favori }) => {
+const ListView = memo(({ ctt_id, photo, prenom, nom, favori }) => {
 
     const navigation = useNavigation()
 
@@ -110,7 +110,7 @@ const ListView = ({ ctt_id, photo, prenom, nom, favori }) => {
         </>
 
     )
-}
+})
 
 const styles = StyleSheet.create({
 
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
         fontSize: 18
     }
 
-});
+})
 
 export default ListView

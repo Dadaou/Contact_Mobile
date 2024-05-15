@@ -8,7 +8,10 @@ const ChampDate = ({ paramDate, sourceId, onChangeDate }) => {
     const [estVisible, setVisible] = useState(false)
 
     const afficherCalendrier = () => {
-        setVisible(true)
+
+        if (sourceId !== 1) setVisible(false)
+        else setVisible(true)
+
     }
 
     const cacherCalendrier = () => {
@@ -24,7 +27,7 @@ const ChampDate = ({ paramDate, sourceId, onChangeDate }) => {
 
         <View style={styles.container}>
 
-            <TouchableOpacity style={styles.input} onPress={afficherCalendrier}>
+            <TouchableOpacity style={styles.input} onPress={afficherCalendrier} >
                 <View style={{ padding: 10 }}>
                     <Image source={require('../../../assets/Calendrier.png')} style={{ width: 35, height: 30 }} />
                 </View>
@@ -39,7 +42,7 @@ const ChampDate = ({ paramDate, sourceId, onChangeDate }) => {
                 mode={'date'}
                 onConfirm={handleConfirm}
                 onCancel={cacherCalendrier}
-                disabled={sourceId === 1 || sourceId === undefined ? false : true}
+
             />
 
         </View>

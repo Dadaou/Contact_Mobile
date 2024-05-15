@@ -40,18 +40,18 @@ const Synchronisation = () => {
   }, [])
 
   useEffect(() => {
- 
-     if (isLogin && connecte && internetJoignable) {
- 
-       const syncInterval = setInterval(() => {
-         lancerSynchronisation()
-       }, 1 * 60 * 1000) // 1 minute
- 
-       return () => {
-         clearInterval(syncInterval)
-       }
-     }
-   }, [isLogin, connecte, internetJoignable])
+
+    if (isLogin && connecte && internetJoignable) {
+
+      const syncInterval = setInterval(() => {
+        lancerSynchronisation()
+      }, 5000/*5 * 60 * 1000*/)
+
+      return () => {
+        clearInterval(syncInterval)
+      }
+    }
+  }, [isLogin, connecte, internetJoignable])
 
   /*return (
     <>

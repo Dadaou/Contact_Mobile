@@ -1,54 +1,42 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { View, FlatList } from "react-native"
 import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
 import ListView from './ListView'
+import { getListContact } from '../utils/utils'
+import { store } from '../redux/dataStore'
+import { updateNombreFavori } from '../redux/action/globalDataAction'
 
 
 const ListFavori = () => {
 
     const navigation = useNavigation()
-    const reqToGetListFavori = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact WHERE ctt_favoris = ? ORDER BY ctt_prenom ASC"
+    const reqToGetListFavori = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact WHERE ctt_favoris = ? ORDER BY ctt_prenom ASC, ctt_nom ASC"
 
     const db = SQLite.openDatabase(dbLocalName)
     const [data, setData] = useState([])
 
+    const fetchListContact = useCallback(async () => {
 
-    const getListContact = () => {
-
-        return new Promise((resolve, reject) => {
-
-            db.transaction((tx) => {
-
-                tx.executeSql(reqToGetListFavori, [1],
-
-                    (_, resultSet) => {
-                        resolve(resultSet.rows)
-                    },
-                    (_, error) => reject(error)
-                )
-
-            })
-        })
-    }
-
+        try {
+            const data = await getListContact(db, reqToGetListFavori, [1])
+            setData(data._array)
+            store.dispatch(updateNombreFavori(data.length))
+        } catch (error) {
+            console.error(error)
+        }
+    }, [])
 
     useEffect(() => {
 
-        navigation.addListener('focus', () => {
-
-            getListContact()
-                .then((data) => {
-                    setData(data._array)
-                })
-                .catch((error) => {
-                    console.warn(error)
-                })
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchListContact()
         })
 
-    }, [])
+        return unsubscribe
+    }, [navigation, data.length])
 
 
     return (

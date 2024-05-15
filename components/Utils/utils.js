@@ -1,4 +1,5 @@
 import { listPays } from "./IsoCode"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const genererID = () => {
     return 'xxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -50,3 +51,30 @@ export const getDate = () => {
     return dateEtHeure
 
 }
+
+
+export const getListContact = (db, requete, valeur = null) => {
+
+    return new Promise((resolve, reject) => {
+
+        db.transaction((tx) => {
+
+            tx.executeSql(requete, valeur,
+
+                (_, resultSet) => {
+                    resolve(resultSet.rows)
+                },
+                (_, error) => reject(error)
+            )
+
+        })
+    })
+}
+
+export const getUtilId = async () => {
+
+    const utilId = AsyncStorage.getItem('_infoUtilisateur')
+    //console.log(utilId)
+}
+
+

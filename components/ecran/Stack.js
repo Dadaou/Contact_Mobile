@@ -24,37 +24,35 @@ const AppStack = () => {
     const unsubscribe = store.subscribe(() => {
         setIsLogin(store.getState().globalReducer.isLogin)
     })
-    //unsubscribe()
 
     useEffect(() => {
 
-        if (isLogin) {
 
-            db.transaction((tx) => {
 
-                tx.executeSql(
-                    //'DROP TABLE IF EXISTS contact'
-                    requetes.CreerTableContact
-                )
+        db.transaction((tx) => {
 
-                tx.executeSql(
-                    //'DROP TABLE IF EXISTS telephone'
-                    requetes.CreerTableTelephone
-                )
+            tx.executeSql(
+                //'DROP TABLE IF EXISTS contact'
+                requetes.CreerTableContact
+            )
 
-                tx.executeSql(
-                    //'DROP TABLE IF EXISTS mail'
-                    requetes.CreerTableMail
-                )
+            tx.executeSql(
+                //'DROP TABLE IF EXISTS telephone'
+                requetes.CreerTableTelephone
+            )
 
-                tx.executeSql(
-                    //'DROP TABLE IF EXISTS adresse'
-                    requetes.CreerTableAdresse
-                )
-            })
+            tx.executeSql(
+                //'DROP TABLE IF EXISTS mail'
+                requetes.CreerTableMail
+            )
 
-        }
-    }, [isLogin])
+            tx.executeSql(
+                //'DROP TABLE IF EXISTS adresse'
+                requetes.CreerTableAdresse
+            )
+        })
+
+    }, [])
 
     useEffect(() => {
 
