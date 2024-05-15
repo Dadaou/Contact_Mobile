@@ -7,7 +7,7 @@ import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
 import { updateNombreContact, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
 import ListView from './ListView'
-import { recupererContactDepuisWeb, recupererContactMajDepuisWeb } from '../synchronisation/RecupererContact'
+import { recupererContactDepuisWeb } from '../synchronisation/RecupererContact'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 

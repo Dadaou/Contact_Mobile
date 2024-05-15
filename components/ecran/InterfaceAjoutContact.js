@@ -34,60 +34,48 @@ const AjoutContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
     const utilId = 1700
-    const estFavori = 0
-    const idContactWeb = null
     const estInsererDansWeb = 0
     const estMaj = 0
-    const sourceId = 1
 
     const [loading, setLoading] = useState(false)
-    const [photo, setPhoto] = useState('')
-    const [nom, setNom] = useState('')
-    const [prenom, setPrenom] = useState('')
-    const [prenomUsage, setPrenomUsage] = useState('')
-    const [groupe, setGroupe] = useState('')
-    const [entreprise, setEntreprise] = useState('')
-    const [fonction, setFonction] = useState('')
+    const [contact, setContact] = useState({
+
+        date: "",
+        corbeille: 0,
+        entreprise: "",
+        etat: true,
+        facebook: "",
+        favoris: 0,
+        fonction: "",
+        idContactWeb: null,
+        linkedin: "",
+        nom: "",
+        note: "",
+        photo: "",
+        prenom: "",
+        prenomUsage: "",
+        service: "",
+        siteWeb: "",
+        skype: "",
+        twitter: "",
+        utilId: utilId,
+        sourceId: 1
+    })
+
     const [telephone, setTelephone] = useState([{ tel_libelle: "", tel_numero: "" }])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
-    const [date, setDate] = useState('')
-    const [note, setNote] = useState('')
     const [adresse, setAdresse] = useState([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-    const [service, setService] = useState('')
-    const [siteWeb, setSiteWeb] = useState('')
-    const [twitter, setTwitter] = useState('')
-    const [linkedin, setLinkedin] = useState('')
-    const [facebook, setFacebook] = useState('')
-    const [skype, setSkype] = useState('')
-    const [etat, setEtat] = useState(true)
-
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
     const redirection = (showModal) => {
 
-        setPhoto('')
-        setNom('')
-        setPrenom('')
-        setPrenomUsage('')
-        setGroupe('')
-        setEntreprise('')
-        setFonction('')
+        setContact({})
         setTelephone([{ tel_libelle: "", tel_numero: "" }])
         setMail([{ ml_libelle: "", ml_mail: "" }])
-        setDate('')
-        setNote('')
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-        setService('')
-        setSiteWeb('')
-        setTwitter('')
-        setLinkedin('')
-        setFacebook('')
-        setSkype('')
-        setEtat(true)
 
         navigation.navigate('Accueil', { showModal: showModal })
     }
-
 
     const saveContact = () => {
 
@@ -99,17 +87,14 @@ const AjoutContact = ({ navigation }) => {
 
                     requetes.InsererContact,
                     [
-                        photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                        note, service, siteWeb, twitter, linkedin, facebook, skype, etat, estFavori, utilId, idContactWeb, sourceId, estInsererDansWeb, estMaj
+                        contact.photo, contact.prenom, contact.nom, contact.prenomUsage, contact.entreprise, contact.fonction, contact.date,
+                        contact.note, contact.service, contact.siteWeb, contact.twitter, contact.linkedin, contact.facebook, contact.skype, contact.etat,
+                        contact.favoris, contact.utilId, contact.idContactWeb, contact.sourceId, estInsererDansWeb, estMaj
                     ],
 
                     (txObj, resultSet) => {
 
                         if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                            store.dispatch(addContact({
-                                photo, prenom, nom, prenomUsage, entreprise, fonction, date,
-                                note, service, siteWeb, twitter, linkedin, facebook, skype, etat
-                            }))
                             resolve(resultSet.insertId)
                         }
 
@@ -123,28 +108,6 @@ const AjoutContact = ({ navigation }) => {
         })
     }
 
-    /*const getLastContactId = (lastRowId) => {
-
-        return new Promise((resolve, reject) => {
-
-            db.transaction((tx) => {
-
-                tx.executeSql(
-                    "SELECT ctt_id FROM contact WHERE rowid = ?",
-                    [lastRowId],
-                    (txObj, results) => {
-                        console.log({ insertId2: results.rows._array[0].ctt_id })
-                        resolve(results.rows._array[0].ctt_id)
-                    },
-                    (txObj, error) => {
-                        console.log('transaction error', error)
-                        reject(error)
-                    }
-                )
-            })
-        })
-
-    }*/
 
     const saveTelephone = (idContact) => {
 
@@ -152,24 +115,7 @@ const AjoutContact = ({ navigation }) => {
 
             telephone.forEach((item) => {
 
-                tx.executeSql(requetes.InsererTelephone,
-                    [item.tel_numero, item.tel_libelle, idContact, utilId],
-
-                    (txObj, resultSet) => {
-
-                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                            store.dispatch(addTelephone({
-                                tel_numero: item.tel_numero,
-                                tel_libelle: item.tel_libelle
-                            }))
-                        }
-                    },
-
-                    (txObj, error) => {
-                        console.log('telephone error', error)
-                        throw error
-                    }
-                )
+                tx.executeSql(requetes.InsererTelephone, [item.tel_numero, item.tel_libelle, idContact, utilId])
             })
         })
 
@@ -182,23 +128,7 @@ const AjoutContact = ({ navigation }) => {
             mail.forEach((item) => {
 
                 tx.executeSql(requetes.InsererMail,
-                    [item.ml_mail, item.ml_libelle, idContact, utilId],
-
-                    (txObj, resultSet) => {
-
-                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                            store.dispatch(addMail({
-                                ml_mail: item.ml_mail,
-                                ml_libelle: item.ml_libelle,
-                            }))
-                        }
-                    },
-
-                    (txObj, error) => {
-                        console.log('mail error', error)
-                        throw error
-                    }
-                )
+                    [item.ml_mail, item.ml_libelle, idContact, utilId])
             })
 
         })
@@ -210,27 +140,7 @@ const AjoutContact = ({ navigation }) => {
 
             adresse.forEach((item) => {
                 tx.executeSql(requetes.InsererAdresse,
-                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact],
-
-                    (txObj, resultSet) => {
-                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                            store.dispatch(addAdresse({
-                                addr_ligne1: item.addr_ligne1,
-                                addr_ligne2: item.addr_ligne2,
-                                addr_ligne3: item.addr_ligne3,
-                                addr_cp: item.addr_cp,
-                                addr_bp: item.addr_bp,
-                                addr_pays: item.addr_pays,
-                                addr_ville: item.addr_ville,
-                                addr_libelle: item.addr_libelle
-                            }))
-                        }
-                    },
-                    (txObj, error) => {
-                        console.log('adresse error', error);
-                        throw error;
-                    }
-                )
+                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact])
             })
         })
     }
@@ -238,12 +148,23 @@ const AjoutContact = ({ navigation }) => {
     const saveInformation = () => {
 
 
-        if (nom == '' || prenom == '') {
+        if (contact.nom == '' && contact.prenom == '') {
 
             Alert.alert(
 
                 'Information',
-                'Veuillez ajouter un nom et un prénom au minimun pour créer un contact',
+                'Veuillez ajouter un nom ou un prénom au minimun pour créer un contact',
+                [{ text: "OK" }],
+                { cancelable: false }
+            )
+        }
+
+        else if (telephone[0].tel_numero == '' && mail[0].ml_mail == '') {
+
+            Alert.alert(
+
+                'Information',
+                'Veuillez ajouter un numero ou un mail pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
             )
@@ -287,7 +208,7 @@ const AjoutContact = ({ navigation }) => {
                 <Appbar.Action icon="check" size={30} onPress={saveInformation} color={blanc} />
             </Appbar.Header>
 
-            <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
+            <EtatContact paramEtat={contact.etat} onChangeEtat={(etat) => setContact({ ...contact, etat: etat })} />
 
             <ScrollView style={{ flex: 1, backgroundColor: blanc }}>
 
@@ -295,19 +216,19 @@ const AjoutContact = ({ navigation }) => {
 
                     <View style={{ flex: 1, padding: 10 }} />
 
-                    <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto} />
+                    <ChampPhoto paramPhoto={contact.photo} sourceId={contact.sourceId} onChangePhoto={(photo) => setContact(prevEtat => ({ ...prevEtat, photo: photo }))} />
 
-                    <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom} />
+                    <ChampPrenom paramPrenom={contact.prenom} sourceId={contact.sourceId} onChangePrenom={(prenom) => setContact({ ...contact, prenom: prenom })} />
 
-                    <ChampNom paramNom={nom} onChangeNom={setNom} />
+                    <ChampNom paramNom={contact.nom} sourceId={contact.sourceId} onChangeNom={(nom) => setContact({ ...contact, nom: nom })} />
 
-                    <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage} />
+                    <ChampPrenomUsage paramPrenomUsage={contact.prenomUsage} sourceId={contact.sourceId} onChangePrenomUsage={(prenomUsage) => setContact({ ...contact, prenomUsage: prenomUsage })} />
 
-                    <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe} />
+                    <ChampGroupe />
 
-                    <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise} />
+                    <ChampEntreprise paramEntreprise={contact.entreprise} sourceId={contact.sourceId} onChangeEntreprise={(entreprise) => setContact({ ...contact, entreprise: entreprise })} />
 
-                    <ChampFonction paramFonction={fonction} onChangeFonction={setFonction} />
+                    <ChampFonction paramFonction={contact.fonction} sourceId={contact.sourceId} onChangeFonction={(fonction) => setContact({ ...contact, fonction: fonction })} />
 
                     <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone} />
 
@@ -325,23 +246,23 @@ const AjoutContact = ({ navigation }) => {
 
                         <>
 
-                            <ChampDate paramDate={date} onChangeDate={setDate} />
+                            <ChampDate paramDate={contact.date} sourceId={contact.sourceId} onChangeDate={(date) => setContact({ ...contact, date: date })} />
 
-                            <ChampNote paramNote={note} onChangeNote={setNote} />
+                            <ChampNote paramNote={contact.note} sourceId={contact.sourceId} onChangeNote={(note) => setContact({ ...contact, note: note })} />
 
                             <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
 
-                            <ChampService paramServie={service} onChangeService={setService} />
+                            <ChampService paramServie={contact.service} sourceId={contact.sourceId} onChangeService={(service) => setContact({ ...contact, service: service })} />
 
-                            <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
+                            <ChampSiteWeb paramSiteWeb={contact.siteWeb} sourceId={contact.sourceId} onChangeSiteWeb={(siteWeb) => setContact({ ...contact, siteWeb: siteWeb })} />
 
-                            <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
+                            <ChampTwitter paramTwitter={contact.twitter} sourceId={contact.sourceId} onChangeTwitter={(twitter) => setContact({ ...contact, twitter: twitter })} />
 
-                            <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
+                            <ChampLinkedin paramLinkedin={contact.linkedin} sourceId={contact.sourceId} onChangeLinkedin={(linkedin) => setContact({ ...contact, linkedin: linkedin })} />
 
-                            <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
+                            <ChampFacebook paramFacebook={contact.facebook} sourceId={contact.sourceId} onChangeFacebook={(facebook) => setContact({ ...contact, facebook: facebook })} />
 
-                            <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
+                            <ChampSkype paramSkype={contact.skype} sourceId={contact.sourceId} onChangeSkype={(skype) => setContact({ ...contact, skype: skype })} />
 
                         </>
 

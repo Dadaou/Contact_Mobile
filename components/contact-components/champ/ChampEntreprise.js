@@ -2,10 +2,9 @@ import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 import { blanc, bleu } from '../../utils/Constant'
 
-const ChampEntreprise = ({ paramEntreprise, onChangeEntreprise }) => {
+const ChampEntreprise = ({ paramEntreprise, sourceId, onChangeEntreprise }) => {
 
     return (
-
 
         <TextInput
 
@@ -14,7 +13,8 @@ const ChampEntreprise = ({ paramEntreprise, onChangeEntreprise }) => {
             mode='outlined'
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeEntreprise(text)}
-            value={paramEntreprise} />
+            value={paramEntreprise}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
     )
 
 }

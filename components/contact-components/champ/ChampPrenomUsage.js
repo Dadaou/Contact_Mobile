@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampPrenomUsage = ({ paramPrenomUsage, onChangePrenomUsage }) => {
+const ChampPrenomUsage = ({ paramPrenomUsage, sourceId, onChangePrenomUsage }) => {
 
     return (
 
@@ -13,7 +13,8 @@ const ChampPrenomUsage = ({ paramPrenomUsage, onChangePrenomUsage }) => {
             mode='outlined'
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangePrenomUsage(text)}
-            value={paramPrenomUsage} />
+            value={paramPrenomUsage}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
 
     )
 

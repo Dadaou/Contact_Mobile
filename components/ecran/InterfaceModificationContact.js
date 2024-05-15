@@ -1,11 +1,8 @@
 import requetes from '../utils/RequeteSql'
 import { dbLocalName, blanc, bleu } from '../utils/Constant'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import * as SQLite from 'expo-sqlite'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, Alert } from "react-native"
-import { store } from '../redux/dataStore'
-import { updateContact, updateTelephone, updateMail, updateAdresse } from '../redux/action/updateDataAction'
 import { Appbar } from 'react-native-paper'
 
 import EtatContact from '../contact-components/champ/EtatContact'
@@ -31,95 +28,126 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const ModificationContact = ({ navigation, route }) => {
 
     const { ctt_id } = route.params
-    const utilId = 1700
-
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
+    const utilId = 1700
 
-    const [photo, setPhoto] = useState('')
-    const [nom, setNom] = useState('')
-    const [prenom, setPrenom] = useState('')
-    const [prenomUsage, setPrenomUsage] = useState('')
-    const [groupe, setGroupe] = useState('')
-    const [entreprise, setEntreprise] = useState('')
-    const [fonction, setFonction] = useState('')
+    const [contact, setContact] = useState({})
     const [telephone, setTelephone] = useState([])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
-    const [date, setDate] = useState('')
-    const [note, setNote] = useState('')
     const [adresse, setAdresse] = useState([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-    const [service, setService] = useState('')
-    const [siteWeb, setSiteWeb] = useState('')
-    const [twitter, setTwitter] = useState('')
-    const [linkedin, setLinkedin] = useState('')
-    const [facebook, setFacebook] = useState('')
-    const [skype, setSkype] = useState('')
-    const [etat, setEtat] = useState(true)
-    const [sourceId, setSourceId] = useState(1)
-
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
-    const getInfoContact = () => {
 
-        db.transaction((tx) => {
+    const getContact = useCallback(() => {
 
-            tx.executeSql(requetes.GetContact, [ctt_id],
-                (_, resultSet) => {
-                    setPhoto(resultSet.rows._array[0].ctt_photo)
-                    setPrenom(resultSet.rows._array[0].ctt_prenom)
-                    setNom(resultSet.rows._array[0].ctt_nom)
-                    setPrenomUsage(resultSet.rows._array[0].ctt_prenom_usage)
-                    //setGroupe(resultSet.rows._array[0].ctt_groupe)
-                    setEntreprise(resultSet.rows._array[0].ctt_entreprise)
-                    setFonction(resultSet.rows._array[0].ctt_fonction)
-                    setDate(resultSet.rows._array[0].ctt_anniversaire)
-                    setNote(resultSet.rows._array[0].ctt_notes)
-                    setService(resultSet.rows._array[0].ctt_service)
-                    setSiteWeb(resultSet.rows._array[0].ctt_siteweb)
-                    setTwitter(resultSet.rows._array[0].ctt_twitter)
-                    setLinkedin(resultSet.rows._array[0].ctt_linkedin)
-                    setFacebook(resultSet.rows._array[0].ctt_facebook)
-                    setSkype(resultSet.rows._array[0].ctt_skype)
-                    setEtat(resultSet.rows._array[0].ctt_etat)
-                    setSourceId(resultSet.rows._array[0].src_id)
-                },
-                (_, error) => console.log(error)
-            )
+        return new Promise((resolve, reject) => {
 
-            tx.executeSql(requetes.GetTelephone, [ctt_id],
-                (_, resultSet) => {
+            db.transaction((tx) => {
 
-                    setTelephone(resultSet.rows._array)
-                },
-                (_, error) => console.log(error)
-            )
-
-            tx.executeSql(requetes.GetMail, [ctt_id],
-                (_, resultSet) => {
-                    setMail(resultSet.rows._array)
-                },
-                (_, error) => console.log(error)
-            )
-
-            tx.executeSql(requetes.GetAdresse, [ctt_id],
-                (_, resultSet) => {
-                    setAdresse(resultSet.rows._array)
-                },
-                (_, error) => console.log(error)
-            )
+                tx.executeSql(requetes.GetContact, [ctt_id],
+                    (_, resultSet) => {
+                        resolve(resultSet.rows._array[0])
+                    },
+                    (_, error) => reject(error)
+                )
+            })
 
         })
 
+    }, [])
+
+    const getTelephone = useCallback(() => {
+
+        return new Promise((resolve, reject) => {
+
+            db.transaction((tx) => {
+
+                tx.executeSql(requetes.GetTelephone, [ctt_id],
+                    (_, resultSet) => {
+                        resolve(resultSet.rows._array)
+                    },
+                    (_, error) => reject(error)
+                )
+            })
+
+        })
+
+    }, [])
+
+
+    const getMail = useCallback(() => {
+
+        return new Promise((resolve, reject) => {
+
+            db.transaction((tx) => {
+
+                tx.executeSql(requetes.GetMail, [ctt_id],
+                    (_, resultSet) => {
+                        resolve(resultSet.rows._array)
+                    },
+                    (_, error) => reject(error)
+                )
+            })
+
+        })
+
+    }, [])
+
+
+    const getAdresse = useCallback(() => {
+
+        return new Promise((resolve, reject) => {
+
+            db.transaction((tx) => {
+
+                tx.executeSql(requetes.GetAdresse, [ctt_id],
+                    (_, resultSet) => {
+                        resolve(resultSet.rows._array)
+                    },
+                    (_, error) => reject(error)
+                )
+            })
+
+        })
+
+    }, [])
+
+
+    const getInfoContact = async () => {
+
+        const contactResult = await getContact()
+        const telephoneResult = await getTelephone()
+        const mailResult = await getMail()
+        const adresseResult = await getAdresse()
+
+        setContact(contactResult)
+        setTelephone(telephoneResult)
+        setMail(mailResult)
+        setAdresse(adresseResult)
     }
+
+
 
     const misAJourInfoContact = () => {
 
-        if (nom == '' || prenom == '') {
+        if (contact.ctt_nom == '' && contact.ctt_prenom == '') {
 
             Alert.alert(
 
                 'Information',
-                'Veuillez ne pas laisser le nom et le prénom vide',
+                'Veuillez ne pas laisser le nom ou le prénom vide',
+                [{ text: "OK" }],
+                { cancelable: false }
+            )
+        }
+
+        else if (telephone[0].tel_numero == '' && mail[0].ml_mail == '') {
+
+            Alert.alert(
+
+                'Information',
+                'Veuillez ajouter un numero ou un mail pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
             )
@@ -138,99 +166,27 @@ const ModificationContact = ({ navigation, route }) => {
                         tx.executeSql(requetes.SupprAdresse, [ctt_id])
 
                         tx.executeSql(requetes.MajContact,
-                            [photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb,
-                                twitter, linkedin, facebook, skype, note, etat, estMaj, ctt_id],
-
-                            (txObj, resultSet) => {
-
-                                if (resultSet.rowsAffected !== 0) {
-
-                                    store.dispatch(updateContact({
-                                        photo, nom, prenom, prenomUsage, entreprise, service, fonction, date, siteWeb,
-                                        twitter, linkedin, facebook, skype, note, etat, estMaj, ctt_id
-                                    }))
-                                }
-
-                            },
-                            (txObj, error) => {
-                                console.log('transaction error', error)
-                            }
-                        )
+                            [contact.ctt_photo, contact.ctt_nom, contact.ctt_prenom, contact.ctt_prenom_usage, contact.ctt_entreprise, contact.ctt_service, contact.ctt_fonction,
+                            contact.ctt_anniversaire, contact.ctt_siteweb, contact.ctt_twitter, contact.ctt_linkedin, contact.ctt_facebook, contact.ctt_skype, contact.ctt_notes,
+                            contact.ctt_etat, estMaj, ctt_id])
 
                         telephone.forEach((item) => {
-                            tx.executeSql(requetes.InsererTelephone,
-                                [item.tel_numero, item.tel_libelle, ctt_id, utilId],
-
-                                (txObj, resultSet) => {
-                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                                        store.dispatch(updateTelephone({
-                                            ctt_id: ctt_id,
-                                            tel_numero: item.tel_numero,
-                                            tel_libelle: item.tel_libelle
-                                        }))
-                                    }
-                                },
-                                (txObj, error) => {
-                                    console.log('telephone error ', error)
-                                    throw error
-                                }
-                            )
+                            tx.executeSql(requetes.InsererTelephone, [item.tel_numero, item.tel_libelle, ctt_id, utilId])
                         })
 
                         mail.forEach((item) => {
-                            tx.executeSql(requetes.InsererMail,
-                                [item.ml_mail, item.ml_libelle, ctt_id, utilId],
-
-                                (txObj, resultSet) => {
-                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                                        store.dispatch(updateMail({
-                                            ctt_id: ctt_id,
-                                            ml_mail: item.ml_mail,
-                                            ml_libelle: item.ml_libelle
-                                        }))
-                                    }
-                                },
-
-                                (txObj, error) => {
-                                    console.log('mail error ', error)
-                                    throw error
-                                }
-                            )
+                            tx.executeSql(requetes.InsererMail, [item.ml_mail, item.ml_libelle, ctt_id, utilId])
                         })
 
                         adresse.forEach((item) => {
                             tx.executeSql(requetes.InsererAdresse,
                                 [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp,
-                                item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id],
-
-                                (txObj, resultSet) => {
-                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                                        store.dispatch(updateAdresse({
-                                            ctt_id: ctt_id,
-                                            addr_ligne1: item.addr_ligne1,
-                                            addr_ligne2: item.addr_ligne2,
-                                            addr_ligne3: item.addr_ligne3,
-                                            addr_cp: item.addr_cp,
-                                            addr_bp: item.addr_bp,
-                                            addr_pays: item.addr_pays,
-                                            addr_ville: item.addr_ville,
-                                            addr_libelle: item.addr_libelle
-                                        }))
-                                    }
-                                },
-
-                                (txObj, error) => {
-                                    console.log('adresse error ', error)
-                                    throw error
-                                }
-
-                            )
+                                item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, ctt_id])
                         })
                     }
 
                     catch (error) {
                         console.error("Erreur lors de l'exécution des requêtes d'insertion:", error)
-                        throw error
                     }
                 })
 
@@ -240,42 +196,24 @@ const ModificationContact = ({ navigation, route }) => {
             catch (error) {
                 console.error("Une erreur est survenue lors de la transaction:", error)
             }
-
-            //store.subscribe(() => console.log(store.getState().updateDataReducer.listUpdatedTelephone))
         }
+
+    }
+
+
+    const redirection = (showModal) => {
+
+        setContact({})
+        setTelephone([])
+        setMail([{ ml_libelle: "", ml_mail: "" }])
+        setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
+        navigation.navigate('DetailContact', { ctt_id: ctt_id, showModal: showModal })
 
     }
 
     useEffect(() => {
         getInfoContact()
     }, [])
-
-
-    const redirection = (showModal) => {
-
-        setPhoto('')
-        setNom('')
-        setPrenom('')
-        setPrenomUsage('')
-        setGroupe('')
-        setEntreprise('')
-        setFonction('')
-        setTelephone([])
-        setMail([{ ml_libelle: "", ml_mail: "" }])
-        setDate('')
-        setNote('')
-        setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-        setService('')
-        setSiteWeb('')
-        setTwitter('')
-        setLinkedin('')
-        setFacebook('')
-        setSkype('')
-        setEtat(true)
-
-        navigation.navigate('DetailContact', { ctt_id: ctt_id, showModal: showModal })
-
-    }
 
 
     return (
@@ -290,23 +228,32 @@ const ModificationContact = ({ navigation, route }) => {
                 <Appbar.Action icon="check" size={30} onPress={misAJourInfoContact} color={blanc} />
             </Appbar.Header>
 
-            <EtatContact paramEtat={etat} onChangeEtat={setEtat} />
+            <EtatContact paramEtat={contact.ctt_etat} onChangeEtat={(etat) => setContact({ ...contact, ctt_etat: etat })} />
 
             <ScrollView style={{ flex: 1, backgroundColor: blanc }}>
 
-                <View style={{ alignItems: "center" /*backgroundColor: blanc*/ }}>
+                <View style={{ alignItems: "center" }}>
 
                     <View style={{ flex: 1, padding: 10 }} />
 
-                    <ChampPhoto paramPhoto={photo} onChangePhoto={setPhoto} />
-                    <ChampPrenom paramPrenom={prenom} onChangePrenom={setPrenom} />
-                    <ChampNom paramNom={nom} onChangeNom={setNom} />
-                    <ChampPrenomUsage paramPrenomUsage={prenomUsage} onChangePrenomUsage={setPrenomUsage} />
-                    <ChampGroupe paramGroupe={groupe} onChangeGroupe={setGroupe} />
-                    <ChampEntreprise paramEntreprise={entreprise} onChangeEntreprise={setEntreprise} />
-                    <ChampFonction paramFonction={fonction} onChangeFonction={setFonction} />
+                    <ChampPhoto paramPhoto={contact.ctt_photo} sourceId={contact.src_id} onChangePhoto={(photo) => setContact(prevEtat => ({ ...prevEtat, ctt_photo: photo }))} />
+
+                    <ChampPrenom paramPrenom={contact.ctt_prenom} sourceId={contact.src_id} onChangePrenom={(prenom) => setContact({ ...contact, ctt_prenom: prenom })} />
+
+                    <ChampNom paramNom={contact.ctt_nom} sourceId={contact.src_id} onChangeNom={(nom) => setContact({ ...contact, ctt_nom: nom })} />
+
+                    <ChampPrenomUsage paramPrenomUsage={contact.ctt_prenom_usage} sourceId={contact.src_id} onChangePrenomUsage={(prenomUsage) => setContact({ ...contact, ctt_prenom_usage: prenomUsage })} />
+
+                    <ChampGroupe />
+
+                    <ChampEntreprise paramEntreprise={contact.ctt_entreprise} sourceId={contact.src_id} onChangeEntreprise={(entreprise) => setContact({ ...contact, ctt_entreprise: entreprise })} />
+
+                    <ChampFonction paramFonction={contact.ctt_fonction} sourceId={contact.src_id} onChangeFonction={(fonction) => setContact({ ...contact, ctt_fonction: fonction })} />
+
                     <ChampTelephone paramTelephone={telephone} onChangeTelephone={setTelephone} />
+
                     <ChampEmail paramMail={mail} onChangeMail={setMail} />
+
                     <TouchableOpacity onPress={() => setAfficherAutreChamp(!afficherAutreChamp)}>
 
                         {!afficherAutreChamp ?
@@ -319,15 +266,23 @@ const ModificationContact = ({ navigation, route }) => {
 
                         <>
 
-                            <ChampDate paramDate={date} onChangeDate={setDate} />
-                            <ChampNote paramNote={note} onChangeNote={setNote} />
+                            <ChampDate paramDate={contact.ctt_anniversaire} sourceId={contact.src_id} onChangeDate={(date) => setContact({ ...contact, ctt_anniversaire: date })} />
+
+                            <ChampNote paramNote={contact.ctt_notes} sourceId={contact.src_id} onChangeNote={(note) => setContact({ ...contact, ctt_notes: note })} />
+
                             <ChampAdresse paramAdresse={adresse} onChangeAdresse={setAdresse} />
-                            <ChampService paramServie={service} onChangeService={setService} />
-                            <ChampSiteWeb paramSiteWeb={siteWeb} onChangeSiteWeb={setSiteWeb} />
-                            <ChampTwitter paramTwitter={twitter} onChangeTwitter={setTwitter} />
-                            <ChampLinkedin paramLinkedin={linkedin} onChangeLinkedin={setLinkedin} />
-                            <ChampFacebook paramFacebook={facebook} onChangeFacebook={setFacebook} />
-                            <ChampSkype paramSkype={skype} onChangeSkype={setSkype} />
+
+                            <ChampService paramServie={contact.ctt_service} sourceId={contact.src_id} onChangeService={(service) => setContact({ ...contact, ctt_service: service })} />
+
+                            <ChampSiteWeb paramSiteWeb={contact.ctt_siteweb} sourceId={contact.src_id} onChangeSiteWeb={(siteWeb) => setContact({ ...contact, ctt_siteweb: siteWeb })} />
+
+                            <ChampTwitter paramTwitter={contact.ctt_twitter} sourceId={contact.src_id} onChangeTwitter={(twitter) => setContact({ ...contact, ctt_twitter: twitter })} />
+
+                            <ChampLinkedin paramLinkedin={contact.ctt_linkedin} sourceId={contact.src_id} onChangeLinkedin={(linkedin) => setContact({ ...contact, ctt_linkedin: linkedin })} />
+
+                            <ChampFacebook paramFacebook={contact.ctt_facebook} sourceId={contact.src_id} onChangeFacebook={(facebook) => setContact({ ...contact, ctt_facebook: facebook })} />
+
+                            <ChampSkype paramSkype={contact.ctt_skype} sourceId={contact.src_id} onChangeSkype={(skype) => setContact({ ...contact, ctt_skype: skype })} />
                         </>
 
                     ) : null
@@ -340,6 +295,7 @@ const ModificationContact = ({ navigation, route }) => {
         </>
 
     )
+
 }
 
 export default ModificationContact

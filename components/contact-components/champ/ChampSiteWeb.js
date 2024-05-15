@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampSiteWeb = ({ paramSiteWeb, onChangeSiteWeb }) => {
+const ChampSiteWeb = ({ paramSiteWeb, sourceId, onChangeSiteWeb }) => {
 
     return (
 
@@ -13,7 +13,8 @@ const ChampSiteWeb = ({ paramSiteWeb, onChangeSiteWeb }) => {
             mode='outlined'
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeSiteWeb(text)}
-            value={paramSiteWeb} />
+            value={paramSiteWeb}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
     )
 
 }

@@ -7,7 +7,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 const ChampAdresse = ({ paramAdresse, onChangeAdresse }) => {
 
-    const libelle = ['Professionel', 'Personnel', 'Entreprise']
+    const libelle = ['Professionel', 'Personnel', 'Entreprise', 'Autre']
 
     const changerAdresseLigneUn = (adresseLigneUn, index) => {
         const list = [...paramAdresse]

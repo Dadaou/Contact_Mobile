@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampNom = ({ paramNom, onChangeNom }) => {
+const ChampNom = ({ paramNom, sourceId, onChangeNom }) => {
 
     return (
 
@@ -12,7 +12,8 @@ const ChampNom = ({ paramNom, onChangeNom }) => {
             mode='outlined'
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeNom(text)}
-            value={paramNom} />
+            value={paramNom}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
     )
 
 }

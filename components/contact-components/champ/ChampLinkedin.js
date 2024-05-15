@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampLinkedin = ({ paramLinkedin, onChangeLinkedin }) => {
+const ChampLinkedin = ({ paramLinkedin, sourceId, onChangeLinkedin }) => {
 
     return (
 
@@ -14,6 +14,7 @@ const ChampLinkedin = ({ paramLinkedin, onChangeLinkedin }) => {
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeLinkedin(text)}
             value={paramLinkedin}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true}
             left={<TextInput.Icon icon="linkedin" color={"#0077b5"} size={35} />} />
     )
 

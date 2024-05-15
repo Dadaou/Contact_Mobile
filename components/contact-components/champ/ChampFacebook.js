@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampFacebook = ({ paramFacebook, onChangeFacebook }) => {
+const ChampFacebook = ({ paramFacebook, sourceId, onChangeFacebook }) => {
 
 
     return (
@@ -15,6 +15,7 @@ const ChampFacebook = ({ paramFacebook, onChangeFacebook }) => {
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeFacebook(text)}
             value={paramFacebook}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true}
             left={<TextInput.Icon icon="facebook" color={"#1877F2"} size={35} />} />
     )
 }

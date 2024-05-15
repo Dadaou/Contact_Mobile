@@ -1,10 +1,10 @@
+import { memo } from 'react'
 import * as ImagePicker from 'expo-image-picker'
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native"
 import Capture from '../../modal/Capture'
 import { useState, useCallback } from 'react'
-import { Snackbar } from 'react-native-paper'
 
-const ChampPhoto = ({ paramPhoto, onChangePhoto }) => {
+const ChampPhoto = memo(({ paramPhoto, sourceId, onChangePhoto }) => {
 
   const [isVisible, setIsVisible] = useState(false)
 
@@ -41,32 +41,28 @@ const ChampPhoto = ({ paramPhoto, onChangePhoto }) => {
 
   return (
 
-
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
       <View>
 
-        {paramPhoto ?
-
+        {paramPhoto ? (
           <TouchableOpacity onPress={() => setIsVisible(true)}>
             <Image source={{ uri: paramPhoto }} style={{ borderRadius: 100, width: 150, height: 150 }} />
-          </TouchableOpacity> :
-
+          </TouchableOpacity>
+        ) : (
           <TouchableOpacity onPress={() => setIsVisible(true)} style={styles.containerImage}>
             <Image source={require('../../../assets/gallery.png')} style={{ width: 50, height: 50 }} />
           </TouchableOpacity>
-
-        }
-
+        )}
       </View>
 
-      <Capture isVisible={isVisible} onClose={setIsVisible} launchCamera={launchCamera} openGalerie={pickImage} />
+      {sourceId === 1 || sourceId === undefined ? <Capture isVisible={isVisible} onClose={setIsVisible} launchCamera={launchCamera} openGalerie={pickImage} /> : null}
 
     </View>
 
   )
 
-}
+})
 
 const styles = StyleSheet.create({
 

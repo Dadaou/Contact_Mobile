@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper'
 import { StyleSheet } from "react-native"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampNote = ({ paramNote, onChangeNote }) => {
+const ChampNote = ({ paramNote, sourceId, onChangeNote }) => {
 
     return (
 
@@ -14,7 +14,8 @@ const ChampNote = ({ paramNote, onChangeNote }) => {
             multiline={true}
             numberOfLines={8}
             onChangeText={(text) => onChangeNote(text)}
-            value={paramNote} />
+            value={paramNote}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
     )
 
 }

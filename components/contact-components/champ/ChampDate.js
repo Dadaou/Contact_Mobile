@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampDate = ({ paramDate, onChangeDate }) => {
+const ChampDate = ({ paramDate, sourceId, onChangeDate }) => {
 
     const [estVisible, setVisible] = useState(false)
 
@@ -39,6 +39,7 @@ const ChampDate = ({ paramDate, onChangeDate }) => {
                 mode={'date'}
                 onConfirm={handleConfirm}
                 onCancel={cacherCalendrier}
+                disabled={sourceId === 1 || sourceId === undefined ? false : true}
             />
 
         </View>

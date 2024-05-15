@@ -6,7 +6,7 @@ import { envoyerNouveauContactAWeb, envoyerContactModifierAWeb } from './Envoyer
 import { recupererContactMajDepuisWeb, recupererContactDepuisWeb } from './RecupererContact'
 import { getDate } from '../utils/utils'
 
-const NetworkCheck = () => {
+const Synchronisation = () => {
 
   const [connecte, setConnecte] = useState(false)
   const [internetJoignable, setInternetJoignable] = useState(false)
@@ -40,18 +40,18 @@ const NetworkCheck = () => {
   }, [])
 
   useEffect(() => {
-
-    if (isLogin && connecte && internetJoignable) {
-
-      const syncInterval = setInterval(() => {
-        lancerSynchronisation()
-      }, 5000/*5 * 60 * 1000*/)
-
-      return () => {
-        clearInterval(syncInterval)
-      }
-    }
-  }, [isLogin, connecte, internetJoignable])
+ 
+     if (isLogin && connecte && internetJoignable) {
+ 
+       const syncInterval = setInterval(() => {
+         lancerSynchronisation()
+       }, 1 * 60 * 1000) // 1 minute
+ 
+       return () => {
+         clearInterval(syncInterval)
+       }
+     }
+   }, [isLogin, connecte, internetJoignable])
 
   /*return (
     <>
@@ -79,5 +79,5 @@ const NetworkCheck = () => {
   )*/
 }
 
-export default NetworkCheck
+export default Synchronisation
 

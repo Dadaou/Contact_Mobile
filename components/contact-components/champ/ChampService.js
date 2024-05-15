@@ -2,7 +2,7 @@ import { TextInput } from 'react-native-paper'
 import { View, StyleSheet } from "react-native"
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampService = ({ paramServie, onChangeService }) => {
+const ChampService = ({ paramServie, sourceId, onChangeService }) => {
 
     return (
 
@@ -13,7 +13,8 @@ const ChampService = ({ paramServie, onChangeService }) => {
             mode='outlined'
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeService(text)}
-            value={paramServie} />
+            value={paramServie}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true} />
     )
 
 }

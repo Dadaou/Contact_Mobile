@@ -1,5 +1,5 @@
 import AppStack from './components/ecran/Stack'
-import NetworkCheck from './components/synchronisation/NetworkCheck'
+import Synchronisation from './components/synchronisation/Synchronisation'
 import NotificationToast from './components/modal/NotificationToast'
 import { PaperProvider } from 'react-native-paper'
 
@@ -8,11 +8,11 @@ const App = () => {
   return (
 
     <PaperProvider>
-   
-        <AppStack />
-        <NetworkCheck />
-        <NotificationToast />
- 
+
+      <AppStack />
+      <Synchronisation />
+      <NotificationToast />
+
     </PaperProvider>
 
   )

@@ -244,7 +244,7 @@ export const recupererContactDepuisWeb = async () => {
         const appToken = extractAppTokenFromLocalStorage()
         await Promise.all([
             recupererContactPersoDepuisWeb(appToken),
-            //recupererContactPlateformeDepuisWeb(appToken)
+            recupererContactPlateformeDepuisWeb(appToken)
         ])
         await AsyncStorage.setItem('_premierSynchro', 'true')
         await AsyncStorage.setItem('_dateSynchronisation', date)

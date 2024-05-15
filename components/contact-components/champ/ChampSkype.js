@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampSkype = ({ paramSkype, onChangeSkype }) => {
+const ChampSkype = ({ paramSkype, sourceId, onChangeSkype }) => {
 
     return (
 
@@ -14,6 +14,7 @@ const ChampSkype = ({ paramSkype, onChangeSkype }) => {
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeSkype(text)}
             value={paramSkype}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true}
             left={<TextInput.Icon icon="skype" color={"#00AFF0"} size={35} />} />
     )
 

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 import { TextInput } from 'react-native-paper'
 import { blanc, bleu } from "../../utils/Constant"
 
-const ChampTwitter = ({ paramTwitter, onChangeTwitter }) => {
+const ChampTwitter = ({ paramTwitter, sourceId, onChangeTwitter }) => {
 
     return (
 
@@ -14,6 +14,7 @@ const ChampTwitter = ({ paramTwitter, onChangeTwitter }) => {
             activeOutlineColor={bleu}
             onChangeText={(text) => onChangeTwitter(text)}
             value={paramTwitter}
+            disabled={sourceId === 1 || sourceId === undefined ? false : true}
             left={<TextInput.Icon icon="twitter" color={"#00AFF0"} size={35} />} />
     )
 
