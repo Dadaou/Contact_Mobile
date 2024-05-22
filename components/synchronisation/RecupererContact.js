@@ -1,21 +1,15 @@
-import { useState } from 'react'
 import axios from 'axios'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
-import { obtenirAppToken, extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
+import { obtenirAppToken } from '../utils/GestionAppToken'
 import { uri } from '../utils/Constant'
-import { getDate } from '../utils/utils'
+import { getDate, getUtilId, getSuffixBase } from '../utils/utils'
 import requetes from '../utils/RequeteSql'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const db = SQLite.openDatabase(dbLocalName)
-
-const suffixBase = 220638
-const utilId = 1700
 const maxTentatives = 3
 const date = getDate()
-
-
 
 const enregistrerNumeroTelephoneWebSurMobile = (telephones, idContact, utilId, idContactEnWeb) => {
 
@@ -58,9 +52,9 @@ const enregistrerContactWebSurMobile = (contacts) => {
                         if (resultSet.rows._array.length === 0) {
 
                             tx.executeSql(requetes.InsererContact,
-                                [item.ctt_photo, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
-                                item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
-                                item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
+                                [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                    item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
+                                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
                                 (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                                         enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
@@ -109,9 +103,9 @@ const appliquerMajWebDansMobile = (contacts) => {
                         tx.executeSql(requetes.SupprMail, [idContactMobile])
 
                         tx.executeSql(requetes.MajContact,
-                            [item.ctt_photo, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
-                            item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
-                            item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
+                            [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
+                                item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
                             async (txObj, resultSet) => {
                                 if (resultSet.rowsAffected !== 0) {
                                     enregistrerNumeroTelephoneWebSurMobile(item.telephone, idContactMobile, item.util_id, item.ctt_id)
@@ -140,6 +134,9 @@ const appliquerMajWebDansMobile = (contacts) => {
 
 const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
+    const utilId = await getUtilId()
+    const suffixBase = await getSuffixBase()
+
     try {
 
         const response = await axios.post(uri.recuperationContactPersoWeb, {
@@ -153,7 +150,6 @@ const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTent
 
         if (response && response.data) {
             await enregistrerContactWebSurMobile(response.data.listContact)
-            //await AsyncStorage.setItem('_premierSynchro', 'true')
         }
 
     } catch (error) {
@@ -174,6 +170,8 @@ const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTent
 export const recupererContactMajDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
     const dateSynchronisation = await AsyncStorage.getItem('_dateSynchronisation')
+    const utilId = await getUtilId()
+    const suffixBase = await getSuffixBase()
 
     try {
 
@@ -207,6 +205,9 @@ export const recupererContactMajDepuisWeb = async (appToken, tentativeEssai = ma
 
 const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
+    const utilId = await getUtilId()
+    const suffixBase = await getSuffixBase()
+
     try {
 
         const response = await axios.post(uri.recuperationContactPlateforme, {
@@ -218,9 +219,9 @@ const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = ma
             }
         })
 
+
         if (response && response.data) {
             await enregistrerContactWebSurMobile(response.data.contacts)
-            //await AsyncStorage.setItem('_premierSynchro', 'true')
         }
 
     } catch (error) {
@@ -237,11 +238,10 @@ const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = ma
     }
 }
 
-export const recupererContactDepuisWeb = async () => {
+export const recupererContactDepuisWeb = async (appToken) => {
 
     try {
 
-        const appToken = extractAppTokenFromLocalStorage()
         await Promise.all([
             recupererContactPersoDepuisWeb(appToken),
             recupererContactPlateformeDepuisWeb(appToken)

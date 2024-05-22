@@ -73,8 +73,15 @@ export const getListContact = (db, requete, valeur = null) => {
 
 export const getUtilId = async () => {
 
-    const utilId = AsyncStorage.getItem('_infoUtilisateur')
-    //console.log(utilId)
+    const utilId = JSON.parse(await AsyncStorage.getItem('_infoUtilisateur')).util_id
+    return utilId
+}
+
+
+export const getSuffixBase = async () => {
+
+    const suffixBase = JSON.parse(await AsyncStorage.getItem('_infoUtilisateur')).pfm_numero
+    return suffixBase
 }
 
 

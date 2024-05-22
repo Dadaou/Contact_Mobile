@@ -1,5 +1,5 @@
 import axios from "axios"
-import { infoApp } from "./Constant"
+import { infoApp, uri } from "./Constant"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const extractAppTokenFromLocalStorage = async () => {
@@ -20,7 +20,7 @@ export const extractAppTokenFromLocalStorage = async () => {
 export const obtenirAppToken = async () => {
 
     try {
-        const res = await axios.post('http://pp-api-token.manao.eu/authentifierApp', infoApp)
+        const res = await axios.post(uri.appToken, infoApp)
         if (res.data.token) {
             await AsyncStorage.setItem('_appToken', res.data.token)
             return res.data.token

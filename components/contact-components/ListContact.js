@@ -4,8 +4,9 @@ import { Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
-import { getListContact, getUtilId } from '../utils/utils'
+import { getListContact } from '../utils/utils'
 import { store } from '../redux/dataStore'
+import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import { updateNombreContact, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import { recupererContactDepuisWeb } from '../synchronisation/RecupererContact'
@@ -14,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ListContact = () => {
 
-    //console.log("UtilId : ", getUtilId())
 
     const navigation = useNavigation()
     const requete = "SELECT ctt_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact ORDER BY ctt_prenom ASC, ctt_nom ASC"
@@ -26,7 +26,7 @@ const ListContact = () => {
     /*
         const connecte = store.getState().globalReducer.networkInfo.isConnected
         const internetJoignable = store.getState().globalReducer.networkInfo.isInternetReachable
-        console.log("Eto", store.getState().globalReducer._infoUtilisateur)
+        console.log(store.getState().globalReducer._infoUtilisateur)
     */
 
 
@@ -49,12 +49,13 @@ const ListContact = () => {
 
         if (premierSynchro === null || premierSynchro !== 'true') {
 
+            const appToken = await extractAppTokenFromLocalStorage()
             store.dispatch(manageApparitionNotification(true))
             store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours..."))
-            await recupererContactDepuisWeb()
+            await recupererContactDepuisWeb(appToken)
             store.dispatch(manageApparitionNotification(false))
         }
-        //recupererContactMajDepuisWeb()
+
         fetchListContact()
 
     }, [])

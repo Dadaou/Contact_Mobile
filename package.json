@@ -33,6 +33,7 @@
     "react-native-country-flag": "^2.0.2",
     "react-native-dropdown-select-list": "^2.0.5",
     "react-native-gesture-handler": "~2.12.0",
+    "react-native-intl-phone-input": "^1.2.27",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-paper": "^5.11.3",

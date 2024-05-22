@@ -1,8 +1,9 @@
 import requetes from '../utils/RequeteSql'
 import { dbLocalName, blanc, bleu } from '../utils/Constant'
 import { useState, useEffect, useCallback } from 'react'
+import { getUtilId } from '../utils/utils'
 import * as SQLite from 'expo-sqlite'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, StatusBar, Alert } from "react-native"
+import { View, Text, TouchableOpacity, ScrollView, StatusBar, Alert } from "react-native"
 import { Appbar } from 'react-native-paper'
 
 import EtatContact from '../contact-components/champ/EtatContact'
@@ -30,8 +31,7 @@ const ModificationContact = ({ navigation, route }) => {
     const { ctt_id } = route.params
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
-    const utilId = 1700
-
+    
     const [contact, setContact] = useState({})
     const [telephone, setTelephone] = useState([])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
@@ -129,7 +129,7 @@ const ModificationContact = ({ navigation, route }) => {
 
 
 
-    const misAJourInfoContact = () => {
+    const misAJourInfoContact = async () => {
 
         if (contact.ctt_nom == '' && contact.ctt_prenom == '') {
 
@@ -154,6 +154,8 @@ const ModificationContact = ({ navigation, route }) => {
         }
 
         else {
+
+            const utilId = await getUtilId()
 
             try {
 

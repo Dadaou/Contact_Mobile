@@ -1,12 +1,10 @@
 import requetes from '../utils/RequeteSql'
 import { Appbar } from 'react-native-paper'
 import { blanc, bleu, dbLocalName } from '../utils/Constant'
-import { genererID } from '../utils/utils'
-import { store } from '../redux/dataStore'
-import { addContact, addTelephone, addMail, addAdresse } from '../redux/action/addDataAction'
 import { useState } from 'react'
 import * as SQLite from 'expo-sqlite'
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert, StatusBar } from "react-native"
+import { getUtilId } from '../utils/utils'
 import SpinnerModal from '../modal/Spinner'
 
 import EtatContact from '../contact-components/champ/EtatContact'
@@ -33,7 +31,6 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 const AjoutContact = ({ navigation }) => {
 
     const db = SQLite.openDatabase(dbLocalName)
-    const utilId = 1700
     const estInsererDansWeb = 0
     const estMaj = 0
 
@@ -58,7 +55,6 @@ const AjoutContact = ({ navigation }) => {
         siteWeb: "",
         skype: "",
         twitter: "",
-        utilId: utilId,
         sourceId: 1
     })
 
@@ -77,7 +73,7 @@ const AjoutContact = ({ navigation }) => {
         navigation.navigate('Accueil', { showModal: showModal })
     }
 
-    const saveContact = () => {
+    const saveContact = (utilId) => {
 
         return new Promise((resolve, reject) => {
 
@@ -89,7 +85,7 @@ const AjoutContact = ({ navigation }) => {
                     [
                         contact.photo, contact.prenom, contact.nom, contact.prenomUsage, contact.entreprise, contact.fonction, contact.date,
                         contact.note, contact.service, contact.siteWeb, contact.twitter, contact.linkedin, contact.facebook, contact.skype, contact.etat,
-                        contact.favoris, contact.utilId, contact.idContactWeb, contact.sourceId, estInsererDansWeb, estMaj
+                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, estInsererDansWeb, estMaj
                     ],
 
                     (txObj, resultSet) => {
@@ -109,7 +105,7 @@ const AjoutContact = ({ navigation }) => {
     }
 
 
-    const saveTelephone = (idContact) => {
+    const saveTelephone = (idContact, utilId) => {
 
         db.transaction((tx) => {
 
@@ -121,7 +117,7 @@ const AjoutContact = ({ navigation }) => {
 
     }
 
-    const saveMail = (idContact) => {
+    const saveMail = (idContact,  utilId) => {
 
         db.transaction((tx) => {
 
@@ -145,7 +141,7 @@ const AjoutContact = ({ navigation }) => {
         })
     }
 
-    const saveInformation = () => {
+    const saveInformation = async () => {
 
 
         if (contact.nom == '' && contact.prenom == '') {
@@ -172,13 +168,15 @@ const AjoutContact = ({ navigation }) => {
 
         else {
 
+            const utilId = await getUtilId()
+
             try {
 
-                saveContact().then((idContact) => {
+                saveContact(utilId).then((idContact) => {
 
-                    saveTelephone(idContact)
-                    saveMail(idContact)
-                    saveAdresse(idContact)
+                    saveTelephone(idContact, utilId)
+                    saveMail(idContact, utilId)
+                    saveAdresse(idContact, utilId)
                 })
 
                 redirection(true)

@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
-import { updateNetworkStatus, manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
-import { envoyerNouveauContactAWeb, envoyerContactModifierAWeb } from './EnvoyerContact'
+import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
+import { updateNetworkStatus } from '../redux/action/globalDataAction'
+import { envoyerContactModifierAWeb, envoyerNouveauContactAWeb } from './EnvoyerContact'
 import { recupererContactMajDepuisWeb, recupererContactDepuisWeb } from './RecupererContact'
 import { getDate } from '../utils/utils'
 
@@ -12,7 +13,7 @@ const Synchronisation = () => {
   const [internetJoignable, setInternetJoignable] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
 
-  const unsubscribe = store.subscribe(() => {
+  store.subscribe(() => {
     setIsLogin(store.getState().globalReducer.isLogin)
   })
 
@@ -22,13 +23,16 @@ const Synchronisation = () => {
     setInternetJoignable(state.isInternetReachable)
   }, [])
 
-  const lancerSynchronisation = useCallback(() => {
+  const lancerSynchronisation = useCallback(async () => {
 
     console.log(`Synchronisation du ${getDate()} en cours...`)
-    envoyerNouveauContactAWeb()
-    envoyerContactModifierAWeb()
-    recupererContactDepuisWeb()
-    recupererContactMajDepuisWeb()
+    const appToken = await extractAppTokenFromLocalStorage()
+    await Promise.all([
+      envoyerNouveauContactAWeb(appToken),
+      envoyerContactModifierAWeb(appToken),
+      recupererContactDepuisWeb(appToken),
+      recupererContactMajDepuisWeb(appToken),
+    ])
 
   }, [])
 
@@ -45,7 +49,7 @@ const Synchronisation = () => {
 
       const syncInterval = setInterval(() => {
         lancerSynchronisation()
-      }, 5000/*5 * 60 * 1000*/)
+      }, 30000/*5 * 60 * 1000*/)
 
       return () => {
         clearInterval(syncInterval)
