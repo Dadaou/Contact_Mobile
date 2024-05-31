@@ -16,6 +16,15 @@ const NotificationToast = () => {
       setNotificationToastVisible(state.globalReducer.showNotificationToast)
       setNotificationMessage(state.globalReducer.msgNotificationToast)
 
+
+      /*const timeoutId = setTimeout(() => {
+        store.dispatch(manageApparitionNotification(false))
+      }, 5000)
+
+      return () => {
+        clearTimeout(timeoutId)
+      }*/
+
       //console.log(state.globalReducer.showNotificationToast)
 
       /*if (state.globalReducer.showNotificationToast === true) {

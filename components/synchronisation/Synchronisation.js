@@ -4,8 +4,9 @@ import { store } from '../redux/dataStore'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import { updateNetworkStatus } from '../redux/action/globalDataAction'
 import { envoyerContactModifierAWeb, envoyerNouveauContactAWeb } from './EnvoyerContact'
-import { recupererContactMajDepuisWeb, recupererContactDepuisWeb } from './RecupererContact'
+import { recupererContactMajDepuisWeb } from './RecupererContact'
 import { getDate } from '../utils/utils'
+
 
 const Synchronisation = () => {
 
@@ -25,14 +26,14 @@ const Synchronisation = () => {
 
   const lancerSynchronisation = useCallback(async () => {
 
+
     console.log(`Synchronisation du ${getDate()} en cours...`)
-    const appToken = await extractAppTokenFromLocalStorage()
-    await Promise.all([
-      envoyerNouveauContactAWeb(appToken),
-      envoyerContactModifierAWeb(appToken),
-      recupererContactDepuisWeb(appToken),
-      recupererContactMajDepuisWeb(appToken),
-    ])
+    const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
+
+    //await envoyerNouveauContactAWeb(appToken)
+    //await envoyerContactModifierAWeb(appToken)
+    await recupererContactMajDepuisWeb(appToken)
+  
 
   }, [])
 
@@ -49,7 +50,7 @@ const Synchronisation = () => {
 
       const syncInterval = setInterval(() => {
         lancerSynchronisation()
-      }, 30000/*5 * 60 * 1000*/)
+      }, 3000)
 
       return () => {
         clearInterval(syncInterval)

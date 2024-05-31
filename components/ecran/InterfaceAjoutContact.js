@@ -40,7 +40,7 @@ const AjoutContact = ({ navigation }) => {
         date: "",
         corbeille: 0,
         entreprise: "",
-        etat: true,
+        etat: 0,
         facebook: "",
         favoris: 0,
         fonction: "",
@@ -117,7 +117,7 @@ const AjoutContact = ({ navigation }) => {
 
     }
 
-    const saveMail = (idContact,  utilId) => {
+    const saveMail = (idContact, utilId) => {
 
         db.transaction((tx) => {
 

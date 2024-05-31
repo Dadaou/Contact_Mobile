@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { blanc } from "../../utils/Constant";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { blanc } from "../../utils/Constant"
 
 const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
   const handleActif = () => {
-    onChangeEtat(true)
+    onChangeEtat(0)
   }
 
   const handleInactif = () => {
-    onChangeEtat(false)
+    onChangeEtat(1)
   }
-
 
   return (
 
@@ -23,18 +21,18 @@ const EtatContact = ({ paramEtat, onChangeEtat }) => {
 
         <TouchableOpacity
           onPress={handleActif}
-          style={paramEtat ? styles.actif : styles.buton}>
+          style={!paramEtat ? styles.actif : styles.buton}>
 
-          <Text style={paramEtat ? styles.selectedText : styles.text}>Actif</Text>
+          <Text style={!paramEtat ? styles.selectedText : styles.text}>Actif</Text>
 
         </TouchableOpacity>
 
         <TouchableOpacity
 
           onPress={handleInactif}
-          style={!paramEtat ? styles.inactif : styles.buton}>
+          style={paramEtat ? styles.inactif : styles.buton}>
 
-          <Text style={!paramEtat ? styles.selectedText : styles.text}>Inactif</Text>
+          <Text style={paramEtat ? styles.selectedText : styles.text}>Inactif</Text>
 
         </TouchableOpacity>
 

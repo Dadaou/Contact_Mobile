@@ -7,6 +7,7 @@ import { getDate, getUtilId, getSuffixBase } from '../utils/utils'
 import requetes from '../utils/RequeteSql'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+
 const db = SQLite.openDatabase(dbLocalName)
 const maxTentatives = 3
 const date = getDate()
@@ -41,41 +42,46 @@ const enregistrerContactWebSurMobile = (contacts) => {
 
         db.transaction((tx) => {
 
-            contacts.forEach((item) => {
+            if (contacts.length !== 0) {
 
-                tx.executeSql(requete, [item.ctt_id],
+                contacts.forEach((item) => {
 
-                    (txObj, resultSet) => {
+                    tx.executeSql(requete, [item.ctt_id],
 
-                        //console.log({ result: resultSet.rows._array })
+                        (txObj, resultSet) => {
 
-                        if (resultSet.rows._array.length === 0) {
+                            //console.log({ result: resultSet.rows._array })
 
-                            tx.executeSql(requetes.InsererContact,
-                                [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
-                                    item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
-                                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
-                                (txObj, resultSet) => {
-                                    if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                                        enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
-                                        enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
-                                        resolve()
+                            if (resultSet.rows._array.length === 0) {
+
+                                tx.executeSql(requetes.InsererContact,
+                                    [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                        item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
+                                        item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
+                                    (txObj, resultSet) => {
+                                        if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                            enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
+                                            enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
+                                        }
+                                    },
+
+                                    (txObj, error) => {
+                                        reject(error)
                                     }
-                                },
+                                )
+                            }
+                        },
 
-                                (txObj, error) => {
-                                    reject(error)
-                                }
-                            )
+                        (txObj, error) => {
+                            reject(error)
                         }
-                    },
+                    )
 
-                    (txObj, error) => {
-                        reject(error)
-                    }
-                )
+                })
 
-            })
+            }
+
+            resolve()
         })
 
     })
@@ -89,50 +95,94 @@ const appliquerMajWebDansMobile = (contacts) => {
 
     db.transaction((tx) => {
 
-        contacts.forEach((item) => {
+        if (contacts.length !== 0) {
 
-            tx.executeSql(requete, [item.ctt_id],
+            contacts.forEach((item) => {
 
-                (txObj, resultSet) => {
+                tx.executeSql(requete, [item.ctt_id],
 
-                    if (resultSet.rows._array.length !== 0) {
+                    (txObj, resultSet) => {
 
-                        let idContactMobile = resultSet.rows._array[0].ctt_id_mobile
+                        if (resultSet.rows._array.length !== 0) {
 
-                        tx.executeSql(requetes.SupprTelephone, [idContactMobile])
-                        tx.executeSql(requetes.SupprMail, [idContactMobile])
+                            let idContactMobile = resultSet.rows._array[0].ctt_id_mobile
 
-                        tx.executeSql(requetes.MajContact,
-                            [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
-                                item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
-                                item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
-                            async (txObj, resultSet) => {
-                                if (resultSet.rowsAffected !== 0) {
-                                    enregistrerNumeroTelephoneWebSurMobile(item.telephone, idContactMobile, item.util_id, item.ctt_id)
-                                    enregistrerMailWebSurMobile(item.mail, idContactMobile, item.util_id, item.ctt_id)
-                                    await AsyncStorage.setItem('_dateSynchronisation', date)
+                            tx.executeSql(requetes.SupprTelephone, [idContactMobile])
+                            tx.executeSql(requetes.SupprMail, [idContactMobile])
+
+                            tx.executeSql(requetes.MajContact,
+                                [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                    item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
+                                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
+                                async (txObj, resultSet) => {
+                                    if (resultSet.rowsAffected !== 0) {
+                                        enregistrerNumeroTelephoneWebSurMobile(item.telephone, idContactMobile, item.util_id, item.ctt_id)
+                                        enregistrerMailWebSurMobile(item.mail, idContactMobile, item.util_id, item.ctt_id)
+                                        await AsyncStorage.setItem('_dateSynchronisation', date)
+                                    }
+                                },
+
+                                (txObj, error) => {
+                                    console.error(error)
                                 }
-                            },
+                            )
 
-                            (txObj, error) => {
-                                console.error(error)
-                            }
-                        )
+                        }
+                    },
 
-                    }
-                },
+                    (txObj, error) => {
+                        console.error(error)
+                    })
 
-                (txObj, error) => {
-                    console.error(error)
-                })
-        })
+
+            })
+
+        }
 
     })
 
 }
 
 
-const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
+export const recupererContactMajDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
+
+    const dateSynchronisation = await AsyncStorage.getItem('_dateSynchronisation')
+    const utilId = await getUtilId()
+    const suffixBase = await getSuffixBase()
+
+    try {
+
+        const response = await axios.post(uri.recuperationContactMaj, {
+            suffixBase: suffixBase,
+            utilId: utilId,
+            dateTime: dateSynchronisation
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + appToken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+
+        if (response && response.data && response.data.length !== 0) {
+            appliquerMajWebDansMobile(response.data)
+        }
+
+    } catch (error) {
+
+        if (tentativeEssai > 0) {
+
+            const nouveauAppToken = obtenirAppToken()
+            await recupererContactMajDepuisWeb(nouveauAppToken, tentativeEssai - 1)
+
+        } else {
+            console.log("Une erreur s'est produite lors de la récupération des contacts mofifiés.", error)
+        }
+
+    }
+}
+
+
+export const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
     const utilId = await getUtilId()
     const suffixBase = await getSuffixBase()
@@ -160,50 +210,13 @@ const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = maxTent
             await recupererContactPersoDepuisWeb(nouveauAppToken, tentativeEssai - 1)
 
         } else {
-            console.log("Une erreur s'est produite lors de la récupération des contacts modifiés.", error)
+            console.log("Une erreur s'est produite lors de la récupération des contacts Perso.", error)
         }
 
     }
 }
 
-
-export const recupererContactMajDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
-
-    const dateSynchronisation = await AsyncStorage.getItem('_dateSynchronisation')
-    const utilId = await getUtilId()
-    const suffixBase = await getSuffixBase()
-
-    try {
-
-        const response = await axios.post(uri.recuperationContactMaj, {
-            suffixBase: suffixBase,
-            utilId: utilId,
-            dateTime: dateSynchronisation
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + appToken
-            }
-        })
-
-        if (response && response.data && response.data.length !== 0) {
-            appliquerMajWebDansMobile(response.data)
-        }
-
-    } catch (error) {
-
-        if (tentativeEssai > 0) {
-
-            const nouveauAppToken = obtenirAppToken()
-            await recupererContactMajDepuisWeb(nouveauAppToken, tentativeEssai - 1)
-
-        } else {
-            console.log("Une erreur s'est produite lors de la récupération des contacts mofifiés.", error)
-        }
-
-    }
-}
-
-const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
+export const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
     const utilId = await getUtilId()
     const suffixBase = await getSuffixBase()
@@ -238,21 +251,20 @@ const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEssai = ma
     }
 }
 
-export const recupererContactDepuisWeb = async (appToken) => {
+/*export const recupererContactDepuisWeb = async (appToken) => {
 
     try {
 
-        await Promise.all([
-            recupererContactPersoDepuisWeb(appToken),
-            recupererContactPlateformeDepuisWeb(appToken)
-        ])
+        await recupererContactPlateformeDepuisWeb(appToken)
+        await recupererContactPersoDepuisWeb(appToken)
+
         await AsyncStorage.setItem('_premierSynchro', 'true')
         await AsyncStorage.setItem('_dateSynchronisation', date)
 
     } catch (error) {
         console.error(error)
     }
-}
+}*/
 
 
 

@@ -22,7 +22,6 @@ export const envoyerNouveauContactAWeb = async (appToken, tentativeEssai = maxTe
                 const data = results.rows._array
                 const dataAEnvoyer = convertirChaineEnArray(data)
 
-
                 if (dataAEnvoyer.length !== 0) {
 
                     try {
@@ -32,9 +31,12 @@ export const envoyerNouveauContactAWeb = async (appToken, tentativeEssai = maxTe
                             data: JSON.stringify(dataAEnvoyer)
                         }, {
                             headers: {
-                                'Authorization': 'Bearer ' + appToken
+                                'Authorization': 'Bearer ' + appToken,
+                                'Content-Type': 'application/x-www-form-urlencoded'
                             }
                         })
+
+                        console.log(response.data)
 
                         if (response.data && response.data.code === 1) {
 
@@ -87,7 +89,6 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = maxT
                 const data = results.rows._array
                 const dataAEnvoyer = convertirChaineEnArray(data)
 
-        
                 if (dataAEnvoyer.length !== 0) {
 
                     try {
@@ -98,8 +99,8 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = maxT
                         }, {
                             headers: {
 
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                                'Authorization': 'Bearer ' + appToken
+                                'Authorization': 'Bearer ' + appToken,
+                                'Content-Type': 'application/x-www-form-urlencoded'
                             }
                         })
 
@@ -120,7 +121,7 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = maxT
 
                     } catch (error) {
 
-                       if (tentativeEssai > 0) {
+                        if (tentativeEssai > 0) {
 
                             const nouveauAppToken = obtenirAppToken()
                             await envoyerContactModifierAWeb(nouveauAppToken, tentativeEssai - 1)
