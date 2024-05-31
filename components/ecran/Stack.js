@@ -27,8 +27,6 @@ const AppStack = () => {
 
     useEffect(() => {
 
-
-
         db.transaction((tx) => {
 
             tx.executeSql(

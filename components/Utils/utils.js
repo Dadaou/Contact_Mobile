@@ -42,7 +42,7 @@ export const getDate = () => {
     let jour = date.getDate()
     let mois = date.getMonth() + 1
     let année = date.getFullYear()
-    let heure = date.getHours()
+    let heure = date.getHours() - 1
     let minute = date.getMinutes()
     let seconde = date.getSeconds()
 

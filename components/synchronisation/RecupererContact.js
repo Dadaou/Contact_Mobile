@@ -204,13 +204,15 @@ export const recupererContactPersoDepuisWeb = async (appToken, tentativeEssai = 
 
     } catch (error) {
 
+        console.log(error.message)
+
         if (tentativeEssai > 0) {
 
             const nouveauAppToken = obtenirAppToken()
             await recupererContactPersoDepuisWeb(nouveauAppToken, tentativeEssai - 1)
 
         } else {
-            console.log("Une erreur s'est produite lors de la récupération des contacts Perso.", error)
+            console.log("Une erreur s'est produite lors de la récupération des contacts Perso.", error.message)
         }
 
     }

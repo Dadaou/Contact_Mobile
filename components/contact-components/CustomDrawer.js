@@ -1,12 +1,9 @@
 import { useCallback } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SQLite from 'expo-sqlite'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import {
-  View,
-  Text,
-  ImageBackground,
-  Image
-} from 'react-native'
+import { View, Text, ImageBackground, Image } from 'react-native'
+import { dbLocalName } from '../utils/Constant'
 import { TouchableRipple } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
 import { store } from '../redux/dataStore'
@@ -17,6 +14,31 @@ import axios from 'axios'
 
 const CustomDrawer = props => {
 
+  const db = SQLite.openDatabase(dbLocalName)
+
+  const supprimerTable = useCallback(() => {
+
+    db.transaction((tx) => {
+
+      tx.executeSql(
+          'DROP TABLE IF EXISTS contact'
+      )
+
+      tx.executeSql(
+          'DROP TABLE IF EXISTS telephone'
+      )
+
+      tx.executeSql(
+          'DROP TABLE IF EXISTS mail'
+      )
+
+      tx.executeSql(
+          'DROP TABLE IF EXISTS adresse'
+      )
+  })
+
+  }, [])
+
   const seDeconnecter = useCallback(async () => {
 
     try {
@@ -25,6 +47,7 @@ const CustomDrawer = props => {
       store.dispatch(manageUserToken(null))
       store.dispatch(manageLogin(false))
       store.dispatch(manageUserInfo({}))
+      //supprimerTable()
       //await axios.get(uri.deconnexion + token)
       await AsyncStorage.removeItem('_tokenUtilisateur')
       await AsyncStorage.removeItem('_infoUtilisateur')

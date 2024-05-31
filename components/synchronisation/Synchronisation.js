@@ -29,9 +29,8 @@ const Synchronisation = () => {
 
     console.log(`Synchronisation du ${getDate()} en cours...`)
     const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
-
-    //await envoyerNouveauContactAWeb(appToken)
-    //await envoyerContactModifierAWeb(appToken)
+    await envoyerNouveauContactAWeb(appToken)
+    await envoyerContactModifierAWeb(appToken)
     await recupererContactMajDepuisWeb(appToken)
   
 
@@ -44,7 +43,7 @@ const Synchronisation = () => {
     }
   }, [])
 
-  useEffect(() => {
+  /*useEffect(() => {
 
     if (isLogin && connecte && internetJoignable) {
 
@@ -56,7 +55,7 @@ const Synchronisation = () => {
         clearInterval(syncInterval)
       }
     }
-  }, [isLogin, connecte, internetJoignable])
+  }, [isLogin, connecte, internetJoignable])*/
 
   /*return (
     <>

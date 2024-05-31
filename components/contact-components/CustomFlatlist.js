@@ -26,6 +26,13 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
     const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
     const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
 
+    store.subscribe(() => {
+        const state = store.getState()
+        //console.log(state.globalReducer.networkInfo.isConnected)
+        setConnecte(state.globalReducer.networkInfo.isConnected)
+        setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
+    })
+
     const fetchListContact = useCallback(async () => {
 
         try {
@@ -74,22 +81,23 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
         }
     }, [connecte, internetJoignable])
 
-    useEffect(() => {
+
+    /*useEffect(() => {
 
         const unsubscribe = store.subscribe(() => {
             const state = store.getState()
-            console.log(state.globalReducer.networkInfo.isConnected)
             setConnecte(state.globalReducer.networkInfo.isConnected)
             setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
         })
 
         return () => unsubscribe()
-    }, [])
+    }, [])*/
+
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', async () => {
-            //console.log("Ok", connecte + " " + internetJoignable)
+            //console.log("Eto", connecte + " " + internetJoignable)
             setRefreshing(true)
             if (connecte && internetJoignable) {
                 await fetchContactWeb()
@@ -100,7 +108,7 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
         })
 
         return unsubscribe
-    }, [navigation])
+    }, [navigation, connecte, internetJoignable])
 
 
     return (
