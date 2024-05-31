@@ -2,7 +2,7 @@
   "expo": {
     "name": "manao contact",
     "slug": "Mobile_Contact",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/logo-contacts.png",
     "userInterfaceStyle": "light",

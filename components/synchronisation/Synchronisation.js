@@ -43,7 +43,7 @@ const Synchronisation = () => {
     }
   }, [])
 
-  /*useEffect(() => {
+  useEffect(() => {
 
     if (isLogin && connecte && internetJoignable) {
 
@@ -55,7 +55,7 @@ const Synchronisation = () => {
         clearInterval(syncInterval)
       }
     }
-  }, [isLogin, connecte, internetJoignable])*/
+  }, [isLogin, connecte, internetJoignable])
 
   /*return (
     <>
