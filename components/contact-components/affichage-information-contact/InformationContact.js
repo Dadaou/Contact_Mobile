@@ -52,11 +52,9 @@ const InformationContact = ({ idContact }) => {
             )
             }
 
-            <Text style={styles.sectionNom} numberOfLines={3} ellipsizeMode="tail" >
-                <Text style={styles.sectionNom}> {contact[0].ctt_prenom} </Text> {contact[0].ctt_nom}
+            <Text style={styles.sectionNomEtPrenom}>
+                {contact[0].ctt_prenom} <Text style={styles.sectionNomEtPrenom} ellipsizeMode="tail" >{contact[0].ctt_nom}</Text>
             </Text>
-
-
         </View>
 
     )
@@ -73,10 +71,11 @@ const styles = StyleSheet.create({
         borderRadius: 100
     },
 
-    sectionNom: {
+    sectionNomEtPrenom: {
 
         fontSize: 25,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: "center"
     },
 
 })

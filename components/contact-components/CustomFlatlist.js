@@ -20,6 +20,7 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     const date = getDate()
+    const messageNotification = "Récupération de vos contacts en cours. Cette opération peut prendre quelques minutes..."
 
     const [data, setData] = useState([])
     const [refreshing, setRefreshing] = useState(true)
@@ -52,12 +53,12 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
             if (connecte && internetJoignable) {
 
                 const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
-                const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'// await extractAppTokenFromLocalStorage()
+                const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
 
                 if (premierSynchro === null || premierSynchro !== 'true') {
 
                     store.dispatch(manageApparitionNotification(true));
-                    store.dispatch(manageNotificationMessage("Récupération de vos contacts en cours. Ceci peut prendre quelques minutes..."))
+                    store.dispatch(manageNotificationMessage(messageNotification))
 
                     await recupererContactPlateformeDepuisWeb(appToken)
                     await recupererContactPersoDepuisWeb(appToken)
@@ -82,24 +83,12 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
     }, [connecte, internetJoignable])
 
 
-    /*useEffect(() => {
-
-        const unsubscribe = store.subscribe(() => {
-            const state = store.getState()
-            setConnecte(state.globalReducer.networkInfo.isConnected)
-            setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
-        })
-
-        return () => unsubscribe()
-    }, [])*/
-
-
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', async () => {
-            //console.log("Eto", connecte + " " + internetJoignable)
             setRefreshing(true)
-            if (connecte && internetJoignable) {
+            const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
+            if (connecte && internetJoignable && premierSynchro !== 'true') {
                 await fetchContactWeb()
             } else {
                 fetchListContact()

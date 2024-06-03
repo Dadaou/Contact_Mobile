@@ -25,32 +25,21 @@ const AppStack = () => {
         setIsLogin(store.getState().globalReducer.isLogin)
     })
 
-    useEffect(() => {
+    /*useEffect(() => {
 
-        db.transaction((tx) => {
+        if(isLogin) {
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS contact'
-                requetes.CreerTableContact
-            )
+            db.transaction((tx) => {
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS telephone'
-                requetes.CreerTableTelephone
-            )
+                tx.executeSql(requetes.CreerTableContact)
+                tx.executeSql(requetes.CreerTableTelephone)
+                tx.executeSql(requetes.CreerTableMail)
+                tx.executeSql(requetes.CreerTableAdresse)
+              })
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS mail'
-                requetes.CreerTableMail
-            )
+        }
 
-            tx.executeSql(
-                //'DROP TABLE IF EXISTS adresse'
-                requetes.CreerTableAdresse
-            )
-        })
-
-    }, [])
+    }, [isLogin])*/
 
     useEffect(() => {
 

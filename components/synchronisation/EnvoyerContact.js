@@ -49,7 +49,7 @@ export const envoyerNouveauContactAWeb = async (appToken, tentativeEssai = maxTe
                                     tx.executeSql(requetePourMajFlag, [item.ctt_id, est_inserersdansweb, item.ctt_id_mobile])
                                 })
                             })
-                            console.log("Envoi ajout done")
+                            //console.log("Envoi ajout done")
                         }
 
                     } catch (error) {
@@ -116,7 +116,7 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = maxT
                                 })
                             })
 
-                            console.log("Envoi modif done")
+                            //console.log("Envoi modif done")
                         }
 
                     } catch (error) {

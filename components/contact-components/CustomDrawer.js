@@ -10,47 +10,48 @@ import { store } from '../redux/dataStore'
 import { manageLogin, manageUserToken, manageUserInfo } from '../redux/action/globalDataAction'
 import { uri } from '../utils/Constant'
 import axios from 'axios'
-
+import { updateNombreContact, updateNombreFavori, updateNombreContactPersonnel } from '../redux/action/globalDataAction'
 
 const CustomDrawer = props => {
 
   const db = SQLite.openDatabase(dbLocalName)
 
-  const supprimerTable = useCallback(() => {
+  const supprimerTableContact = useCallback(() => {
 
-    db.transaction((tx) => {
+    return new Promise((resolve, reject) => {
 
-      tx.executeSql(
-          'DROP TABLE IF EXISTS contact'
+      db.transaction(
+        (tx) => {
+          tx.executeSql('DROP TABLE IF EXISTS contact')
+          tx.executeSql('DROP TABLE IF EXISTS telephone')
+          tx.executeSql('DROP TABLE IF EXISTS mail')
+          tx.executeSql('DROP TABLE IF EXISTS adresse')
+        },
+        (error) => {
+          reject(error)
+        },
+        () => {
+          resolve()
+        }
       )
-
-      tx.executeSql(
-          'DROP TABLE IF EXISTS telephone'
-      )
-
-      tx.executeSql(
-          'DROP TABLE IF EXISTS mail'
-      )
-
-      tx.executeSql(
-          'DROP TABLE IF EXISTS adresse'
-      )
-  })
-
+    })
   }, [])
 
   const seDeconnecter = useCallback(async () => {
 
     try {
 
-      //const token = await AsyncStorage.getItem('_tokenUtilisateur')
-      store.dispatch(manageUserToken(null))
-      store.dispatch(manageLogin(false))
-      store.dispatch(manageUserInfo({}))
-      //supprimerTable()
-      //await axios.get(uri.deconnexion + token)
       await AsyncStorage.removeItem('_tokenUtilisateur')
       await AsyncStorage.removeItem('_infoUtilisateur')
+      await AsyncStorage.setItem('_premierSynchro', 'false')
+      store.dispatch(manageUserInfo({}))
+      store.dispatch(manageUserToken(null))
+      store.dispatch(manageLogin(false))
+      store.dispatch(updateNombreContact(0))
+      store.dispatch(updateNombreContactPersonnel(0))
+      store.dispatch(updateNombreFavori(0))
+      await supprimerTableContact()
+      //await axios.get(uri.deconnexion + token)
 
     } catch (error) {
       throw error

@@ -64,16 +64,6 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
         setAfficherCountryPicker([...afficherCountryPicker, false])
     }
 
-    const verifierSiNumeroEstValide = (tel_numero) => {
-
-        if (tel_numero.startsWith("+")) {
-            return tel_numero
-
-        } else {
-            return `+33 ${tel_numero}`
-        }
-    }
-
     useEffect(() => {
         setAfficherCountryPicker(paramTelephone.map(() => false))
     }, [paramTelephone])
@@ -99,7 +89,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 onPressFlag={() => setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index))}
                                 ref={phoneRef.current[index]}
                                 onChangePhoneNumber={(text) => changerTelephone(text, index)}
-                                initialValue={verifierSiNumeroEstValide(item.tel_numero)}
+                                initialValue={item.tel_numero}
                                 textComponent={TextInput}
                                 flagStyle={{ borderWidth: 1, marginTop: 6 }}
                                 textProps={{

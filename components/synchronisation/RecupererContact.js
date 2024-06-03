@@ -6,6 +6,7 @@ import { uri } from '../utils/Constant'
 import { getDate, getUtilId, getSuffixBase } from '../utils/utils'
 import requetes from '../utils/RequeteSql'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { verifierNumeroTelephone } from '../utils/utils'
 
 
 const db = SQLite.openDatabase(dbLocalName)
@@ -17,7 +18,8 @@ const enregistrerNumeroTelephoneWebSurMobile = (telephones, idContact, utilId, i
     let telephoneArray = telephones === null ? [""] : telephones.split(", ")
     db.transaction((tx) => {
         telephoneArray.forEach((telNumero) => {
-            tx.executeSql(requetes.InsererTelephone, [telNumero, "", idContact, utilId, idContactEnWeb])
+            const numeroTelephoneVerifier = telNumero === "" ? "" : verifierNumeroTelephone(telNumero)
+            tx.executeSql(requetes.InsererTelephone, [numeroTelephoneVerifier, "", idContact, utilId, idContactEnWeb])
         })
     })
 }

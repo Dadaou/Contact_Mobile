@@ -1,5 +1,6 @@
 import { listPays } from "./IsoCode"
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { parsePhoneNumber } from "awesome-phonenumber"
 
 export const genererID = () => {
     return 'xxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -84,4 +85,47 @@ export const getSuffixBase = async () => {
     return suffixBase
 }
 
+export const verifierNumeroTelephone = (numeroTelephone) => {
 
+    let numeroTelephoneParser = ""
+
+    if (numeroTelephone.startsWith("+")) {
+        numeroTelephoneParser = parsePhoneNumber(numeroTelephone)
+        return numeroTelephoneParser.number.international
+    }
+    else if (numeroTelephone.startsWith("00")) {
+
+        numeroTelephoneParser = parsePhoneNumber(numeroTelephone.replace(/00/g, "+"))
+        return numeroTelephoneParser.number.international
+    }
+
+    else {
+
+        if (numeroTelephone.startsWith("0") || numeroTelephone.startsWith("(0)")) {
+
+            const deuxCaracteres = numeroTelephone.substring(1, 3)
+
+            if (["32", "33", "34", "38"].includes(deuxCaracteres)) {
+
+                let numeroMalagasy = "+261 " + numeroTelephone.substring(1)
+                numeroTelephoneParser = parsePhoneNumber(numeroMalagasy)
+                //console.log(numeroTelephoneParser.number.international)
+                return numeroTelephoneParser.number.international
+            }
+
+
+            else {
+                numeroTelephoneParser = parsePhoneNumber("+33" + numeroTelephone)
+                return numeroTelephoneParser.number.international
+            }
+
+        }
+
+        else {
+
+            numeroTelephoneParser = "+" + numeroTelephone
+            return numeroTelephoneParser
+        }
+    }
+
+}

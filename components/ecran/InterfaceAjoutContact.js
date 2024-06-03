@@ -1,4 +1,5 @@
 import requetes from '../utils/RequeteSql'
+import { useMemo } from 'react'
 import { Appbar } from 'react-native-paper'
 import { blanc, bleu, dbLocalName } from '../utils/Constant'
 import { useState } from 'react'

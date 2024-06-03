@@ -27,7 +27,7 @@ const Synchronisation = () => {
   const lancerSynchronisation = useCallback(async () => {
 
 
-    console.log(`Synchronisation du ${getDate()} en cours...`)
+    //console.log(`Synchronisation du ${getDate()} en cours...`)
     const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
     await envoyerNouveauContactAWeb(appToken)
     await envoyerContactModifierAWeb(appToken)

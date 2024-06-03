@@ -31,7 +31,7 @@ const ModificationContact = ({ navigation, route }) => {
     const { ctt_id } = route.params
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
-    
+
     const [contact, setContact] = useState({})
     const [telephone, setTelephone] = useState([])
     const [mail, setMail] = useState([{ ml_libelle: "", ml_mail: "" }])
@@ -103,7 +103,13 @@ const ModificationContact = ({ navigation, route }) => {
 
                 tx.executeSql(requetes.GetAdresse, [ctt_id],
                     (_, resultSet) => {
-                        resolve(resultSet.rows._array)
+                        
+                        if(resultSet.rows._array.length === 0) {
+                            resolve([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
+                        }
+                        else {
+                            resolve(resultSet.rows._array)
+                        }
                     },
                     (_, error) => reject(error)
                 )
