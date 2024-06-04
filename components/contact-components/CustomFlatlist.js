@@ -9,17 +9,19 @@ import { dbLocalName } from '../utils/Constant'
 import { getListContact } from '../utils/utils'
 import { store } from '../redux/dataStore'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
-import { manageApparitionNotification, manageNotificationMessage } from '../redux/action/globalDataAction'
+import { manageApparitionNotification, manageNotificationMessage, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import { recupererContactPlateformeDepuisWeb, recupererContactPersoDepuisWeb } from '../synchronisation/RecupererContact'
-import { getDate } from '../utils/utils'
+import { getDateTime } from '../utils/utils'
+import { getformatedDateTime } from '../utils/utils'
 
 
 const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregistré", requete, paramRequete = null }) => {
 
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
-    const date = getDate()
+    const date = getDateTime()
+    let formatedDateTime = getformatedDateTime().formatedDate + " à " + getformatedDateTime().time
     const messageNotification = "Récupération de vos contacts en cours. Cette opération peut prendre quelques minutes..."
 
     const [data, setData] = useState([])
@@ -37,6 +39,7 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
     const fetchListContact = useCallback(async () => {
 
         try {
+            setRefreshing(true)
             const data = await getListContact(db, requete, paramRequete)
             setData(data._array)
             onTotalChange(data.length)
@@ -52,6 +55,8 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
 
             if (connecte && internetJoignable) {
 
+                setRefreshing(true)
+
                 const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
                 const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
 
@@ -64,13 +69,19 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
                     await recupererContactPersoDepuisWeb(appToken)
 
                     await AsyncStorage.setItem('_premierSynchro', 'true')
-                    await AsyncStorage.setItem('_dateSynchronisation', date)
+                    await AsyncStorage.setItem('_datePremierSynchronisation', date)
+                    await AsyncStorage.setItem('_dateDernierRecuperation', formatedDateTime)
 
+                    store.dispatch(manageDateDernierRecuperation(formatedDateTime))
                     store.dispatch(manageApparitionNotification(false))
 
                 } else {
+
                     await recupererContactPlateformeDepuisWeb(appToken)
                     await recupererContactPersoDepuisWeb(appToken)
+                    await AsyncStorage.setItem('_dateDernierRecuperation', formatedDateTime)
+                    store.dispatch(manageDateDernierRecuperation(formatedDateTime))
+
                 }
 
             }
@@ -80,13 +91,13 @@ const CustomFlatlist = ({ onTotalChange, texteSiListVide = "Aucun contact enregi
         } catch (error) {
             console.error(error)
         }
-    }, [connecte, internetJoignable])
+    }, [connecte, internetJoignable, date])
 
 
     useEffect(() => {
 
         const unsubscribe = navigation.addListener('focus', async () => {
-            setRefreshing(true)
+
             const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
             if (connecte && internetJoignable && premierSynchro !== 'true') {
                 await fetchContactWeb()

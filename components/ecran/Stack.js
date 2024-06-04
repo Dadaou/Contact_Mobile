@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
-import { manageLogin, manageUserToken, manageUserInfo } from '../redux/action/globalDataAction'
+import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
 import requetes from '../utils/RequeteSql'
 
 
@@ -25,32 +25,19 @@ const AppStack = () => {
         setIsLogin(store.getState().globalReducer.isLogin)
     })
 
-    /*useEffect(() => {
-
-        if(isLogin) {
-
-            db.transaction((tx) => {
-
-                tx.executeSql(requetes.CreerTableContact)
-                tx.executeSql(requetes.CreerTableTelephone)
-                tx.executeSql(requetes.CreerTableMail)
-                tx.executeSql(requetes.CreerTableAdresse)
-              })
-
-        }
-
-    }, [isLogin])*/
-
     useEffect(() => {
 
         (async () => {
             try {
                 const token = await AsyncStorage.getItem('_tokenUtilisateur')
                 const infoUtilisateur = await AsyncStorage.getItem('_infoUtilisateur')
+                const dateDernierRecuperation = await AsyncStorage.getItem('_dateDernierRecuperation')
+
                 if (token !== null && token !== undefined) {
                     store.dispatch(manageUserToken(token))
                     store.dispatch(manageLogin(true))
                     store.dispatch(manageUserInfo(JSON.parse(infoUtilisateur)))
+                    store.dispatch(manageDateDernierRecuperation(dateDernierRecuperation))
                 }
                 else store.dispatch(manageLogin(false))
 

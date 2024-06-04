@@ -7,6 +7,7 @@ export const MANAGE_USER_TOKEN = "MANAGE_USER_TOKEN"
 export const MANAGE_USER_INFO = "MANAGE_USER_INFO"
 export const MANAGE_NOTIFICATION_MESSAGE = "MANAGE_NOTIFICATION_MESSAGE"
 export const MANAGE_APPARITION_NOTIFICATION = "MANAGE_APPARITION_NOTIFICATION"
+export const MANAGE_DATE_DERNIER_RECUPERATION = "MANAGE_DATE_DERNIER_RECUPERATION"
 
 export const updateNetworkStatus = data => dispatch => {
 
@@ -83,6 +84,15 @@ export const manageNotificationMessage = msg => dispatch => {
     dispatch({
         type: MANAGE_NOTIFICATION_MESSAGE,
         payload: msg,
+    })
+
+}
+
+export const manageDateDernierRecuperation = dateTime => dispatch => {
+
+    dispatch({
+        type: MANAGE_DATE_DERNIER_RECUPERATION,
+        payload: dateTime,
     })
 
 }

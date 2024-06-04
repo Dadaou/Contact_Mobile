@@ -36,7 +36,6 @@ export const envoyerNouveauContactAWeb = async (appToken, tentativeEssai = maxTe
                             }
                         })
 
-                        console.log(response.data)
 
                         if (response.data && response.data.code === 1) {
 

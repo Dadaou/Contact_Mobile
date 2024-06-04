@@ -1,13 +1,15 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SQLite from 'expo-sqlite'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, Feather } from '@expo/vector-icons'
 import { View, Text, ImageBackground, Image } from 'react-native'
 import { dbLocalName } from '../utils/Constant'
-import { TouchableRipple } from 'react-native-paper'
+import { TouchableRipple, ActivityIndicator } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
 import { store } from '../redux/dataStore'
-import { manageLogin, manageUserToken, manageUserInfo } from '../redux/action/globalDataAction'
+import { getformatedDateTime } from '../utils/utils'
+import { recupererContactPersoDepuisWeb, recupererContactPlateformeDepuisWeb } from '../synchronisation/RecupererContact'
+import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
 import { uri } from '../utils/Constant'
 import axios from 'axios'
 import { updateNombreContact, updateNombreFavori, updateNombreContactPersonnel } from '../redux/action/globalDataAction'
@@ -15,6 +17,20 @@ import { updateNombreContact, updateNombreFavori, updateNombreContactPersonnel }
 const CustomDrawer = props => {
 
   const db = SQLite.openDatabase(dbLocalName)
+  const formatedDateTime = getformatedDateTime().formatedDate + " à " + getformatedDateTime().time
+
+  const [loading, setLoading] = useState(false)
+  const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
+  const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
+  const [dateDernierRecuperation, setDateDernierRecuperation] = useState(store.getState().globalReducer.dateDernierRecuperation)
+
+  store.subscribe(() => {
+    const state = store.getState()
+    //console.log(state.globalReducer.dateDernierRecuperation)
+    setConnecte(state.globalReducer.networkInfo.isConnected)
+    setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
+    setDateDernierRecuperation(state.globalReducer.dateDernierRecuperation)
+  })
 
   const supprimerTableContact = useCallback(() => {
 
@@ -36,6 +52,27 @@ const CustomDrawer = props => {
       )
     })
   }, [])
+
+  const synchroniser = useCallback(async () => {
+
+    try {
+
+      if (connecte && internetJoignable) {
+
+        setLoading(true)
+        const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
+        await recupererContactPlateformeDepuisWeb(appToken)
+        await recupererContactPersoDepuisWeb(appToken)
+        await AsyncStorage.setItem('_dateDernierRecuperation', formatedDateTime)
+        setDateDernierRecuperation(formatedDateTime)
+        setLoading(false)
+      }
+
+    } catch (error) {
+      throw error
+    }
+  }, [connecte, internetJoignable, formatedDateTime])
+
 
   const seDeconnecter = useCallback(async () => {
 
@@ -81,6 +118,38 @@ const CustomDrawer = props => {
       <View style={{ flex: 1, backgroundColor: "#F2F3F4", paddingTop: 10 }}>
         <DrawerItemList {...props} />
       </View>
+
+      <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
+        <TouchableRipple onPress={synchroniser} style={{ paddingVertical: 15 }}>
+          <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+              {loading ?
+                <ActivityIndicator animating={loading} color="#000000" style={{ marginLeft: 8 }} /> :
+                <Feather name="refresh-cw" size={24} color="#000000" style={{ marginLeft: 8 }} />
+              }
+
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}>
+                Synchroniser
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 11,
+                  marginLeft: 10,
+                }}>
+                Dernière synchronisation le {dateDernierRecuperation}
+              </Text>
+            </View>
+          </View>
+        </TouchableRipple>
+      </View>
+
       <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
         <TouchableRipple onPress={seDeconnecter} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>

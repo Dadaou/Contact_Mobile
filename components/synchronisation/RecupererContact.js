@@ -3,7 +3,7 @@ import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
 import { obtenirAppToken } from '../utils/GestionAppToken'
 import { uri } from '../utils/Constant'
-import { getDate, getUtilId, getSuffixBase } from '../utils/utils'
+import { getDateTime, getUtilId, getSuffixBase } from '../utils/utils'
 import requetes from '../utils/RequeteSql'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { verifierNumeroTelephone } from '../utils/utils'
@@ -11,7 +11,7 @@ import { verifierNumeroTelephone } from '../utils/utils'
 
 const db = SQLite.openDatabase(dbLocalName)
 const maxTentatives = 3
-const date = getDate()
+const date = getDateTime()
 
 const enregistrerNumeroTelephoneWebSurMobile = (telephones, idContact, utilId, idContactEnWeb) => {
 
@@ -113,14 +113,14 @@ const appliquerMajWebDansMobile = (contacts) => {
                             tx.executeSql(requetes.SupprMail, [idContactMobile])
 
                             tx.executeSql(requetes.MajContact,
-                                [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
+                                [null/*item.ctt_photo*/, item.ctt_nom, item.ctt_prenom, item.ctt_prenom_usage, item.ctt_entreprise,
                                     item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
                                     item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
                                 async (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0) {
                                         enregistrerNumeroTelephoneWebSurMobile(item.telephone, idContactMobile, item.util_id, item.ctt_id)
                                         enregistrerMailWebSurMobile(item.mail, idContactMobile, item.util_id, item.ctt_id)
-                                        await AsyncStorage.setItem('_dateSynchronisation', date)
+                                        await AsyncStorage.setItem('_datePremierSynchronisation', date)
                                     }
                                 },
 
@@ -148,7 +148,7 @@ const appliquerMajWebDansMobile = (contacts) => {
 
 export const recupererContactMajDepuisWeb = async (appToken, tentativeEssai = maxTentatives) => {
 
-    const dateSynchronisation = await AsyncStorage.getItem('_dateSynchronisation')
+    const dateSynchronisation = await AsyncStorage.getItem('_datePremierSynchronisation')
     const utilId = await getUtilId()
     const suffixBase = await getSuffixBase()
 
@@ -263,7 +263,7 @@ export const recupererContactPlateformeDepuisWeb = async (appToken, tentativeEss
         await recupererContactPersoDepuisWeb(appToken)
 
         await AsyncStorage.setItem('_premierSynchro', 'true')
-        await AsyncStorage.setItem('_dateSynchronisation', date)
+        await AsyncStorage.setItem('_datePremierSynchronisation', date)
 
     } catch (error) {
         console.error(error)
