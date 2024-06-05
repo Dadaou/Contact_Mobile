@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { Menu, TouchableRipple } from 'react-native-paper'
 
-const ListView = memo(({ ctt_id, photo, prenom, nom, favori }) => {
+const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori }) => {
 
     const navigation = useNavigation()
 
@@ -77,7 +77,7 @@ const ListView = memo(({ ctt_id, photo, prenom, nom, favori }) => {
             <View style={{ flex: 1 }}>
 
                 <TouchableRipple style={styles.container}
-                    onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
+                    onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id : src_id, favori: favori })}>
 
                     <View style={{ flex: 1, flexDirection: "row" }}>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native"
+import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Text } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import { Appbar } from "react-native-paper"
 import Toast from "../modal/Toast"
@@ -23,7 +23,7 @@ import { updateNombreFavori } from "../redux/action/globalDataAction"
 
 const DetailContact = ({ route }) => {
 
-    const { ctt_id, showModal, favori } = route.params
+    const { ctt_id, src_id, showModal, favori } = route.params
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
@@ -31,12 +31,13 @@ const DetailContact = ({ route }) => {
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
     const [isFavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
+    let dateDernierRecuperation = store.getState().globalReducer.dateDernierRecuperation
+
 
     const IncrementNombreFavori = () => {
         !isFavori ?
             store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori + 1)) :
             store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori - 1))
-
     }
 
     const toggleFavori = () => {
@@ -104,10 +105,36 @@ const DetailContact = ({ route }) => {
 
             </ScrollView>
 
+
+            {parseInt(src_id) !== 1 &&
+                <View style={styles.bottomView}>
+                    <Text style={styles.textStyle}> Contact lié à l'univers Plateforme. La dernière synchronisation a eu lieu le {dateDernierRecuperation}</Text>
+                </View>
+            }
+
             <Toast title='Contact modifié' isVisible={isModalVisible} />
         </>
     )
 
 }
+
+const styles = StyleSheet.create({
+
+    bottomView: {
+        width: '100%',
+        height: 50,
+        backgroundColor: '#72A0C1',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0
+    },
+
+    textStyle: {
+        color: '#fff',
+        fontSize: 15,
+    }
+
+})
 
 export default DetailContact

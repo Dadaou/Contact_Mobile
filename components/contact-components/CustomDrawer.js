@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SQLite from 'expo-sqlite'
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons'
-import { View, Text, ImageBackground, Image } from 'react-native'
+import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
 import { dbLocalName } from '../utils/Constant'
 import { TouchableRipple, ActivityIndicator } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
@@ -63,7 +63,8 @@ const CustomDrawer = props => {
         const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
         await recupererContactPlateformeDepuisWeb(appToken)
         await recupererContactPersoDepuisWeb(appToken)
-        await AsyncStorage.setItem('_dateDernierRecuperation', formatedDateTime)
+        await AsyncStorage.setItem('_dateDernierSynchro', formatedDateTime)
+        store.dispatch(manageDateDernierRecuperation(formatedDateTime))
         setDateDernierRecuperation(formatedDateTime)
         setLoading(false)
       }
@@ -119,29 +120,28 @@ const CustomDrawer = props => {
         <DrawerItemList {...props} />
       </View>
 
-      <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
+      <View style={styles.container}>
         <TouchableRipple onPress={synchroniser} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'column' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-              {loading ?
-                <ActivityIndicator animating={loading} color="#000000" style={{ marginLeft: 8 }} /> :
-                <Feather name="refresh-cw" size={24} color="#000000" style={{ marginLeft: 8 }} />
-              }
-
-              <Text
-                style={{
-                  fontSize: 16,
-                  marginLeft: 10,
-                }}>
-                Synchroniser
-              </Text>
+              {loading ? (
+                <>
+                  <ActivityIndicator animating={loading} color="#000000" style={{ marginLeft: 8 }} />
+                  <Text style={styles.textStyle}>Synchronisation en cours...</Text>
+                </>
+              ) : (
+                <>
+                  <Feather name="refresh-cw" size={24} color="#000000" style={{ marginLeft: 8 }} />
+                  <Text style={styles.textStyle}>Synchroniser</Text>
+                </>
+              )}
             </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 11,
-                  marginLeft: 10,
+                  marginLeft: 10
                 }}>
                 Dernière synchronisation le {dateDernierRecuperation}
               </Text>
@@ -150,22 +150,32 @@ const CustomDrawer = props => {
         </TouchableRipple>
       </View>
 
-      <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: '#ccc', backgroundColor: "#F2F3F4" }}>
+      <View style={styles.container}>
         <TouchableRipple onPress={seDeconnecter} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <MaterialCommunityIcons name="logout" size={24} color="#000000" style={{ marginLeft: 8 }} />
-            <Text
-              style={{
-                fontSize: 16,
-                marginLeft: 10,
-              }}>
-              Déconnexion
-            </Text>
+            <Text style={styles.textStyle}>Déconnexion</Text>
           </View>
         </TouchableRipple>
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+
+  container: {
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    backgroundColor: "#F2F3F4"
+  },
+
+  textStyle: {
+    fontSize: 16,
+    marginLeft: 10
+  }
+
+})
 
 export default CustomDrawer

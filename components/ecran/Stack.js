@@ -31,7 +31,7 @@ const AppStack = () => {
             try {
                 const token = await AsyncStorage.getItem('_tokenUtilisateur')
                 const infoUtilisateur = await AsyncStorage.getItem('_infoUtilisateur')
-                const dateDernierRecuperation = await AsyncStorage.getItem('_dateDernierRecuperation')
+                const dateDernierRecuperation = await AsyncStorage.getItem('_dateDernierSynchro')
 
                 if (token !== null && token !== undefined) {
                     store.dispatch(manageUserToken(token))
