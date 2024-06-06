@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SQLite from 'expo-sqlite'
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons'
-import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native'
+import { View, Text, ImageBackground, Image, StyleSheet, ScrollView } from 'react-native'
 import { dbLocalName } from '../utils/Constant'
 import { TouchableRipple, ActivityIndicator } from 'react-native-paper'
 import { DrawerItemList } from '@react-navigation/drawer'
@@ -22,7 +22,7 @@ const CustomDrawer = props => {
   const [loading, setLoading] = useState(false)
   const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
   const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
-  const [dateDernierSynchro,  setDateDernierSynchro] = useState(store.getState().globalReducer.dateDernierSynchro)
+  const [dateDernierSynchro, setDateDernierSynchro] = useState(store.getState().globalReducer.dateDernierSynchro)
 
   store.subscribe(() => {
     const state = store.getState()
@@ -65,7 +65,7 @@ const CustomDrawer = props => {
         await recupererContactPersoDepuisWeb(appToken)
         await AsyncStorage.setItem('_dateDernierSynchro', formatedDateTime)
         store.dispatch(manageDateDernierSynchro(formatedDateTime))
-         setDateDernierSynchro(formatedDateTime)
+        setDateDernierSynchro(formatedDateTime)
         setLoading(false)
       }
 
@@ -116,9 +116,9 @@ const CustomDrawer = props => {
 
       </ImageBackground>
 
-      <View style={{ flex: 1, backgroundColor: "#F2F3F4", paddingTop: 10 }}>
+      <ScrollView style={{ flex: 1, backgroundColor: "#F2F3F4", paddingTop: 10 }}>
         <DrawerItemList {...props} />
-      </View>
+      </ScrollView>
 
       <View style={styles.container}>
         <TouchableRipple onPress={synchroniser} style={{ paddingVertical: 15 }}>
