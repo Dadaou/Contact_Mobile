@@ -3,10 +3,11 @@ import { blanc, bleu } from "../../utils/Constant"
 import SelectDropdown from 'react-native-select-dropdown'
 import PhoneInput from "react-native-phone-input"
 import { CountryPicker } from "react-native-country-codes-picker"
-
+import { parsePhoneNumber } from "awesome-phonenumber"
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { compterCaracteres } from "../../utils/utils"
 
 
 const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
@@ -15,6 +16,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
     const libelle = ['Professionel', 'Personnel', 'Standard', 'Mobile', 'Fixe', 'Ligne directe', 'Secrétariat', 'Autre']
     let phoneRef = useRef([])
     const [afficherCountryPicker, setAfficherCountryPicker] = useState([])
+    const [maxLengthNumeroTelephone, setMaxLengthNumeroTelephone] = useState([])
 
     phoneRef.current = paramTelephone.map((ref, index) => phoneRef.current[index] = React.createRef())
 
@@ -27,8 +29,18 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
         setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index ? false : item))
     }
 
+
     const changerTelephone = (numeroTelephone, index) => {
+
         const list = [...paramTelephone]
+        const numeroTelephoneParser = parsePhoneNumber(numeroTelephone)
+        const maxLengthTelNum = [...maxLengthNumeroTelephone]
+
+        if (numeroTelephoneParser.valid) {
+            maxLengthTelNum[index] = numeroTelephone.length
+            setMaxLengthNumeroTelephone(maxLengthTelNum)
+        }
+
         list[index].tel_numero = numeroTelephone
         onChangeTelephone(list)
     }
@@ -93,6 +105,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 textComponent={TextInput}
                                 flagStyle={{ borderWidth: 1, marginTop: 6 }}
                                 textProps={{
+                                    maxLength: maxLengthNumeroTelephone[index],
                                     label: "Téléphone",
                                     mode: 'outlined',
                                     activeOutlineColor: "#0066b2",
