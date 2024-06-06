@@ -31,7 +31,7 @@ const DetailContact = ({ route }) => {
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
     const [isFavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
-    let dateDernierRecuperation = store.getState().globalReducer.dateDernierRecuperation
+    let dateDernierSynchro = store.getState().globalReducer.dateDernierSynchro
 
 
     const IncrementNombreFavori = () => {
@@ -63,7 +63,7 @@ const DetailContact = ({ route }) => {
         const listener = navigation.addListener('focus', () => {
 
             if (showModal && showModal !== undefined) {
-                toggleModal();
+                toggleModal()
                 navigation.setParams({ showModal: false })
             }
 
@@ -108,7 +108,7 @@ const DetailContact = ({ route }) => {
 
             {parseInt(src_id) !== 1 &&
                 <View style={styles.bottomView}>
-                    <Text style={styles.textStyle}> Contact lié à l'univers Plateforme. La dernière synchronisation a eu lieu le {dateDernierRecuperation}</Text>
+                    <Text style={styles.textStyle}> Contact lié à l'univers Plateforme. La dernière synchronisation a eu lieu le {dateDernierSynchro}</Text>
                 </View>
             }
 

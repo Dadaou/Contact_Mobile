@@ -1,4 +1,3 @@
-import ChampRechercheContact from "../champ/ChampRechercheContact"
 import HeaderPrincipal from "../HeaderPrincipal"
 import ListFavori from "../ListFavori"
 import { PaperProvider } from 'react-native-paper'
@@ -10,8 +9,7 @@ const ContactFavori = () => {
     return (
 
         <PaperProvider>
-            <HeaderPrincipal titre={titre}/>
-            <ChampRechercheContact />
+            <HeaderPrincipal titre={titre} />
             <ListFavori />
         </PaperProvider>
 

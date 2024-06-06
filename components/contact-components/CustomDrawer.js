@@ -9,7 +9,7 @@ import { DrawerItemList } from '@react-navigation/drawer'
 import { store } from '../redux/dataStore'
 import { getformatedDateTime } from '../utils/utils'
 import { recupererContactPersoDepuisWeb, recupererContactPlateformeDepuisWeb } from '../synchronisation/RecupererContact'
-import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
+import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierSynchro } from '../redux/action/globalDataAction'
 import { uri } from '../utils/Constant'
 import axios from 'axios'
 import { updateNombreContact, updateNombreFavori, updateNombreContactPersonnel } from '../redux/action/globalDataAction'
@@ -22,14 +22,14 @@ const CustomDrawer = props => {
   const [loading, setLoading] = useState(false)
   const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
   const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
-  const [dateDernierRecuperation, setDateDernierRecuperation] = useState(store.getState().globalReducer.dateDernierRecuperation)
+  const [dateDernierSynchro,  setDateDernierSynchro] = useState(store.getState().globalReducer.dateDernierSynchro)
 
   store.subscribe(() => {
     const state = store.getState()
-    //console.log(state.globalReducer.dateDernierRecuperation)
+    //console.log(state.globalReducer.dateDernierSynchro)
     setConnecte(state.globalReducer.networkInfo.isConnected)
     setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
-    setDateDernierRecuperation(state.globalReducer.dateDernierRecuperation)
+    setDateDernierSynchro(state.globalReducer.dateDernierSynchro)
   })
 
   const supprimerTableContact = useCallback(() => {
@@ -64,8 +64,8 @@ const CustomDrawer = props => {
         await recupererContactPlateformeDepuisWeb(appToken)
         await recupererContactPersoDepuisWeb(appToken)
         await AsyncStorage.setItem('_dateDernierSynchro', formatedDateTime)
-        store.dispatch(manageDateDernierRecuperation(formatedDateTime))
-        setDateDernierRecuperation(formatedDateTime)
+        store.dispatch(manageDateDernierSynchro(formatedDateTime))
+         setDateDernierSynchro(formatedDateTime)
         setLoading(false)
       }
 
@@ -143,7 +143,7 @@ const CustomDrawer = props => {
                   fontSize: 11,
                   marginLeft: 10
                 }}>
-                Dernière synchronisation le {dateDernierRecuperation}
+                Dernière synchronisation le {dateDernierSynchro}
               </Text>
             </View>
           </View>

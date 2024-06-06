@@ -1,138 +1,146 @@
-import { memo } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import { View, StyleSheet, Image, Text } from 'react-native'
-import { Menu, TouchableRipple } from 'react-native-paper'
+import React, { memo } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { Menu, TouchableRipple, List } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
 
-const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori }) => {
+const ListViewAvecPlusDInfo = memo(({ index, photo, prenom, nom, telephone, mail }) => {
+
+    return (
+        <>
+
+            <List.Item
+
+                title={() => (
+                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                        <Text>{prenom}</Text> {nom}
+                    </Text>
+                )}
+
+                description={() => (
+                    <View>
+
+                        {
+                            telephone === "" || telephone === null ? null :
+
+                                (
+                                    <Text numberOfLines={1} ellipsizeMode="tail">
+                                        tel: {telephone.replace(/,/g, ', ')}
+                                    </Text>
+
+                                )
+                        }
+
+                        {
+                            mail === "" || mail === null ? null :
+
+                                (
+                                    <Text numberOfLines={1} ellipsizeMode="tail">
+                                        mail: {mail.replace(/,/g, ', ')}
+                                    </Text>
+
+                                )
+                        }
+
+
+                    </View>
+                )}
+
+                left={() => (
+
+                    <View style={{ marginTop: 6 }}>
+
+                        <Image
+                            style={styles.photoContact}
+                            source={photo == null || photo == "" ? require('../../assets/user.jpg') : { uri: photo }}
+                        />
+
+                    </View>
+                )}
+
+            />
+        </>
+    )
+
+})
+
+const ListViewAvecMoinDInfo = memo(({ photo, prenom, nom }) => {
+
+    return (
+
+        <>
+
+            <List.Item
+
+                title={() => (
+                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                        <Text>{prenom}</Text> {nom}
+                    </Text>
+                )}
+
+
+                left={() => (
+                    <Image
+                        style={styles.photoContact}
+                        source={photo == null || photo == "" ? require('../../assets/user.jpg') : { uri: photo }}
+                    />
+                )}
+
+            />
+        </>
+    )
+})
+
+
+const ListView = memo(({ focus, index, ctt_id, src_id, photo, prenom, nom, favori, telephone, mail }) => {
 
     const navigation = useNavigation()
 
-    /*const [visible, setVisible] = useState({})
-    const [coordMenuContaxtuel, setCoordMenuContaxtuel] = useState({ x: 0, y: 0 })
-  
-    const toggleMenu = (name) => () => setVisible({ ...visible, [name]: !visible[name] })
-    const getVisible = (name) => !!visible[name]
-  
-    const handleLongPress = (event) => {
-      const { nativeEvent } = event
-      setCoordMenuContaxtuel({
-        x: nativeEvent.pageX,
-        y: nativeEvent.pageY,
-      })
-      setVisible({ menuContextuel: true });
-    }
-
-
     return (
-        <>
-            <View style={{ flex: 1 }}>
-                
-                <Menu
-                    visible={getVisible('menuContextuel')}
-                    onDismiss={toggleMenu('menuContextuel')}
-                    anchor={coordMenuContaxtuel}>
 
-                    <Menu.Item onPress={() => { }} title="Item 1" />
-                    <Menu.Item onPress={() => { }} title="Item 2" />
-                    <Menu.Item onPress={() => { }} title="Item 3" disabled />
+        <View style={{ flex: 1 }}>
 
-                </Menu>
-    
-                <TouchableRipple  style = {styles.container} 
-                       onLongPress={handleLongPress}
-                       onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, favori: favori })}>
-                    <View style = {{flex : 1, flexDirection : "row"}}>
+            <TouchableRipple
+                onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, favori: favori })}>
 
-                            <View style={{ flex: 0.2 }}>
+                <View style={styles.container}>
 
-                                {photo == '' ? (
-                                    <Image
-                                        source={require('../../assets/user.jpg')}
-                                        style={styles.photoContact}
-                                    />
-                                ) : (
-                                    <Image source={{ uri: photo }} style={styles.photoContact} />
-                                )
-                                }
+                    {
+                        focus ? (
 
-                            </View>
+                            <ListViewAvecPlusDInfo index={index} photo={photo} nom={nom} prenom={prenom} telephone={telephone} mail={mail} />
+                        ) : (
 
+                            <ListViewAvecMoinDInfo photo={photo} nom={nom} prenom={prenom} />
+                        )
 
-                            <View style={{ flex: 1, padding: 8 }}>
+                    }
 
-                                <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                                    <Text> {prenom} </Text> {nom}
-                                </Text>
+                </View>
 
-                            </View>
-
-                        </View>
-                    </TouchableRipple>
-            </View>
-        </>
-    )*/
-
-    return (
-        <>
-            <View style={{ flex: 1 }}>
-
-                <TouchableRipple style={styles.container}
-                    onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id : src_id, favori: favori })}>
-
-                    <View style={{ flex: 1, flexDirection: "row" }}>
-
-                        <View style={{ flex: 0.2 }}>
-
-                            {photo == null || photo == "" ? (
-                                <Image
-                                    source={require('../../assets/user.jpg')}
-                                    style={styles.photoContact}
-                                />
-                            ) : (
-                                <Image source={{ uri: photo }} style={styles.photoContact} />
-                            )
-                            }
-
-                        </View>
-
-
-                        <View style={{ flex: 1, padding: 8 }}>
-
-                            <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                                <Text> {prenom} </Text> {nom}
-                            </Text>
-
-                        </View>
-
-                    </View>
-                </TouchableRipple>
-            </View>
-        </>
-
+            </TouchableRipple>
+        </View>
     )
 })
 
 const styles = StyleSheet.create({
 
     container: {
-
-        padding: 10,
-        marginHorizontal: 8,
+        marginLeft: 25,
+        marginRight: 30,
         flexDirection: 'row'
-
     },
 
     photoContact: {
-
         width: 40,
         height: 40,
-        borderRadius: 100
+        borderRadius: 25
     },
 
     text: {
-        fontSize: 18
+        fontSize: 19
     }
 
-})
+});
 
 export default ListView
