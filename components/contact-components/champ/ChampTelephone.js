@@ -7,7 +7,6 @@ import { parsePhoneNumber } from "awesome-phonenumber"
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { compterCaracteres } from "../../utils/utils"
 
 
 const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
@@ -20,27 +19,38 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
 
     phoneRef.current = paramTelephone.map((ref, index) => phoneRef.current[index] = React.createRef())
 
-
     const selectCountry = (pays, index) => {
-        phoneRef.current[index].current.selectCountry(pays);
+        phoneRef.current[index].current.selectCountry(pays)
     }
 
     const onRequestClosePicker = (index) => {
         setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index ? false : item))
     }
 
+    const verifierLongueurNumeroTelephone = (numeroTelephone, index) => {
+
+        const numeroTelephoneParser = parsePhoneNumber(numeroTelephone)
+
+        if (numeroTelephoneParser.possibility === "is-possible") {
+
+            setMaxLengthNumeroTelephone(prevState => {
+                const maxLengthTelNum = [...prevState]
+                maxLengthTelNum[index] = numeroTelephone.length
+                return maxLengthTelNum
+            })
+        } else {
+            setMaxLengthNumeroTelephone(prevState => {
+                return prevState.filter((_, i) => i !== index)
+            })
+        }
+
+    }
+
 
     const changerTelephone = (numeroTelephone, index) => {
 
         const list = [...paramTelephone]
-        const numeroTelephoneParser = parsePhoneNumber(numeroTelephone)
-        const maxLengthTelNum = [...maxLengthNumeroTelephone]
-
-        if (numeroTelephoneParser.valid) {
-            maxLengthTelNum[index] = numeroTelephone.length
-            setMaxLengthNumeroTelephone(maxLengthTelNum)
-        }
-
+        verifierLongueurNumeroTelephone(numeroTelephone, index)
         list[index].tel_numero = numeroTelephone
         onChangeTelephone(list)
     }
@@ -64,10 +74,6 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
         const list = [...paramTelephone]
         list.splice(index, 1)
         onChangeTelephone(list)
-        /*onChangeTelephone([])
-        setTimeout(() => {
-            onChangeTelephone(list)
-        }, 1)*/
 
     }
 
@@ -77,7 +83,12 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
     }
 
     useEffect(() => {
+
         setAfficherCountryPicker(paramTelephone.map(() => false))
+        paramTelephone.map((item, index) => {
+            verifierLongueurNumeroTelephone(item.tel_numero, index)
+        })
+
     }, [paramTelephone])
 
 

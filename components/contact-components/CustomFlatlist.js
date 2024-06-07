@@ -118,7 +118,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
             }
         }
 
-        const unsubscribe = navigation.addListener('focus', fetchContacts);
+        const unsubscribe = navigation.addListener('focus', fetchContacts)
 
         fetchContacts() // se déclenche quand il y a une appelle externe et qu'on a besoin de rafraichir la liste des contacts
 
