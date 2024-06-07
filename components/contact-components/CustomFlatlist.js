@@ -8,8 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { dbLocalName } from '../utils/Constant'
 import { getListContact } from '../utils/utils'
 import { store } from '../redux/dataStore'
+import ChampRechercheContact from './champ/ChampRechercheContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
-import { manageApparitionNotification, manageNotificationMessage, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
+import { manageApparitionNotification, manageNotificationMessage, manageDateDernierSynchro } from '../redux/action/globalDataAction'
 import ListView from './ListView'
 import { recupererContactPlateformeDepuisWeb, recupererContactPersoDepuisWeb } from '../synchronisation/RecupererContact'
 import { getDateTime } from '../utils/utils'
@@ -25,17 +26,20 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
     const messageNotification = "Récupération de vos contacts en cours. Cette opération peut prendre quelques minutes..."
 
     const [data, setData] = useState([])
+    const [copieData, setCopieData] = useState([])
     const [refreshing, setRefreshing] = useState(false)
     const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
     const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
-    const [dateDernierRecuperation, setDateDernierRecuperation] = useState("")
+    const [dateDernierSynchro, setDateDernierSynchro] = useState("")
+    const [messageAAfficherSiDataVide, setMessageAAfficherSiDataVide] = useState(texteSiListVide)
+    const [focus, setFocus] = useState(false)
 
     store.subscribe(() => {
         const state = store.getState()
         //console.log(state.globalReducer.networkInfo.isConnected)
         setConnecte(state.globalReducer.networkInfo.isConnected)
         setInternetJoignable(state.globalReducer.networkInfo.isInternetReachable)
-        setDateDernierRecuperation(state.globalReducer.dateDernierRecuperation)
+        setDateDernierSynchro(state.globalReducer.dateDernierSynchro)
     })
 
     const fetchListContact = useCallback(async () => {
@@ -45,6 +49,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         try {
             const data = await getListContact(db, requete, paramRequete)
             setData(data._array)
+            setCopieData(data._array)
             onTotalChange(data.length)
 
         } catch (error) {
@@ -83,8 +88,8 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                     await recupererContactPersoDepuisWeb(appToken)
                 }
 
-                await AsyncStorage.setItem('_dateDernierRecuperation', formatedDateTime)
-                store.dispatch(manageDateDernierRecuperation(formatedDateTime))
+                await AsyncStorage.setItem('_dateDernierSynchro', formatedDateTime)
+                store.dispatch(manageDateDernierSynchro(formatedDateTime))
                 fetchListContact()
             }
             catch (error) {
@@ -121,25 +126,31 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
             unsubscribe()
         }
 
-    }, [navigation, connecte, internetJoignable, dateDernierRecuperation])
+    }, [navigation, connecte, internetJoignable, dateDernierSynchro])
 
 
     return (
 
         <>
+            <ChampRechercheContact data={data} dataCopie={copieData} onSearch={setData} onFocusChampRecherche={setFocus} onFindNoResult={setMessageAAfficherSiDataVide} />
+
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
                 data={data}
                 maxToRenderPerBatch={20}
                 keyExtractor={item => item.ctt_id}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                     <ListView
+                        focus={focus}
+                        index={index}
                         ctt_id={item.ctt_id}
                         src_id={item.src_id}
                         photo={item.ctt_photo}
                         prenom={item.ctt_prenom}
                         nom={item.ctt_nom}
                         favori={item.ctt_favoris}
+                        telephone={item.telephone}
+                        mail={item.mail}
                     />
                 )}
 
@@ -148,7 +159,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                 ListEmptyComponent={(
                     <View style={{ flex: 1, justifyContent: "center", marginBottom: 100 }}>
                         <Text style={{ textAlign: "center", fontWeight: "bold" }} variant="headlineSmall">
-                            {texteSiListVide}
+                            {messageAAfficherSiDataVide}
                         </Text>
                     </View>
                 )}

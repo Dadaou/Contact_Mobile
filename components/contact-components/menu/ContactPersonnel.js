@@ -1,7 +1,6 @@
 import ListContactPersonnel from '../ListContactPersonnel'
 import BoutonAjoutContact from '../BoutonAjoutContact'
 import HeaderPrincipal from "../HeaderPrincipal"
-import ChampRechercheContact from '../champ/ChampRechercheContact'
 
 const ContactPersonnel = () => {
 
@@ -11,7 +10,6 @@ const ContactPersonnel = () => {
 
         <>
             <HeaderPrincipal titre={titre} />
-            <ChampRechercheContact />
             <ListContactPersonnel />
             <BoutonAjoutContact />
         </>

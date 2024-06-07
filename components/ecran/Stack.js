@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SQLite from 'expo-sqlite'
 import { dbLocalName } from '../utils/Constant'
 import { store } from '../redux/dataStore'
-import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierRecuperation } from '../redux/action/globalDataAction'
+import { manageLogin, manageUserToken, manageUserInfo, manageDateDernierSynchro } from '../redux/action/globalDataAction'
 import requetes from '../utils/RequeteSql'
 
 
@@ -31,13 +31,13 @@ const AppStack = () => {
             try {
                 const token = await AsyncStorage.getItem('_tokenUtilisateur')
                 const infoUtilisateur = await AsyncStorage.getItem('_infoUtilisateur')
-                const dateDernierRecuperation = await AsyncStorage.getItem('_dateDernierSynchro')
+                const dateDernierSynchro = await AsyncStorage.getItem('_dateDernierSynchro')
 
                 if (token !== null && token !== undefined) {
                     store.dispatch(manageUserToken(token))
                     store.dispatch(manageLogin(true))
                     store.dispatch(manageUserInfo(JSON.parse(infoUtilisateur)))
-                    store.dispatch(manageDateDernierRecuperation(dateDernierRecuperation))
+                    store.dispatch(manageDateDernierSynchro(dateDernierSynchro))
                 }
                 else store.dispatch(manageLogin(false))
 

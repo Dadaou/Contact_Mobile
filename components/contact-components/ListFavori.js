@@ -5,7 +5,8 @@ import { updateNombreFavori } from '../redux/action/globalDataAction'
 
 const ListFavori = () => {
 
-    const requete = "SELECT ctt_id, src_id, ctt_photo, ctt_prenom, ctt_nom, ctt_favoris FROM contact WHERE ctt_favoris = ? ORDER BY ctt_prenom ASC, ctt_nom ASC"
+
+    const requete = "SELECT c.ctt_id, c.src_id, c.ctt_photo, c.ctt_prenom, c.ctt_nom, c.ctt_prenom_usage, c.ctt_favoris, GROUP_CONCAT(DISTINCT t.tel_numero) AS telephone, GROUP_CONCAT(DISTINCT m.ml_mail) AS mail FROM contact c LEFT JOIN telephone t ON c.ctt_id = t.ctt_id LEFT JOIN mail m ON c.ctt_id = m.ctt_id WHERE c.ctt_favoris = ? GROUP BY c.ctt_id ORDER BY c.ctt_prenom ASC, c.ctt_nom ASC"
     const favori = [1]
     const textAAfficherSiAucunFavori = "Aucun contact favori"
 

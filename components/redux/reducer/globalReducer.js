@@ -1,5 +1,5 @@
-import { CHECK_NETWORK_STATUS, UPDATE_NOMBRE_CONTACT, UPDATE_NOMBRE_CONTACT_PERSO, UPDATE_NOMBRE_FAVORI, MANAGE_LOGIN, MANAGE_USER_TOKEN, MANAGE_USER_INFO, MANAGE_NOTIFICATION_MESSAGE, MANAGE_APPARITION_NOTIFICATION, MANAGE_DATE_DERNIER_RECUPERATION } from "../action/globalDataAction"
-const initialState = { networkInfo: {}, nombreContact: 0, nombreContactPersonnel: 0, nombreFavori: 0, isLogin: false, _tokenUtilisateur: null, _infoUtilisateur: {}, msgNotificationToast: "", showNotificationToast: false, dateDernierRecuperation: "" }
+import { CHECK_NETWORK_STATUS, UPDATE_NOMBRE_CONTACT, UPDATE_NOMBRE_CONTACT_PERSO, UPDATE_NOMBRE_FAVORI, MANAGE_LOGIN, MANAGE_USER_TOKEN, MANAGE_USER_INFO, MANAGE_NOTIFICATION_MESSAGE, MANAGE_APPARITION_NOTIFICATION, MANAGE_DATE_DERNIER_SYNCHRO } from "../action/globalDataAction"
+const initialState = { networkInfo: {}, nombreContact: 0, nombreContactPersonnel: 0, nombreFavori: 0, isLogin: false, _tokenUtilisateur: null, _infoUtilisateur: {}, msgNotificationToast: "", showNotificationToast: false, dateDernierSynchro: "" }
 
 const globalReducer = (state = initialState, action) => {
 
@@ -59,10 +59,10 @@ const globalReducer = (state = initialState, action) => {
                 msgNotificationToast: action.payload
             }
 
-        case MANAGE_DATE_DERNIER_RECUPERATION:
+        case MANAGE_DATE_DERNIER_SYNCHRO:
             return {
                 ...state,
-                dateDernierRecuperation: action.payload
+                dateDernierSynchro: action.payload
             }
 
         default:
