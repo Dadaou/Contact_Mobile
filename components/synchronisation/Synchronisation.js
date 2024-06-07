@@ -5,7 +5,6 @@ import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import { updateNetworkStatus } from '../redux/action/globalDataAction'
 import { envoyerContactModifierAWeb, envoyerNouveauContactAWeb } from './EnvoyerContact'
 import { recupererContactMajDepuisWeb } from './RecupererContact'
-import { getDateTime } from '../utils/utils'
 
 
 const Synchronisation = () => {
@@ -26,13 +25,12 @@ const Synchronisation = () => {
 
   const lancerSynchronisation = useCallback(async () => {
 
-
     //console.log(`Synchronisation du ${getDateTime()} en cours...`)
     const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
     await envoyerNouveauContactAWeb(appToken)
     await envoyerContactModifierAWeb(appToken)
     await recupererContactMajDepuisWeb(appToken)
-  
+
 
   }, [])
 

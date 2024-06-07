@@ -59,7 +59,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
             setRefreshing(false)
         }
 
-    }, [db, requete, paramRequete])
+    }, [requete, paramRequete])
 
     const fetchContactWeb = useCallback(async () => {
 
@@ -73,7 +73,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
 
                 if (premierSynchro === null || premierSynchro !== 'true') {
 
-                    store.dispatch(manageApparitionNotification(true));
+                    store.dispatch(manageApparitionNotification(true))
                     store.dispatch(manageNotificationMessage(messageNotification))
 
                     await recupererContactPlateformeDepuisWeb(appToken)
@@ -90,7 +90,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
 
                 await AsyncStorage.setItem('_dateDernierSynchro', formatedDateTime)
                 store.dispatch(manageDateDernierSynchro(formatedDateTime))
-                fetchListContact()
+
             }
             catch (error) {
                 throw error
@@ -101,16 +101,19 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                 setRefreshing(false)
             }
 
-
         }
+
+        fetchListContact()
+
     }, [connecte, internetJoignable, formatedDateTime, date])
 
 
     useEffect(() => {
 
-        const fetchContacts = async () => {
+        const refreshList = async () => {
 
             const premierSynchro = await AsyncStorage.getItem('_premierSynchro')
+
             if (connecte && internetJoignable && premierSynchro !== 'true') {
                 await fetchContactWeb()
             } else {
@@ -118,13 +121,10 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
             }
         }
 
-        const unsubscribe = navigation.addListener('focus', fetchContacts)
+        const unsubscribe = navigation.addListener('focus', refreshList)
+        refreshList()
 
-        fetchContacts() // se déclenche quand il y a une appelle externe et qu'on a besoin de rafraichir la liste des contacts
-
-        return () => {
-            unsubscribe()
-        }
+        return unsubscribe
 
     }, [navigation, connecte, internetJoignable, dateDernierSynchro])
 

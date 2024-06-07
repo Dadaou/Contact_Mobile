@@ -68,13 +68,13 @@ export const getformatedDateTime = () => {
 }
 
 
-export const getListContact = (db, requete, valeur = null) => {
+export const getListContact = (db, requete, paramRequete = null) => {
 
     return new Promise((resolve, reject) => {
 
         db.transaction((tx) => {
 
-            tx.executeSql(requete, valeur,
+            tx.executeSql(requete, paramRequete,
 
                 (_, resultSet) => {
                     resolve(resultSet.rows)

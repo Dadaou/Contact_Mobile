@@ -180,13 +180,17 @@ const AjoutContact = ({ navigation }) => {
                     saveAdresse(idContact, utilId)
                 })
 
-                redirection(true)
-
             }
 
             catch (error) {
                 console.error("Une erreur est survenue lors d'enregistrement:", error)
                 setLoading(false)
+            }
+
+            finally {
+
+                redirection(true)
+
             }
         }
 
