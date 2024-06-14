@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Searchbar } from 'react-native-paper'
 import filter from "lodash.filter"
 
-const ChampRechercheContact = ({ dataCopie, onSearch, onFocusChampRecherche, onFindNoResult }) => {
+const ChampRechercheContact = ({ dataCopie, onSearch, onFindNoResult }) => {
 
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -50,8 +50,6 @@ const ChampRechercheContact = ({ dataCopie, onSearch, onFocusChampRecherche, onF
         <Searchbar
             style={styles.input}
             inputMode="search"
-            onFocus={() => onFocusChampRecherche(true)}
-            onBlur={() => onFocusChampRecherche(false)}
             placeholder="Rechercher un contact"
             onChangeText={(motCle) => rechercherContact(motCle)}
             value={searchQuery}

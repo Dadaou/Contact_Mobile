@@ -28,7 +28,7 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 
 const ModificationContact = ({ navigation, route }) => {
 
-    const { ctt_id } = route.params
+    const { ctt_id, src_id } = route.params
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
 
@@ -103,8 +103,8 @@ const ModificationContact = ({ navigation, route }) => {
 
                 tx.executeSql(requetes.GetAdresse, [ctt_id],
                     (_, resultSet) => {
-                        
-                        if(resultSet.rows._array.length === 0) {
+
+                        if (resultSet.rows._array.length === 0) {
                             resolve([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
                         }
                         else {
@@ -196,13 +196,21 @@ const ModificationContact = ({ navigation, route }) => {
                     catch (error) {
                         console.error("Erreur lors de l'exécution des requêtes d'insertion:", error)
                     }
+
+                    finally {
+                        redirection(true)
+                    }
                 })
 
-                redirection(true)
+
             }
 
             catch (error) {
                 console.error("Une erreur est survenue lors de la transaction:", error)
+            }
+
+            finally {
+                redirection(true)
             }
         }
 
@@ -215,7 +223,7 @@ const ModificationContact = ({ navigation, route }) => {
         setTelephone([])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-        navigation.navigate('DetailContact', { ctt_id: ctt_id, showModal: showModal })
+        navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, showModal: showModal })
 
     }
 

@@ -32,7 +32,6 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
     const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
     const [dateDernierSynchro, setDateDernierSynchro] = useState("")
     const [messageAAfficherSiDataVide, setMessageAAfficherSiDataVide] = useState(texteSiListVide)
-    const [focus, setFocus] = useState(false)
 
     store.subscribe(() => {
         const state = store.getState()
@@ -45,6 +44,8 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
     const fetchListContact = useCallback(async () => {
 
         setRefreshing(true)
+
+        console.log("Ato")
 
         try {
             const data = await getListContact(db, requete, paramRequete)
@@ -124,6 +125,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         const unsubscribe = navigation.addListener('focus', refreshList)
         refreshList()
 
+
         return unsubscribe
 
     }, [navigation, connecte, internetJoignable, dateDernierSynchro])
@@ -132,7 +134,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
     return (
 
         <>
-            <ChampRechercheContact data={data} dataCopie={copieData} onSearch={setData} onFocusChampRecherche={setFocus} onFindNoResult={setMessageAAfficherSiDataVide} />
+            <ChampRechercheContact data={data} dataCopie={copieData} onSearch={setData} onFindNoResult={setMessageAAfficherSiDataVide} />
 
             <FlatList
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -141,8 +143,6 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                 keyExtractor={item => item.ctt_id}
                 renderItem={({ item, index }) => (
                     <ListView
-                        focus={focus}
-                        index={index}
                         ctt_id={item.ctt_id}
                         src_id={item.src_id}
                         photo={item.ctt_photo}

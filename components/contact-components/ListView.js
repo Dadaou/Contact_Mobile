@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import { Menu, TouchableRipple, List } from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
+import React, { memo } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { View, StyleSheet, Image, Text } from 'react-native'
+import { Menu, TouchableRipple, List } from 'react-native-paper'
+import * as Animatable from 'react-native-animatable'
 
-const ListViewAvecPlusDInfo = memo(({ index, photo, prenom, nom, telephone, mail }) => {
+const ListViewAvecPlusDInfo = memo(({ photo, prenom, nom, telephone, mail }) => {
 
     return (
         <>
@@ -64,35 +64,8 @@ const ListViewAvecPlusDInfo = memo(({ index, photo, prenom, nom, telephone, mail
 
 })
 
-const ListViewAvecMoinDInfo = memo(({ photo, prenom, nom }) => {
 
-    return (
-
-        <>
-
-            <List.Item
-
-                title={() => (
-                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                        <Text>{prenom}</Text> {nom}
-                    </Text>
-                )}
-
-
-                left={() => (
-                    <Image
-                        style={styles.photoContact}
-                        source={photo == null || photo == "" ? require('../../assets/user.jpg') : { uri: photo }}
-                    />
-                )}
-
-            />
-        </>
-    )
-})
-
-
-const ListView = memo(({ focus, index, ctt_id, src_id, photo, prenom, nom, favori, telephone, mail }) => {
+const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, mail }) => {
 
     const navigation = useNavigation()
 
@@ -105,16 +78,7 @@ const ListView = memo(({ focus, index, ctt_id, src_id, photo, prenom, nom, favor
 
                 <View style={styles.container}>
 
-                    {
-                        focus ? (
-
-                            <ListViewAvecPlusDInfo index={index} photo={photo} nom={nom} prenom={prenom} telephone={telephone} mail={mail} />
-                        ) : (
-
-                            <ListViewAvecMoinDInfo photo={photo} nom={nom} prenom={prenom} />
-                        )
-
-                    }
+                    <ListViewAvecPlusDInfo photo={photo} nom={nom} prenom={prenom} telephone={telephone} mail={mail} />
 
                 </View>
 

@@ -47,7 +47,7 @@ const Synchronisation = () => {
 
       const syncInterval = setInterval(() => {
         lancerSynchronisation()
-      }, 3000)
+      }, 5000)
 
       return () => {
         clearInterval(syncInterval)

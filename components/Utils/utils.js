@@ -54,16 +54,17 @@ export const getDateTime = () => {
 
 export const getformatedDateTime = () => {
 
+
     let date = new Date()
-    let jour = date.getDate()
-    let mois = date.getMonth() + 1
     let annee = date.getFullYear()
-    let heure = date.getHours()
-    let minute = date.getMinutes()
+    let mois = String(date.getMonth() + 1).padStart(2, '0')
+    let jour = String(date.getDate()).padStart(2, '0')
+    let heure = String(date.getHours()).padStart(2, '0')
+    let minute = String(date.getMinutes()).padStart(2, '0')
 
     return {
         formatedDate: jour + '/' + mois + '/' + annee,
-        time: heure + 'h' + minute + 'm'
+        time: heure + 'H' + minute
     }
 }
 

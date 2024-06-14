@@ -24,6 +24,7 @@ import { updateNombreFavori } from "../redux/action/globalDataAction"
 const DetailContact = ({ route }) => {
 
     const { ctt_id, src_id, showModal, favori } = route.params
+
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
@@ -84,7 +85,7 @@ const DetailContact = ({ route }) => {
                 <Appbar.BackAction onPress={() => navigation.goBack()} size={25} />
                 <Appbar.Content title="" />
                 <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori} />
-                <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id })} />
+                <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id, src_id: src_id })} />
             </Appbar.Header>
 
             <ScrollView>
