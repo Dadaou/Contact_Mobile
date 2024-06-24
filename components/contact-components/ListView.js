@@ -4,66 +4,6 @@ import { View, StyleSheet, Image, Text } from 'react-native'
 import { Menu, TouchableRipple, List } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 
-const ListViewAvecPlusDInfo = memo(({ photo, prenom, nom, telephone, mail }) => {
-
-    return (
-        <>
-
-            <List.Item
-
-                title={() => (
-                    <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-                        <Text>{prenom}</Text> {nom}
-                    </Text>
-                )}
-
-                description={() => (
-                    <View>
-
-                        {
-                            telephone === "" || telephone === null ? null :
-
-                                (
-                                    <Text numberOfLines={1} ellipsizeMode="tail">
-                                        tel: {telephone.replace(/,/g, ', ')}
-                                    </Text>
-
-                                )
-                        }
-
-                        {
-                            mail === "" || mail === null ? null :
-
-                                (
-                                    <Text numberOfLines={1} ellipsizeMode="tail">
-                                        mail: {mail.replace(/,/g, ', ')}
-                                    </Text>
-
-                                )
-                        }
-
-
-                    </View>
-                )}
-
-                left={() => (
-
-                    <View style={{ marginTop: 6 }}>
-
-                        <Image
-                            style={styles.photoContact}
-                            source={photo == null || photo == "" ? require('../../assets/user.jpg') : { uri: photo }}
-                        />
-
-                    </View>
-                )}
-
-            />
-        </>
-    )
-
-})
-
 
 const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, mail }) => {
 
@@ -78,7 +18,57 @@ const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, 
 
                 <View style={styles.container}>
 
-                    <ListViewAvecPlusDInfo photo={photo} nom={nom} prenom={prenom} telephone={telephone} mail={mail} />
+                    <List.Item
+
+                        title={() => (
+                            <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+                                <Text>{prenom}</Text> {nom}
+                            </Text>
+                        )}
+
+                        description={() => (
+                            
+                            <View>
+
+                                {
+                                    telephone === "" || telephone === null ? null :
+
+                                        (
+                                            <Text numberOfLines={1} ellipsizeMode="tail">
+                                                tel: {telephone.replace(/,/g, ', ')}
+                                            </Text>
+
+                                        )
+                                }
+
+                                {
+                                    mail === "" || mail === null ? null :
+
+                                        (
+                                            <Text numberOfLines={1} ellipsizeMode="tail">
+                                                mail: {mail.replace(/,/g, ', ')}
+                                            </Text>
+
+                                        )
+                                }
+
+
+                            </View>
+                        )}
+
+                        left={() => (
+
+                            <View style={{ marginTop: 6 }}>
+
+                                <Image
+                                    style={styles.photoContact}
+                                    source={photo == null || photo == "" ? require('../../assets/user.jpg') : { uri: photo }}
+                                />
+
+                            </View>
+                        )}
+
+                    />
 
                 </View>
 

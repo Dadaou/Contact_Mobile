@@ -112,7 +112,7 @@ const ChampTelephone = ({ paramTelephone, onChangeTelephone }) => {
                                 onPressFlag={() => setAfficherCountryPicker(afficherCountryPicker.map((item, idx) => idx === index))}
                                 ref={phoneRef.current[index]}
                                 onChangePhoneNumber={(text) => changerTelephone(text, index)}
-                                initialValue={item.tel_numero}
+                                initialValue={item.tel_numero === "+" ? "+33" : item.tel_numero}
                                 textComponent={TextInput}
                                 flagStyle={{ borderWidth: 1, marginTop: 6 }}
                                 textProps={{

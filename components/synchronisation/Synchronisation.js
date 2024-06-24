@@ -12,6 +12,7 @@ const Synchronisation = () => {
   const [connecte, setConnecte] = useState(false)
   const [internetJoignable, setInternetJoignable] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
+  const [isSynchronizing, setIsSynchronizing] = useState(false)
 
   store.subscribe(() => {
     setIsLogin(store.getState().globalReducer.isLogin)
@@ -25,11 +26,21 @@ const Synchronisation = () => {
 
   const lancerSynchronisation = useCallback(async () => {
 
-    //console.log(`Synchronisation du ${getDateTime()} en cours...`)
-    const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
-    await envoyerNouveauContactAWeb(appToken)
-    await envoyerContactModifierAWeb(appToken)
-    await recupererContactMajDepuisWeb(appToken)
+    if (isSynchronizing) return
+    
+    setIsSynchronizing(true)
+
+    try {
+      //console.log(`Synchronisation du ${getDateTime()} en cours...`)
+      const appToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBfaWQiOiIxIiwiYXBwX25vbSI6ImNvbnRhY3QiLCJsb2dfaWQiOiIxNyJ9.7vXX-t6UZQEz7kSEIQkaHNF97eaUnJsN6CC524SpTFE'//await extractAppTokenFromLocalStorage()
+      await envoyerNouveauContactAWeb(appToken)
+      await envoyerContactModifierAWeb(appToken)
+      await recupererContactMajDepuisWeb(appToken)
+    }
+
+    finally {
+      setIsSynchronizing(false)
+    }
 
 
   }, [])

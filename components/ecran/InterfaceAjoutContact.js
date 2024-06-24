@@ -89,14 +89,14 @@ const AjoutContact = ({ navigation }) => {
                         contact.favoris, utilId, contact.idContactWeb, contact.sourceId, estInsererDansWeb, estMaj
                     ],
 
-                    (txObj, resultSet) => {
+                    (_, resultSet) => {
 
                         if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
                             resolve(resultSet.insertId)
                         }
 
                     },
-                    (txObj, error) => {
+                    (_, error) => {
                         console.log('transaction error', error)
                         reject(error)
                     }
@@ -108,96 +108,132 @@ const AjoutContact = ({ navigation }) => {
 
     const saveTelephone = (idContact, utilId) => {
 
-        db.transaction((tx) => {
+        return new Promise((resolve, reject) => {
 
-            telephone.forEach((item) => {
+            db.transaction((tx) => {
 
-                tx.executeSql(requetes.InsererTelephone, [item.tel_numero, item.tel_libelle, idContact, utilId])
+                telephone.forEach((item) => {
+
+                    tx.executeSql(requetes.InsererTelephone, [item.tel_numero, item.tel_libelle, idContact, utilId],
+
+                        (_, resultSet) => {
+
+                            if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                resolve()
+                            }
+
+                        },
+                        (_, error) => {
+                            reject(error)
+                        })
+                })
             })
+
         })
 
     }
 
     const saveMail = (idContact, utilId) => {
 
-        db.transaction((tx) => {
+        return new Promise((resolve, reject) => {
 
-            mail.forEach((item) => {
+            db.transaction((tx) => {
 
-                tx.executeSql(requetes.InsererMail,
-                    [item.ml_mail, item.ml_libelle, idContact, utilId])
+                mail.forEach((item) => {
+
+                    tx.executeSql(requetes.InsererMail, [item.ml_mail, item.ml_libelle, idContact, utilId],
+
+                        (_, resultSet) => {
+
+                            if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                resolve()
+                            }
+
+                        },
+
+                        (_, error) => {
+                            reject(error)
+                        }
+
+                    )
+                })
+
             })
 
         })
+
     }
 
     const saveAdresse = (idContact) => {
 
-        db.transaction((tx) => {
+        return new Promise((resolve, reject) => {
 
-            adresse.forEach((item) => {
-                tx.executeSql(requetes.InsererAdresse,
-                    [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact])
+            db.transaction((tx) => {
+
+                adresse.forEach((item) => {
+
+                    tx.executeSql(requetes.InsererAdresse,
+
+                        [item.addr_ligne1, item.addr_ligne2, item.addr_ligne3, item.addr_cp, item.addr_bp, item.addr_pays, item.addr_ville, item.addr_libelle, idContact],
+
+                        (_, resultSet) => {
+
+                            if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                resolve()
+                            }
+
+                        },
+
+                        (_, error) => {
+                            reject(error)
+                        }
+
+                    )
+                })
+
             })
+
         })
+
     }
 
-    const saveInformation = async () => {
+    const saveAllInformation = async () => {
 
-
-        if (contact.nom == '' && contact.prenom == '') {
+        if (contact.nom === '' && contact.prenom === '') {
 
             Alert.alert(
-
                 'Information',
                 'Veuillez ajouter un nom ou un prénom au minimun pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
             )
-        }
 
-        else if (telephone[0].tel_numero == '' && mail[0].ml_mail == '') {
-
+        } else if (telephone[0].tel_numero === '' && mail[0].ml_mail === '') {
             Alert.alert(
-
                 'Information',
                 'Veuillez ajouter un numero ou un mail pour créer un contact',
                 [{ text: "OK" }],
                 { cancelable: false }
             )
-        }
 
-        else {
+        } else {
 
             const utilId = await getUtilId()
 
             try {
 
-                saveContact(utilId).then((idContact) => {
+                const idContact = await saveContact(utilId)
+                await saveTelephone(idContact, utilId)
+                await saveMail(idContact, utilId)
+                await saveAdresse(idContact)
+                redirection(true)
 
-                    saveTelephone(idContact, utilId)
-                    saveMail(idContact, utilId)
-                    saveAdresse(idContact, utilId)
-                })
-
-            }
-
-            catch (error) {
+            } catch (error) {
                 console.error("Une erreur est survenue lors d'enregistrement:", error)
                 setLoading(false)
             }
-
-            finally {
-
-                redirection(true)
-
-            }
         }
-
-        //store.subscribe(() => console.log(store.getState().listTelephone))
-
     }
-
 
     return (
 
@@ -208,7 +244,7 @@ const AjoutContact = ({ navigation }) => {
             <Appbar.Header style={{ backgroundColor: bleu }}>
                 <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc} />
                 <Appbar.Content title="Créer un contact" color={blanc} titleStyle={{ alignSelf: 'center' }} />
-                <Appbar.Action icon="check" size={30} onPress={saveInformation} color={blanc} />
+                <Appbar.Action icon="check" size={30} onPress={saveAllInformation} color={blanc} />
             </Appbar.Header>
 
             <EtatContact paramEtat={contact.etat} onChangeEtat={(etat) => setContact({ ...contact, etat: etat })} />

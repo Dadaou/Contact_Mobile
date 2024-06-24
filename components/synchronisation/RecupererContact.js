@@ -15,23 +15,74 @@ const date = getDateTime()
 
 const enregistrerNumeroTelephoneWebSurMobile = (telephones, idContact, utilId, idContactEnWeb) => {
 
-    let telephoneArray = telephones === null ? [""] : telephones.split(", ")
-    db.transaction((tx) => {
-        telephoneArray.forEach((telNumero) => {
-            const numeroTelephoneVerifier = telNumero === "" ? "" : verifierNumeroTelephone(telNumero)
-            tx.executeSql(requetes.InsererTelephone, [numeroTelephoneVerifier, "", idContact, utilId, idContactEnWeb])
+    return new Promise((resolve, reject) => {
+
+        let telephoneArray = telephones === null ? [""] : telephones.split(", ")
+
+        db.transaction((tx) => {
+
+            if (telephoneArray.length !== 0) {
+
+                telephoneArray.forEach((telNumero) => {
+
+                    const numeroTelephoneVerifier = telNumero === "" ? "" : verifierNumeroTelephone(telNumero)
+
+                    tx.executeSql(requetes.InsererTelephone, [numeroTelephoneVerifier, "", idContact, utilId, idContactEnWeb],
+                        (_, resultSet) => {
+                            if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                resolve()
+                            }
+                        },
+
+                        (_, error) => {
+                            reject(error)
+                        }
+                    )
+                })
+
+            }
         })
+
+        resolve()
+
     })
+
+
 }
 
 const enregistrerMailWebSurMobile = (mails, idContact, utilId, idContactEnWeb) => {
 
-    let mailArray = mails === null ? [""] : mails.split(", ")
-    db.transaction((tx) => {
-        mailArray.forEach((mail) => {
-            tx.executeSql(requetes.InsererMail, [mail, "", idContact, utilId, idContactEnWeb])
+    return new Promise((resolve, reject) => {
+
+        let mailArray = mails === null ? [""] : mails.split(", ")
+
+        db.transaction((tx) => {
+
+            if (mailArray.length !== 0) {
+
+                mailArray.forEach((mail) => {
+
+                    tx.executeSql(requetes.InsererMail, [mail, "", idContact, utilId, idContactEnWeb],
+                        (_, resultSet) => {
+                            if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
+                                resolve()
+                            }
+                        },
+
+                        (_, error) => {
+                            reject(error)
+                        }
+                    )
+                })
+
+            }
         })
+
+        resolve()
+
     })
+
+
 }
 
 const enregistrerContactWebSurMobile = (contacts) => {
@@ -57,17 +108,20 @@ const enregistrerContactWebSurMobile = (contacts) => {
                             if (resultSet.rows._array.length === 0) {
 
                                 tx.executeSql(requetes.InsererContact,
+
                                     [null/*item.ctt_photo*/, item.ctt_prenom, item.ctt_nom, item.ctt_prenom_usage, item.ctt_entreprise,
                                         item.ctt_fonction, item.ctt_anniversaire, item.ctt_notes, item.ctt_service, item.ctt_siteweb, item.ctt_twitter,
                                         item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_etat, item.ctt_favoris, item.util_id, item.ctt_id, item.src_id, estInsererSurWeb, estMaj],
-                                    (txObj, resultSet) => {
+
+                                    async (_, resultSet) => {
+
                                         if (resultSet.rowsAffected !== 0 && resultSet.insertId !== undefined) {
-                                            enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
-                                            enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
+                                            await enregistrerNumeroTelephoneWebSurMobile(item.telephone, resultSet.insertId, item.util_id, item.ctt_id)
+                                            await enregistrerMailWebSurMobile(item.mail, resultSet.insertId, item.util_id, item.ctt_id)
                                         }
                                     },
 
-                                    (txObj, error) => {
+                                    (_, error) => {
                                         reject(error)
                                     }
                                 )

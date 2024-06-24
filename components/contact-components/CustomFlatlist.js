@@ -41,11 +41,11 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         setDateDernierSynchro(state.globalReducer.dateDernierSynchro)
     })
 
+
+
     const fetchListContact = useCallback(async () => {
 
         setRefreshing(true)
-
-        console.log("Ato")
 
         try {
             const data = await getListContact(db, requete, paramRequete)
@@ -100,11 +100,12 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
             finally {
                 store.dispatch(manageApparitionNotification(false))
                 setRefreshing(false)
+                fetchListContact()
             }
 
         }
 
-        fetchListContact()
+
 
     }, [connecte, internetJoignable, formatedDateTime, date])
 
@@ -125,10 +126,10 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         const unsubscribe = navigation.addListener('focus', refreshList)
         refreshList()
 
-
         return unsubscribe
 
-    }, [navigation, connecte, internetJoignable, dateDernierSynchro])
+    }, [navigation, connecte, internetJoignable, dateDernierSynchro, data.length])
+
 
 
     return (
