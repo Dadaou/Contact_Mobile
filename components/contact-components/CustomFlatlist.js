@@ -128,7 +128,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
 
         return unsubscribe
 
-    }, [navigation, connecte, internetJoignable, dateDernierSynchro, data.length])
+    }, [navigation, connecte, internetJoignable, dateDernierSynchro])
 
 
 
