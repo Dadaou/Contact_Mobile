@@ -10,6 +10,7 @@ import { dbLocalName } from "../utils/Constant"
 import * as SQLite from 'expo-sqlite'
 import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"
+import CustomAlert from "../modal/CustomAlert"
 
 /*
     <TouchableOpacity onPress={() => setAfficherAutreInfo(!afficherAutreInfo)} style={{ alignItems: 'center', justifyContent : 'center', paddingRight: 170}}>
@@ -23,16 +24,20 @@ import { updateNombreFavori } from "../redux/action/globalDataAction"
 
 const DetailContact = ({ route }) => {
 
-    const { ctt_id, src_id, showModal, favori } = route.params
+    const { ctt_id, src_id, corbeille, showModal, msgToast, favori } = route.params
 
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
+    const reqToMoveInCorbeille = "UPDATE contact SET ctt_corbeille = 1 WHERE ctt_id = ?"
+
+    let dateDernierSynchro = store.getState().globalReducer.dateDernierSynchro
 
     const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
     const [isFavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
-    let dateDernierSynchro = store.getState().globalReducer.dateDernierSynchro
+    const [isAlertVisible, setAlertVisible] = useState(false)
+
 
 
     const IncrementNombreFavori = () => {
@@ -56,6 +61,20 @@ const DetailContact = ({ route }) => {
         setTimeout(() => {
             setModalVisible(false)
         }, 1500)
+
+    }
+
+    const afficherAlertePourSuppression = () => {
+        setAlertVisible(!isAlertVisible)
+    }
+
+    const procederSupression = () => {
+
+        db.transaction((tx) => {
+            tx.executeSql(reqToMoveInCorbeille, [ctt_id])
+        })
+    
+        navigation.navigate('Accueil', { showModal: true, msgToast : 'Contact déplacé dans la corbeille' })
 
     }
 
@@ -85,6 +104,7 @@ const DetailContact = ({ route }) => {
                 <Appbar.BackAction onPress={() => navigation.goBack()} size={25} />
                 <Appbar.Content title="" />
                 <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori} />
+                <Appbar.Action icon={'trash-can-outline'} onPress={afficherAlertePourSuppression} disabled={src_id !== 1 && true} />
                 <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id, src_id: src_id })} />
             </Appbar.Header>
 
@@ -113,7 +133,8 @@ const DetailContact = ({ route }) => {
                 </View>
             }
 
-            <Toast title='Contact modifié' isVisible={isModalVisible} />
+            <Toast title={msgToast} isVisible={isModalVisible} />
+            <CustomAlert isVisible={isAlertVisible} onVisible={setAlertVisible} msg={'Déplacer ce contact dans la corbeille ?'} actionBouton={procederSupression} />
         </>
     )
 

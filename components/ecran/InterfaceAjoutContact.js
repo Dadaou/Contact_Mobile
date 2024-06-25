@@ -64,14 +64,14 @@ const AjoutContact = ({ navigation }) => {
     const [adresse, setAdresse] = useState([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
     const [afficherAutreChamp, setAfficherAutreChamp] = useState(false)
 
-    const redirection = (showModal) => {
+    const redirection = (showModal, msgToast = "") => {
 
         setContact({})
         setTelephone([{ tel_libelle: "", tel_numero: "" }])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
 
-        navigation.navigate('Accueil', { showModal: showModal })
+        navigation.navigate('Accueil', { showModal: showModal, msgToast : msgToast })
     }
 
     const saveContact = (utilId) => {
@@ -86,7 +86,7 @@ const AjoutContact = ({ navigation }) => {
                     [
                         contact.photo, contact.prenom, contact.nom, contact.prenomUsage, contact.entreprise, contact.fonction, contact.date,
                         contact.note, contact.service, contact.siteWeb, contact.twitter, contact.linkedin, contact.facebook, contact.skype, contact.etat,
-                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, estInsererDansWeb, estMaj
+                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, contact.corbeille, estInsererDansWeb, estMaj
                     ],
 
                     (_, resultSet) => {
@@ -226,7 +226,7 @@ const AjoutContact = ({ navigation }) => {
                 await saveTelephone(idContact, utilId)
                 await saveMail(idContact, utilId)
                 await saveAdresse(idContact)
-                redirection(true)
+                redirection(true, 'Contact enregistré')
 
             } catch (error) {
                 console.error("Une erreur est survenue lors d'enregistrement:", error)
@@ -242,7 +242,7 @@ const AjoutContact = ({ navigation }) => {
             <StatusBar backgroundColor={bleu} />
 
             <Appbar.Header style={{ backgroundColor: bleu }}>
-                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc} />
+                <Appbar.Action icon="close" size={30} onPress={() => redirection(false, "")} color={blanc} />
                 <Appbar.Content title="Créer un contact" color={blanc} titleStyle={{ alignSelf: 'center' }} />
                 <Appbar.Action icon="check" size={30} onPress={saveAllInformation} color={blanc} />
             </Appbar.Header>

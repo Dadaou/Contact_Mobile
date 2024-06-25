@@ -2,6 +2,7 @@ export const CHECK_NETWORK_STATUS = "CHECK_NETWORK_STATUS"
 export const UPDATE_NOMBRE_CONTACT = " UPDATE_NOMBRE_CONTACT"
 export const UPDATE_NOMBRE_CONTACT_PERSO = "UPDATE_NOMBRE_CONTACT_PERSO"
 export const UPDATE_NOMBRE_FAVORI = "UPDATE_NOMBRE_FAVORI"
+export const UPDATE_NOMBRE_CONTACT_CORBEILLE = "UPDATE_NOMBRE_CONTACT_CORBEILLE"
 export const MANAGE_LOGIN = "MANAGE_LOGIN"
 export const MANAGE_USER_TOKEN = "MANAGE_USER_TOKEN"
 export const MANAGE_USER_INFO = "MANAGE_USER_INFO"
@@ -39,6 +40,15 @@ export const updateNombreFavori = nombre => dispatch => {
 
     dispatch({
         type: UPDATE_NOMBRE_FAVORI,
+        payload: nombre,
+    })
+
+}
+
+export const updateNombreContactCorbeille = nombre => dispatch => {
+
+    dispatch({
+        type: UPDATE_NOMBRE_CONTACT_CORBEILLE,
         payload: nombre,
     })
 

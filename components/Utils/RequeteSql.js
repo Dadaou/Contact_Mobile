@@ -8,7 +8,7 @@ const requetes = {
     GetTelephone: "SELECT tel_libelle, tel_numero FROM telephone WHERE ctt_id = ?",
     GetMail: "SELECT ml_mail, ml_libelle FROM mail WHERE ctt_id = ?",
     GetAdresse: "SELECT addr_ligne1, addr_ligne2, addr_ligne3, addr_ville, addr_pays, addr_bp, addr_cp, addr_libelle FROM adresse WHERE ctt_id = ?",
-    InsererContact: "INSERT INTO contact (ctt_photo, ctt_prenom, ctt_nom, ctt_prenom_usage, ctt_entreprise, ctt_fonction, ctt_anniversaire, ctt_notes, ctt_service, ctt_siteweb, ctt_twitter, ctt_linkedin, ctt_facebook, ctt_skype, ctt_etat, ctt_favoris, util_id, ctt_id_web, src_id, est_insererdansweb, est_maj) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    InsererContact: "INSERT INTO contact (ctt_photo, ctt_prenom, ctt_nom, ctt_prenom_usage, ctt_entreprise, ctt_fonction, ctt_anniversaire, ctt_notes, ctt_service, ctt_siteweb, ctt_twitter, ctt_linkedin, ctt_facebook, ctt_skype, ctt_etat, ctt_favoris, util_id, ctt_id_web, src_id, ctt_corbeille, est_insererdansweb, est_maj) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     InsererTelephone: "INSERT INTO telephone (tel_numero, tel_libelle, ctt_id, util_id, ctt_id_web) VALUES (?,?,?,?,?)",
     InsererMail: "INSERT INTO mail (ml_mail, ml_libelle, ctt_id, util_id, ctt_id_web) VALUES (?,?,?,?,?)",
     InsererAdresse: "INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",

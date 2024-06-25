@@ -6,6 +6,7 @@ import CustomDrawer from "../contact-components/CustomDrawer"
 import TousLesContacts from "../contact-components/menu/TousLesContacts"
 import ContactFavori from "../contact-components/menu/ContactFavori"
 import ContactPersonnel from "../contact-components/menu/ContactPersonnel"
+import ContactCorbeille from "../contact-components/menu/ContactCorbeille"
 import { store } from "../redux/dataStore"
 
 
@@ -27,11 +28,13 @@ const AppDrawer = () => {
     const [nombreContact, setNombreContact] = useState(0)
     const [nombreContactPersonnel, setNombreContactPersonnel] = useState(0)
     const [nombreFavori, setNombreFavori] = useState(0)
+    const [nombreContactCorbeille, setNombreContactCorbeille] = useState(0)
 
     store.subscribe(() => {
         setNombreContact(store.getState().globalReducer.nombreContact)
         setNombreContactPersonnel(store.getState().globalReducer.nombreContactPersonnel)
         setNombreFavori(store.getState().globalReducer.nombreFavori)
+        setNombreContactCorbeille(store.getState().globalReducer.nombreContactCorbeille)
     })
 
     return (
@@ -71,7 +74,17 @@ const AppDrawer = () => {
             <Drawer.Screen name="Contact favori" component={ContactFavori}
                 options={{
                     drawerLabel: () => (
+
                         <VueDrawer titre={"Contacts favoris"} nombre={nombreFavori} />
+
+                    )
+                }}
+            />
+
+            <Drawer.Screen name="Contact corbeille" component={ContactCorbeille}
+                options={{
+                    drawerLabel: () => (
+                        <VueDrawer titre={"Corbeille"} nombre={nombreContactCorbeille} />
                     )
                 }}
             />

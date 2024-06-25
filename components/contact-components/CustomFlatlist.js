@@ -146,6 +146,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                     <ListView
                         ctt_id={item.ctt_id}
                         src_id={item.src_id}
+                        corbeille={item.ctt_corbeille}
                         photo={item.ctt_photo}
                         prenom={item.ctt_prenom}
                         nom={item.ctt_nom}

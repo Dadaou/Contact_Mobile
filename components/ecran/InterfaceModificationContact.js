@@ -28,7 +28,7 @@ import ChampSkype from '../contact-components/champ/ChampSkype'
 
 const ModificationContact = ({ navigation, route }) => {
 
-    const { ctt_id, src_id } = route.params
+    const { ctt_id, src_id, favori } = route.params
     const db = SQLite.openDatabase(dbLocalName)
     const estMaj = 1
 
@@ -198,7 +198,7 @@ const ModificationContact = ({ navigation, route }) => {
                     }
 
                     finally {
-                        redirection(true)
+                        redirection(true, 'Contact modifié')
                     }
                 })
 
@@ -210,20 +210,20 @@ const ModificationContact = ({ navigation, route }) => {
             }
 
             finally {
-                redirection(true)
+                redirection(true, 'Contact modifié')
             }
         }
 
     }
 
 
-    const redirection = (showModal) => {
+    const redirection = (showModal, msgToast = "") => {
 
         setContact({})
         setTelephone([])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-        navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, showModal: showModal })
+        navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, showModal: showModal, msgToast : msgToast, favori : favori })
 
     }
 
@@ -239,7 +239,7 @@ const ModificationContact = ({ navigation, route }) => {
             <StatusBar backgroundColor={bleu} barStyle="light-content" />
 
             <Appbar.Header style={{ backgroundColor: bleu }}>
-                <Appbar.Action icon="close" size={30} onPress={() => redirection(false)} color={blanc} />
+                <Appbar.Action icon="close" size={30} onPress={() => redirection(false, "")} color={blanc} />
                 <Appbar.Content title="Modifier un contact" color={blanc} titleStyle={{ alignSelf: 'center' }} />
                 <Appbar.Action icon="check" size={30} onPress={misAJourInfoContact} color={blanc} />
             </Appbar.Header>

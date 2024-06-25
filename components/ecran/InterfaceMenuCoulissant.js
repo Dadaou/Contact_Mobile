@@ -5,7 +5,7 @@ import Toast from '../modal/Toast'
 
 const MenuCoulissant = ({ navigation, route }) => {
 
-  const { showModal, infoUtilisateur } = route.params || {}
+  const { showModal, infoUtilisateur, msgToast } = route.params || {}
   const [isModalVisible, setModalVisible] = useState(false)
 
   const toggleModal = () => {
@@ -59,7 +59,7 @@ const MenuCoulissant = ({ navigation, route }) => {
 
     <>
       <AppDrawer />
-      <Toast title='Contact enregistré' isVisible={isModalVisible} />
+      <Toast title={msgToast} isVisible={isModalVisible} />
     </>
 
 

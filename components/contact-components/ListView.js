@@ -5,7 +5,7 @@ import { Menu, TouchableRipple, List } from 'react-native-paper'
 import * as Animatable from 'react-native-animatable'
 
 
-const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, mail }) => {
+const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, telephone, mail }) => {
 
     const navigation = useNavigation()
 
@@ -14,7 +14,7 @@ const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, 
         <View style={{ flex: 1 }}>
 
             <TouchableRipple
-                onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, favori: favori })}>
+                onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, corbeille: corbeille, favori: favori })}>
 
                 <View style={styles.container}>
 
@@ -27,7 +27,7 @@ const ListView = memo(({ ctt_id, src_id, photo, prenom, nom, favori, telephone, 
                         )}
 
                         description={() => (
-                            
+
                             <View>
 
                                 {
