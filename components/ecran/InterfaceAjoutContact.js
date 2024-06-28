@@ -35,6 +35,7 @@ const AjoutContact = ({ navigation }) => {
     const estInsererDansWeb = 0
     const estMaj = 0
     const estSupprimer = 0
+    const estRestaurer = 0
 
     const [loading, setLoading] = useState(false)
     const [contact, setContact] = useState({
@@ -87,7 +88,7 @@ const AjoutContact = ({ navigation }) => {
                     [
                         contact.photo, contact.prenom, contact.nom, contact.prenomUsage, contact.entreprise, contact.fonction, contact.date,
                         contact.note, contact.service, contact.siteWeb, contact.twitter, contact.linkedin, contact.facebook, contact.skype, contact.etat,
-                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, contact.corbeille, estInsererDansWeb, estMaj, estSupprimer
+                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, contact.corbeille, estInsererDansWeb, estMaj, estSupprimer, estRestaurer
                     ],
 
                     (_, resultSet) => {

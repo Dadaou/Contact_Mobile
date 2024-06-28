@@ -21,7 +21,8 @@ export const uri = {
     recuperationContactMaj: 'http://pp-api-contacts.manao.eu/index.php/v1/getNouveauContact',
     envoiContactMobileAWeb: 'http://pp-api-contacts.manao.eu/index.php/v1/addMultiple',
     envoiModificationMobileAWeb: 'http://pp-api-contacts.manao.eu/index.php/v1/modifierContactUtilisateur',
-    envoiContactSupprimerMobileAWeb: 'http://pp-api-contacts.manao.eu/index.php/v1/SupprimerContactUtilisateur'
+    envoiContactSupprimerMobileAWeb: 'http://pp-api-contacts.manao.eu/index.php/v1/SupprimerContactUtilisateur',
+    envoiContactRestaurerMobileAWeb: 'http://pp-api-contacts.manao.eu/index.php/v1/RestaurerContactUtilisateur'
 }
 
 

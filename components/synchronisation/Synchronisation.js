@@ -3,7 +3,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { store } from '../redux/dataStore'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import { updateNetworkStatus } from '../redux/action/globalDataAction'
-import { envoyerContactModifierAWeb, envoyerNouveauContactAWeb, envoyerContactSupprimerAWeb } from './EnvoyerContact'
+import { envoyerContactModifierAWeb, envoyerNouveauContactAWeb, envoyerContactSupprimerAWeb, envoyerContactRestaurerAWeb } from './EnvoyerContact'
 import { recupererContactMajDepuisWeb } from './RecupererContact'
 
 
@@ -36,6 +36,7 @@ const Synchronisation = () => {
       await envoyerNouveauContactAWeb(appToken)
       await envoyerContactModifierAWeb(appToken)
       await envoyerContactSupprimerAWeb(appToken)
+      await envoyerContactRestaurerAWeb(appToken)
       await recupererContactMajDepuisWeb(appToken)
     }
 

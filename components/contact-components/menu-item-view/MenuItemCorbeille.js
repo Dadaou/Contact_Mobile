@@ -9,6 +9,8 @@ const MenuItemCorbeille = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom,
 
 
     const reqToRestoreContact = "UPDATE contact SET ctt_corbeille = 0 WHERE ctt_id = ?"
+    const reqToUpdateFlagRestauration = "UPDATE contact SET est_restaurer = 1 WHERE ctt_id = ?"
+
     const db = SQLite.openDatabase(dbLocalName)
 
     const [visible, setVisible] = useState({})
@@ -31,6 +33,7 @@ const MenuItemCorbeille = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom,
     const procederRestauration = useCallback((idContact) => {
         db.transaction((tx) => {
             tx.executeSql(reqToRestoreContact, [idContact])
+            tx.executeSql(reqToUpdateFlagRestauration, [idContact])
         })
         setVisible({ menuContextuel: false })
         onRefreshList(true)
