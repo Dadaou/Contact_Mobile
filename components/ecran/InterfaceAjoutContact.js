@@ -34,6 +34,7 @@ const AjoutContact = ({ navigation }) => {
     const db = SQLite.openDatabase(dbLocalName)
     const estInsererDansWeb = 0
     const estMaj = 0
+    const estSupprimer = 0
 
     const [loading, setLoading] = useState(false)
     const [contact, setContact] = useState({
@@ -71,7 +72,7 @@ const AjoutContact = ({ navigation }) => {
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
 
-        navigation.navigate('Accueil', { showModal: showModal, msgToast : msgToast })
+        navigation.navigate('Accueil', { showModal: showModal, msgToast: msgToast })
     }
 
     const saveContact = (utilId) => {
@@ -86,7 +87,7 @@ const AjoutContact = ({ navigation }) => {
                     [
                         contact.photo, contact.prenom, contact.nom, contact.prenomUsage, contact.entreprise, contact.fonction, contact.date,
                         contact.note, contact.service, contact.siteWeb, contact.twitter, contact.linkedin, contact.facebook, contact.skype, contact.etat,
-                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, contact.corbeille, estInsererDansWeb, estMaj
+                        contact.favoris, utilId, contact.idContactWeb, contact.sourceId, contact.corbeille, estInsererDansWeb, estMaj, estSupprimer
                     ],
 
                     (_, resultSet) => {

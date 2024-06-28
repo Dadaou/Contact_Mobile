@@ -21,6 +21,7 @@ const DetailContact = ({ route }) => {
     const db = SQLite.openDatabase(dbLocalName)
     const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
     const reqToMoveContactInCorbeille = "UPDATE contact SET ctt_corbeille = 1 WHERE ctt_id = ?"
+    const reqToUpdateFlagSuppression = "UPDATE contact SET est_supprimer = 1 WHERE ctt_id = ?"
     const reqToDeleteContact = "DELETE FROM contact WHERE ctt_id = ?"
 
     let dateDernierSynchro = store.getState().globalReducer.dateDernierSynchro
@@ -33,8 +34,7 @@ const DetailContact = ({ route }) => {
 
 
     const IncrementNombreFavori = () => {
-        !isFavori ?
-            store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori + 1)) :
+        !isFavori ? store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori + 1)) :
             store.dispatch(updateNombreFavori(store.getState().globalReducer.nombreFavori - 1))
     }
 
@@ -73,6 +73,7 @@ const DetailContact = ({ route }) => {
         else {
             db.transaction((tx) => {
                 tx.executeSql(reqToMoveContactInCorbeille, [ctt_id])
+                tx.executeSql(reqToUpdateFlagSuppression, [ctt_id])
             })
 
             navigation.navigate('Accueil', { showModal: true, msgToast: 'Contact déplacé dans la corbeille' })

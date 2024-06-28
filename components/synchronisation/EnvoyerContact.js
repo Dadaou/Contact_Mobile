@@ -138,3 +138,67 @@ export const envoyerContactModifierAWeb = async (appToken, tentativeEssai = maxT
         )
     })
 }
+
+export const envoyerContactSupprimerAWeb = async (appToken, tentativeEssai = maxTentatives) => {
+
+    const db = SQLite.openDatabase(dbLocalName)
+    const requete = "SELECT ctt_id_web FROM contact WHERE est_supprimer = ?"
+    const suffixBase = await getSuffixBase()
+
+    db.transaction((tx) => {
+
+        tx.executeSql(requete, [1],
+
+            async (_, results) => {
+
+                const data = results.rows._array
+
+                if (data.length !== 0) {
+
+                    try {
+
+                        const response = await axios.post(uri.envoiContactSupprimerMobileAWeb, {
+                            suffixBase: suffixBase,
+                            data: JSON.stringify({ listId: data })
+                        }, {
+                            headers: {
+
+                                'Authorization': 'Bearer ' + appToken,
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+
+                        if (response.data && response.data.code === 1) {
+
+                            const requetePourReinitialiserFlag = "UPDATE contact SET est_supprimer = ? WHERE ctt_id_web = ?"
+                            const estSupprimer = 0
+
+                            db.transaction((tx) => {
+                                data.forEach((item) => {
+                                    tx.executeSql(requetePourReinitialiserFlag, [estSupprimer, item.ctt_id_web])
+                                })
+                            })
+
+                            //console.log("Envoi suppr done")
+                        }
+
+                    } catch (error) {
+
+                        if (tentativeEssai > 0) {
+
+                            const nouveauAppToken = obtenirAppToken()
+                            await envoyerContactModifierAWeb(nouveauAppToken, tentativeEssai - 1)
+
+                        } else {
+                            console.log("Une erreur s'est produite lors de l'envoi des contacts supprimés vers contact web.", error)
+                        }
+                    }
+
+                }
+            },
+            (_, error) => {
+                console.log('transaction error', error)
+            }
+        )
+    })
+}
