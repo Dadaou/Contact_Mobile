@@ -29,13 +29,16 @@ const ChampRechercheContact = ({ dataCopie, onSearch, onFindNoResult }) => {
 
         const cleanedNom = ctt_nom ? ctt_nom.replace(/\s+/g, '').toLowerCase() : ''
         const cleanedPrenom = ctt_prenom ? ctt_prenom.replace(/\s+/g, '').toLowerCase() : ''
+        const cleanedPrenomNom = `${cleanedPrenom}${cleanedNom}`
+        const cleanedNomPrenom = `${cleanedNom}${cleanedPrenom}`
         const cleanedPrenomUsage = ctt_prenom_usage ? ctt_prenom_usage.replace(/\s+/g, '').toLowerCase() : ''
         const cleanedTelephones = telephone ? telephone.split(',').map(tel => tel.replace(/\s+/g, '')) : []
         const cleanedMail = mail ? mail.split(',').map(ml => ml.replace(/\s+/g, '')) : []
 
         if (
-            cleanedNom.includes(cleanedMotCle) ||
-            cleanedPrenom.includes(cleanedMotCle) ||
+
+            cleanedPrenomNom.includes(cleanedMotCle) ||
+            cleanedNomPrenom.includes(cleanedMotCle) ||
             cleanedPrenomUsage.includes(cleanedMotCle) ||
             cleanedTelephones.some(tel => tel.includes(cleanedMotCle)) ||
             cleanedMail.some(ml => ml.includes(cleanedMotCle))
