@@ -106,9 +106,9 @@ const DetailContact = ({ route }) => {
             <Appbar.Header style={{ backgroundColor: "#F2F3F4" }}>
                 <Appbar.BackAction onPress={() => navigation.goBack()} size={25} />
                 <Appbar.Content title="" />
-                <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori} />
+                <Appbar.Action icon={isFavori ? 'star' : 'star-outline'} onPress={toggleFavori} disabled={corbeille == 1 && true} />
                 <Appbar.Action icon={'trash-can-outline'} onPress={afficherAlertePourSuppression} disabled={src_id !== 1 && true} />
-                <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id, src_id: src_id })} />
+                <Appbar.Action icon="pencil" onPress={() => navigation.navigate('ModificationContact', { ctt_id: ctt_id, src_id: src_id })} disabled={corbeille == 1 && true} />
             </Appbar.Header>
 
             <ScrollView>
