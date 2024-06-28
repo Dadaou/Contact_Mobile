@@ -176,7 +176,7 @@ const ModificationContact = ({ navigation, route }) => {
                         tx.executeSql(requetes.MajContact,
                             [contact.ctt_photo, contact.ctt_nom, contact.ctt_prenom, contact.ctt_prenom_usage, contact.ctt_entreprise, contact.ctt_service, contact.ctt_fonction,
                             contact.ctt_anniversaire, contact.ctt_siteweb, contact.ctt_twitter, contact.ctt_linkedin, contact.ctt_facebook, contact.ctt_skype, contact.ctt_notes,
-                            contact.ctt_etat, estMaj, ctt_id])
+                            contact.ctt_etat, contact.ctt_corbeille, estMaj, ctt_id])
 
                         telephone.forEach((item) => {
                             tx.executeSql(requetes.InsererTelephone, [item.tel_numero, item.tel_libelle, ctt_id, utilId])
@@ -223,7 +223,7 @@ const ModificationContact = ({ navigation, route }) => {
         setTelephone([])
         setMail([{ ml_libelle: "", ml_mail: "" }])
         setAdresse([{ addr_ligne1: "", addr_ligne2: "", addr_ligne3: "", addr_ville: "", addr_pays: "", addr_bp: "", addr_cp: "", addr_libelle: "" }])
-        navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, showModal: showModal, msgToast : msgToast, favori : favori })
+        navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, showModal: showModal, msgToast: msgToast, favori: favori })
 
     }
 

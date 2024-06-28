@@ -148,6 +148,7 @@ const enregistrerContactWebSurMobile = (contacts) => {
 
 const appliquerMajWebDansMobile = (contacts) => {
 
+    const estMaj = 0
     const requete = "SELECT ctt_id AS ctt_id_mobile FROM contact WHERE ctt_id_web = ?"
 
     db.transaction((tx) => {
@@ -170,7 +171,7 @@ const appliquerMajWebDansMobile = (contacts) => {
                             tx.executeSql(requetes.MajContact,
                                 [null/*item.ctt_photo*/, item.ctt_nom, item.ctt_prenom, item.ctt_prenom_usage, item.ctt_entreprise,
                                     item.ctt_service, item.ctt_fonction, item.ctt_anniversaire, item.ctt_siteweb, item.ctt_twitter,
-                                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, 0, idContactMobile],
+                                    item.ctt_linkedin, item.ctt_facebook, item.ctt_skype, item.ctt_notes, item.ctt_etat, item.ctt_corbeille, estMaj, idContactMobile],
                                 async (txObj, resultSet) => {
                                     if (resultSet.rowsAffected !== 0) {
                                         enregistrerNumeroTelephoneWebSurMobile(item.telephone, idContactMobile, item.util_id, item.ctt_id)

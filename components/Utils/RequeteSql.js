@@ -12,7 +12,7 @@ const requetes = {
     InsererTelephone: "INSERT INTO telephone (tel_numero, tel_libelle, ctt_id, util_id, ctt_id_web) VALUES (?,?,?,?,?)",
     InsererMail: "INSERT INTO mail (ml_mail, ml_libelle, ctt_id, util_id, ctt_id_web) VALUES (?,?,?,?,?)",
     InsererAdresse: "INSERT INTO adresse (addr_ligne1, addr_ligne2, addr_ligne3, addr_cp, addr_bp, addr_pays, addr_ville, addr_libelle, ctt_id) VALUES (?,?,?,?,?,?,?,?,?)",
-    MajContact: "UPDATE contact SET ctt_photo = ?, ctt_nom = ?, ctt_prenom = ?, ctt_prenom_usage = ?, ctt_entreprise = ?, ctt_service = ?, ctt_fonction = ?, ctt_anniversaire = ?, ctt_siteweb = ?, ctt_twitter = ?, ctt_linkedin = ?, ctt_facebook = ?, ctt_skype = ?, ctt_notes = ?, ctt_etat = ?, est_maj = ? WHERE ctt_id = ?",
+    MajContact: "UPDATE contact SET ctt_photo = ?, ctt_nom = ?, ctt_prenom = ?, ctt_prenom_usage = ?, ctt_entreprise = ?, ctt_service = ?, ctt_fonction = ?, ctt_anniversaire = ?, ctt_siteweb = ?, ctt_twitter = ?, ctt_linkedin = ?, ctt_facebook = ?, ctt_skype = ?, ctt_notes = ?, ctt_etat = ?, ctt_corbeille = ?, est_maj = ? WHERE ctt_id = ?",
     SupprContact: "DELETE FROM contact WHERE ctt_id = ?",
     SupprTelephone: "DELETE FROM telephone WHERE ctt_id = ?",
     SupprMail: "DELETE FROM mail WHERE ctt_id = ?",
