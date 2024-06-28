@@ -23,14 +23,12 @@ const ContactPersonnel = () => {
 
         <>
             <HeaderPrincipal titre={titre} />
-
             <CustomFlatlist
                 screenId={screenId}
                 onTotalChange={handleTotalChange}
                 requete={requete}
                 paramRequete={paramRequete}
             />
-
             <BoutonAjoutContact />
         </>
 

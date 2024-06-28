@@ -12,7 +12,6 @@ const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, 
 
         <>
 
-
             <TouchableRipple
                 onLongPress={onLongPressCallback}
                 onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, corbeille: corbeille, favori: favori })}>
@@ -36,7 +35,7 @@ const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, 
 
                                         (
                                             <Text numberOfLines={1} ellipsizeMode="tail">
-                                                tel: {telephone.replace(/,/g, ', ')}
+                                                tél: {telephone.replace(/,/g, ', ')}
                                             </Text>
 
                                         )
