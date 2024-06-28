@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { View, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Text } from "react-native"
+import { useState, useEffect, useCallback } from "react"
+import { View, StyleSheet, ScrollView, StatusBar, Text } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 import { Appbar } from "react-native-paper"
 import Toast from "../modal/Toast"
@@ -12,15 +12,6 @@ import { store } from "../redux/dataStore"
 import { updateNombreFavori } from "../redux/action/globalDataAction"
 import CustomAlert from "../modal/CustomAlert"
 
-/*
-    <TouchableOpacity onPress={() => setAfficherAutreInfo(!afficherAutreInfo)} style={{ alignItems: 'center', justifyContent : 'center', paddingRight: 170}}>
-
-            {!afficherAutreInfo ?
-                <Text style={{ fontSize: 20, color: "#008E97" }}>Autres informations ?</Text> : null
-            }
-
-    </TouchableOpacity>
-*/
 
 const DetailContact = ({ route }) => {
 
@@ -29,11 +20,12 @@ const DetailContact = ({ route }) => {
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
     const reqToUpdateFavori = "UPDATE contact SET ctt_favoris = ? WHERE ctt_id = ?"
-    const reqToMoveInCorbeille = "UPDATE contact SET ctt_corbeille = 1 WHERE ctt_id = ?"
+    const reqToMoveContactInCorbeille = "UPDATE contact SET ctt_corbeille = 1 WHERE ctt_id = ?"
+    const reqToDeleteContact = "DELETE FROM contact WHERE ctt_id = ?"
 
     let dateDernierSynchro = store.getState().globalReducer.dateDernierSynchro
 
-    const [afficherAutreInfo, setAfficherAutreInfo] = useState(false)
+
     const [isFavori, setIsFavori] = useState(favori)
     const [isModalVisible, setModalVisible] = useState(false)
     const [isAlertVisible, setAlertVisible] = useState(false)
@@ -60,7 +52,7 @@ const DetailContact = ({ route }) => {
         setModalVisible(true)
         setTimeout(() => {
             setModalVisible(false)
-        }, 1500)
+        }, 2000)
 
     }
 
@@ -68,15 +60,25 @@ const DetailContact = ({ route }) => {
         setAlertVisible(!isAlertVisible)
     }
 
-    const procederSupression = () => {
+    const procederSuppression = useCallback(() => {
 
-        db.transaction((tx) => {
-            tx.executeSql(reqToMoveInCorbeille, [ctt_id])
-        })
-    
-        navigation.navigate('Accueil', { showModal: true, msgToast : 'Contact déplacé dans la corbeille' })
+        if (corbeille == 1) {
+            db.transaction((tx) => {
+                tx.executeSql(reqToDeleteContact, [ctt_id])
+            })
 
-    }
+            navigation.navigate('Accueil', { showModal: true, msgToast: 'Contact supprimé' })
+        }
+
+        else {
+            db.transaction((tx) => {
+                tx.executeSql(reqToMoveContactInCorbeille, [ctt_id])
+            })
+
+            navigation.navigate('Accueil', { showModal: true, msgToast: 'Contact déplacé dans la corbeille' })
+        }
+
+    }, [])
 
     useEffect(() => {
 
@@ -134,7 +136,9 @@ const DetailContact = ({ route }) => {
             }
 
             <Toast title={msgToast} isVisible={isModalVisible} />
-            <CustomAlert isVisible={isAlertVisible} onVisible={setAlertVisible} msg={'Déplacer ce contact dans la corbeille ?'} actionBouton={procederSupression} />
+            <CustomAlert isVisible={isAlertVisible} onVisible={setAlertVisible} msg={corbeille == 1 ? 'Supprimer définitivement ce contact ?' : 'Déplacer ce contact dans la corbeille ?'} actionBouton={procederSuppression} />
+
+
         </>
     )
 

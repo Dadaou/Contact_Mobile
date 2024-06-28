@@ -11,13 +11,16 @@ import { store } from '../redux/dataStore'
 import ChampRechercheContact from './champ/ChampRechercheContact'
 import { extractAppTokenFromLocalStorage } from '../utils/GestionAppToken'
 import { manageApparitionNotification, manageNotificationMessage, manageDateDernierSynchro } from '../redux/action/globalDataAction'
-import ListView from './ListView'
 import { recupererContactPlateformeDepuisWeb, recupererContactPersoDepuisWeb } from '../synchronisation/RecupererContact'
 import { getDateTime } from '../utils/utils'
 import { getformatedDateTime } from '../utils/utils'
+import MenuItemContact from './menu-item-view/MenuItemContact'
+import MenuItemContactPersonnel from './menu-item-view/MenuItemContactPersonnel'
+import MenuItemFavori from './menu-item-view/MenuItemFavori'
+import MenuItemCorbeille from './menu-item-view/MenuItemCorbeille'
 
 
-const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact enregistré", requete, paramRequete = null }) => {
+const CustomFlatlist = memo(({ screenId, onTotalChange, texteSiListVide = "Aucun contact enregistré", requete, paramRequete = null }) => {
 
     const navigation = useNavigation()
     const db = SQLite.openDatabase(dbLocalName)
@@ -27,7 +30,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
 
     const [data, setData] = useState([])
     const [copieData, setCopieData] = useState([])
-    const [refreshing, setRefreshing] = useState(false)
+    const [refreshing, setRefreshing] = useState(true)
     const [connecte, setConnecte] = useState(store.getState().globalReducer.networkInfo.isConnected)
     const [internetJoignable, setInternetJoignable] = useState(store.getState().globalReducer.networkInfo.isInternetReachable)
     const [dateDernierSynchro, setDateDernierSynchro] = useState("")
@@ -41,11 +44,30 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         setDateDernierSynchro(state.globalReducer.dateDernierSynchro)
     })
 
+    const choisirTypeMenuItem = (ctt_id, src_id, corbeille, photo, prenom, nom, favori, telephone, mail, onRefreshList) => {
+
+        const menuItemProps = {
+            ctt_id, src_id, corbeille, photo, prenom, nom, favori, telephone, mail, onRefreshList
+        }
+
+        switch (screenId) {
+            case 1:
+                return <MenuItemContact {...menuItemProps} />
+            case 2:
+                return <MenuItemContactPersonnel {...menuItemProps} />
+            case 3:
+                return <MenuItemFavori {...menuItemProps} />
+            case 4:
+                return <MenuItemCorbeille {...menuItemProps} />
+            default:
+                return null
+        }
+    }
 
 
     const fetchListContact = useCallback(async () => {
 
-        setRefreshing(true)
+        //setRefreshing(true)
 
         try {
             const data = await getListContact(db, requete, paramRequete)
@@ -61,6 +83,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
         }
 
     }, [requete, paramRequete])
+
 
     const fetchContactWeb = useCallback(async () => {
 
@@ -128,7 +151,7 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
 
         return unsubscribe
 
-    }, [navigation, connecte, internetJoignable, dateDernierSynchro])
+    }, [navigation, connecte, internetJoignable, dateDernierSynchro, refreshing])
 
 
 
@@ -142,20 +165,8 @@ const CustomFlatlist = memo(({ onTotalChange, texteSiListVide = "Aucun contact e
                 data={data}
                 maxToRenderPerBatch={20}
                 keyExtractor={item => item.ctt_id}
-                renderItem={({ item, index }) => (
-                    <ListView
-                        ctt_id={item.ctt_id}
-                        src_id={item.src_id}
-                        corbeille={item.ctt_corbeille}
-                        photo={item.ctt_photo}
-                        prenom={item.ctt_prenom}
-                        nom={item.ctt_nom}
-                        favori={item.ctt_favoris}
-                        telephone={item.telephone}
-                        mail={item.mail}
-                    />
-                )}
 
+                renderItem={({ item }) => choisirTypeMenuItem(item.ctt_id, item.src_id, item.ctt_corbeille, item.ctt_photo, item.ctt_prenom, item.ctt_nom, item.ctt_favoris, item.telephone, item.mail, setRefreshing)}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchContactWeb} />}
 
                 ListEmptyComponent={(

@@ -1,19 +1,20 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, StyleSheet, Image, Text } from 'react-native'
-import { Menu, TouchableRipple, List } from 'react-native-paper'
-import * as Animatable from 'react-native-animatable'
+import { TouchableRipple, List } from 'react-native-paper'
 
 
-const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, telephone, mail }) => {
+const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, telephone, mail, onLongPressCallback = () => { } }) => {
 
     const navigation = useNavigation()
 
     return (
 
-        <View style={{ flex: 1 }}>
+        <>
+
 
             <TouchableRipple
+                onLongPress={onLongPressCallback}
                 onPress={() => navigation.navigate('DetailContact', { ctt_id: ctt_id, src_id: src_id, corbeille: corbeille, favori: favori })}>
 
                 <View style={styles.container}>
@@ -73,7 +74,7 @@ const ListView = memo(({ ctt_id, src_id, corbeille, photo, prenom, nom, favori, 
                 </View>
 
             </TouchableRipple>
-        </View>
+        </>
     )
 })
 
